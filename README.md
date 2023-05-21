@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -65,47 +64,3 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-=======
-# Helpdesk PT SKB & PT BPU
-###### Services for managing assignment data for each division within the company
---------------------------------------------------------
-
-### Requirements
-
-<ul>
-  <li> PHP >= 8.2 </li>
-  <li> Composer >= 2.5.5 </li>
-  <li> Laravel >= 9.0 </li>
-</ul>
-
-### Install
-
-- clone this Repository 
-``` 
-git clone https://github.com/Marvelch/helpdesk.git
-```
-- copy and rename from .env_example to .env 
-- configure .env 
-```
-DB_PORT=3306
-DB_DATABASE=laravel
-DB_USERNAME=root
-DB_PASSWORD=
-```
-- run the following command to update
-```
-composer update
-```
-- generate app key 
-``` 
-php artisan key:generate 
-```
-- for the last stage run the command
-```
-php artisan serve
-```
-- open at the following url 
-```
-http://127.0.0.1:8000/
-```
->>>>>>> b1d73e6d597315e741cb81c9fb0a115b1e38a9e6
