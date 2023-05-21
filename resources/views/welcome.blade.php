@@ -88,7 +88,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
-                            @if(Auth::check())
+                            @if(!Auth::check())
                             <div class="card card-plain mt-8" style="padding: 50% 0 50% 0;">
                                 <div class="card-header pb-0 text-left bg-transparent">
                                     <h3 class="font-weight-bolder text-info text-gradient">Hi </h3>
