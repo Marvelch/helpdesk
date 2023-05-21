@@ -1,0 +1,24 @@
+:root {
+    --bs-original: #ffbd59;
+}
+
+.logo_login_and_register {
+    width: 90%;
+}
+
+.btn-init {
+    border: none;
+    box-shadow: 2px 2px #00000078;
+}
+
+.btn-submit {
+    background-color: var(--bs-original);
+    border-radius: 6px;
+    width: 100px;
+    height: 30px;
+    color: var(--bs-white);
+}
+
+.login {
+    margin-top: 30%;
+}
