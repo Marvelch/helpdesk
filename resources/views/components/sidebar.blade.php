@@ -37,9 +37,9 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
-            @if(Auth::user()->level_id == env('LEVEL_ADMIN') OR Auth::user()->level == env('LEVEL_EDITOR'))
+            @if(Auth::user()->level->special_character ?? '' == env('LEVEL_ADMIN') OR Auth::user()->level->special_character ?? '' == env('LEVEL_EDITOR'))
             <li class="nav-item">
-                <a class="nav-link  " href="{{ROUTE('add-users')}}">
+                <a class="nav-link  " href="{{ROUTE('index_users')}}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1"

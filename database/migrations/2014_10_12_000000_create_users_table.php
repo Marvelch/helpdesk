@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreign('level_id')->references('id')->on('levels');
             $table->string('phone')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->foreign('company_id')->references('id')->on('companies');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

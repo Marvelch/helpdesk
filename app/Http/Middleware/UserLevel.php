@@ -15,7 +15,7 @@ class UserLevel
      */
     public function handle(Request $request, Closure $next, ...$levels): Response
     {
-        if(in_array($request->user()->level_id,$levels)) {
+        if(in_array($request->user()->level->special_character,$levels)) {
             return $next($request);
         }
         return redirect('/')->with('failed','akses terbatas');

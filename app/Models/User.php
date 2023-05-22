@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'company_id',
         'level_id',
         'phone',
         'password',
@@ -44,4 +45,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * displays relationships by table level.
+     *
+     * @var array<string, string>
+     */
+    public function level() {
+        return $this->belongsTo(level::class,'level_id','id');
+    }
+
+     /**
+     * Shows the table's relationship with the company.
+     *
+     * @var array<string, string>
+     */
+    public function company() {
+        return $this->belongsTo(company::class,'company_id','id');
+    }
 }

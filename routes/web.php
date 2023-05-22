@@ -37,8 +37,14 @@ Route::group(['prefix' => 'users','auth'], function(){
     Route::get('/profile',[HomeController::class, 'profile']);
     
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
-        Route::get('/',[HomeController::class,'index'])->name('add-users');
+        Route::get('/',[HomeController::class,'index'])->name('index_users');
+        Route::get('/create',[HomeController::class,'create'])->name('create_users');
+        Route::get('/{id}/edit',[HomeController::class,'edit'])->name('edit_users');
+        Route::post('/store',[HomeController::class,'store'])->name('store_users');
     });
-
-    Route::post('/store',[HomeController::class,'store']);
 });
+
+Route::get('/chat', function() {
+
+});
+    

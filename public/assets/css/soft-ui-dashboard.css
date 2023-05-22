@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital@1&family=Raleway:wght@500&display=swap");
 /*!
 
 =========================================================
@@ -68,6 +69,8 @@
     --bs-body-color-rgb: 103, 116, 142;
     --bs-body-bg-rgb: 255, 255, 255;
     --bs-font-sans-serif: Open Sans;
+    --bs-font-nunito: "Nunito", sans-serif;
+    --bs-font-raleway: "Raleway", sans-serif;
     --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
         "Liberation Mono", "Courier New", monospace;
     --bs-gradient: linear-gradient(
@@ -5683,7 +5686,7 @@ fieldset:disabled .btn {
 .active > .page-link {
     z-index: 3;
     color: var(--bs-pagination-active-color);
-    background-color: var(--bs-pagination-active-bg);
+    background-color: #ffffff;
     border-color: var(--bs-pagination-active-border-color);
 }
 
@@ -24332,7 +24335,7 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #8392ab;
+    color: #000000;
     padding: 0;
     margin: 0 3px;
     border-radius: 50% !important;

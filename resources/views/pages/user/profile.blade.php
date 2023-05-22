@@ -143,13 +143,7 @@
                             &nbsp; Karyawan</li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Level :</strong>
                             &nbsp; 
-                            @if(Auth::user()->level == 0) 
-                                Staff
-                            @elseif(Auth::user()->level == 1)
-                                Editor
-                            @elseif(Auth::user()->level == 2)
-                                Admin
-                            @endif
+                            {{Auth::user()->level->level}}
                         </li>
                         <li class="list-group-item border-0 ps-0 pb-0">
                             <strong class="text-dark text-sm">Social:</strong> &nbsp;

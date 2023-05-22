@@ -34,10 +34,10 @@
                                 <div class="row mb-3">
                                     <div class="form-group">
                                         <label for="name"
-                                            class="form-control-sm col-form-label text-md-end">{{ __('Name') }}</label>
+                                            class="col-form-label text-md-end">{{ __('Name') }}</label>
 
                                         <input id="name" type="text"
-                                            class="form-control form-control-sm @error('name') is-invalid @enderror"
+                                            class="form-control @error('name') is-invalid @enderror"
                                             name="name" value="{{ old('name') }}" required autocomplete="name"
                                             autofocus>
 
