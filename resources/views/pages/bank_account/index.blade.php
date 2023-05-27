@@ -30,7 +30,7 @@
                         <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Nama Pengguna</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -43,27 +43,15 @@
                                         Username</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Password</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    </th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Bantuan
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($items as $item)
                                 <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div>
-                                                <img src="../assets/icon.jpg" class="avatar avatar-sm me-3" alt="xd">
-                                            </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">{{$item->user->name}}</h6>
-                                            </div>
-                                        </div>
+                                    <td class="align-middle text-center text-sm">
+                                        <span class="text-xs font-weight-bold">{{$item->user->name}}</span>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <span class="text-xs font-weight-bold">{{$item->ip_address}}</span>
@@ -75,9 +63,6 @@
                                         <span class="text-xs font-weight-bold"></span>
                                     </td>
                                     <td class="align-middle text-center text-sm">
-                                        <span class="text-xs font-weight-bold"></span>
-                                    </td>
-                                    <td>
                                         <a href="{{url('/bank-accounts/'.$item->user->id.'/edit')}}"
                                             class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
                                             data-original-title="Edit user">
