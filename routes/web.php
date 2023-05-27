@@ -23,14 +23,16 @@ Auth::routes();
 
 Route::get('/home', function() {
     return view('pages.dashboard.index');
-});
+})->name('home');
 
 Route::group(['prefix' => 'bank-accounts'], function(){
-    Route::get('/',[BankAccountsController::class, 'index']);
-    Route::get('/create',[BankAccountsController::class, 'create']);
-    Route::get('/{id}/edit',[BankAccountsController::class, 'edit']);
-    Route::put('/{id}/update',[BankAccountsController::class, 'update']);
-    Route::post('/store',[BankAccountsController::class, 'store']);
+    Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
+        Route::get('/',[BankAccountsController::class, 'index']);
+        Route::get('/create',[BankAccountsController::class, 'create']);
+        Route::get('/{id}/edit',[BankAccountsController::class, 'edit']);
+        Route::put('/{id}/update',[BankAccountsController::class, 'update']);
+        Route::post('/store',[BankAccountsController::class, 'store']);
+    });
 });
 
 Route::group(['prefix' => 'users','auth'], function(){
@@ -41,6 +43,7 @@ Route::group(['prefix' => 'users','auth'], function(){
         Route::get('/create',[HomeController::class,'create'])->name('create_users');
         Route::get('/{id}/edit',[HomeController::class,'edit'])->name('edit_users');
         Route::post('/store',[HomeController::class,'store'])->name('store_users');
+        Route::put('/{id}/update',[HomeController::class,'update'])->name('update_users');
     });
 });
 

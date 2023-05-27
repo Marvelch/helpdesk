@@ -17,6 +17,7 @@
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <link href="{{asset('./assets/css/nucleo-svg.css')}}" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- CSS Files -->
   <link id="pagestyle" href="{{asset('./assets/css/soft-ui-dashboard.css?v=1.0.7')}}" rel="stylesheet" />
   <!-- Nepcha Analytics (nepcha.com) -->
@@ -24,5 +25,6 @@
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
   <!-- sweetalert2 -->
   <script src="{{asset('./js/sweetalert2.all.min.js')}}"></script>
+  <script src="{{asset('./js/jquery-3.7.0.js')}}"></script>
   @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
 </head>

@@ -80,8 +80,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="modal" data-bs-target="#exampleModal" href="javascript:;" role="tab"
-                                aria-selected="false">
+                            <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                href="javascript:;" role="tab" aria-selected="false">
                                 <svg class="text-dark" width="16px" height="16px" viewBox="0 0 40 40" version="1.1"
                                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <title>settings</title>
@@ -141,8 +141,8 @@
                             &nbsp; {{Auth::user()->email}}</li>
                         <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Status :</strong>
                             &nbsp; Karyawan</li>
-                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Level :</strong>
-                            &nbsp; 
+                        <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Level :</strong>
+                            &nbsp;
                             {{Auth::user()->level->level}}
                         </li>
                         <li class="list-group-item border-0 ps-0 pb-0">
@@ -173,32 +173,45 @@
             <form action="{{url('/users/store')}}" method="post">
                 @csrf
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Phone</label>
-                                <div class="mb-3">
-                                    <input type="text" name="phone" class="form-control form-control-sm" 
-                                        aria-label="phone">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Email</label>
-                                <div class="mb-3">
-                                    <input type="text" name="Email" class="form-control form-control-sm"
-                                        aria-label="email">
+                    <div class="row mt-5">
+                        <div class="col-md-6 d-flex justify-content-center">
+                            <div class="form-group mt-5">
+                                <div class="photo__frame">
+                                    <div class="card shadow">
+                                        <div class="card-body mt-5 mb-5 text-center">
+                                            Photo
+                                        </div>
+                                    </div>
+                                    <div class="form-group mt-5">
+                                        <input type="file" name="" id="" class="form-control form-control-sm">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 d-flex justify-content-center">
-                            <img src="{{asset('./assets/img/profile-icon.png')}}" alt="" srcset=""
-                                style="max-width: 100%;">
+                        <div class="col-md-6 col-md-2">
+                            <div class="form-group">
+                                <label>Status</label>
+                                <div class="mb-3">
+                                    <select name="" id="" class="form-control form-control-sm">
+                                        <option value="">Online</option>
+                                        <option value="">Offline</option>
+                                        <option value="">Sick</option>
+                                        <option value="">Paid leave</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Keterangan</label>
+                                <div class="mb-3">
+                                    <textarea name="" id="" cols="30" rows="5" class="form-control"></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">batal</button>
-                    <button type="submit" class="btn btn-primary">simpan perubahan</button>
+                    <button type="submit" class="btn btn-primary">simpan</button>
                 </div>
             </form>
         </div>

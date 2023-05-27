@@ -59,8 +59,9 @@ class HomeController extends Controller
     public function edit(Request $request, $id)
     {
         $items = User::find(Crypt::decryptString($id));
+        $companys = company::all();
         
-        return view('pages.user.edit',compact('items'));
+        return view('pages.user.edit',compact('items','companys'));
     }
 
     /**
@@ -80,6 +81,8 @@ class HomeController extends Controller
      */
     public function store(Request $request)
     {
+        DB::beginTransaction();
+
         try {
             User::create([
                 'name'      => $request->name,
@@ -102,8 +105,51 @@ class HomeController extends Controller
         }
     }
 
-    public function firebase() 
+     /**
+     * Make changes to data in the database
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function update(Request $request, $id)
     {
-        
+        DB::beginTransaction();
+
+        try {
+            if($request->password) {
+                if($request->password == $request->confirm_password) {
+                    User::find($id)->update([
+                        'name'      =>  $request->name,
+                        'email'     =>  $request->email,
+                        'password'  =>  Hash::make($request->password),
+                        'phone'     =>  $request->phone, 
+                        'company_id'=>  $request->company_id
+                    ]);
+
+                    DB::commit();
+                    return redirect('/index_users');
+                }else{
+                    DB::rollback();
+                    return back()->with('failed','Make sure the password is correct');
+                }
+            }else{
+                 User::find($id)->update([
+                    'name'      =>  $request->name,
+                    'email'     =>  $request->email,
+                    'phone'     =>  $request->phone, 
+                    'company_id'=>  $request->company_id
+                ]);
+
+                DB::commit();
+                return redirect('/index_users');
+            }
+            
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            DB::rollback();
+
+            return back()->with('failed','Pembaharuan Data Tidak Berhasil!');
+        }
     }
+
 }
