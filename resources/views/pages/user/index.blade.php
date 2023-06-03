@@ -4,6 +4,11 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-11">
+            @if ($alert = Session::get('success'))
+            <div class="alert alert-success" role="alert" style="font-size: 12px; color: white;">
+                <i class="fa-solid fa-bell" style="padding-right: 15px;"></i>{{$alert}}
+            </div>
+            @endif
             <div class="card mb-4">
                 <div class="card-header pb-0">
                     <div class="row">
@@ -15,7 +20,7 @@
                                 </a>
                                 <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">
                                     <li><a class="dropdown-item border-radius-md"
-                                            href="{{route('create_users')}}">Tambah</a></li>
+                                            href="{{route('create_users')}}">Tambah Pengguna</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -53,7 +58,9 @@
                                     <td>
                                         <div class="d-flex px-2 py-1">
                                             <div>
-                                                <img src="{{asset('./assets/img/users.png')}}" class="avatar avatar-sm me-3" alt="xd" style="padding: 2px; background-color: #54b95b; border-radius: 50%;">
+                                                <img src="{{asset('./assets/img/users.png')}}"
+                                                    class="avatar avatar-sm me-3" alt="xd"
+                                                    style="padding: 2px; background-color: #54b95b; border-radius: 50%;">
                                             </div>
                                             <div class="d-flex flex-column justify-content-center">
                                                 <h6 class="mb-0 text-sm">{{$item->name}}</h6>

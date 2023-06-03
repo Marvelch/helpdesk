@@ -36,6 +36,8 @@ class BankAccountsController extends Controller
      */
     public function store(Request $request)
     {
+        DB::beginTransaction();
+        
         try {
             bankAccounts::firstOrCreate([
                 'user_id'   => $request->user_id,

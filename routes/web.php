@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\BankAccountsController;
+use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RequestBooksController;
+use App\Http\Controllers\RequestTicketController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +26,7 @@ Auth::routes();
 
 Route::get('/home', function() {
     return view('pages.dashboard.index');
-})->name('home');
+})->name('home')->middleware('auth');
 
 Route::group(['prefix' => 'bank-accounts'], function(){
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
@@ -35,9 +38,22 @@ Route::group(['prefix' => 'bank-accounts'], function(){
     });
 });
 
-Route::group(['prefix' => 'users','auth'], function(){
-    Route::get('/profile',[HomeController::class, 'profile']);
+Route::group(['prefix' => 'division','auth'], function(){
+    Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
+        Route::get('/create',[DivisionController::class, 'create'])->name('create_division');
+        Route::post('/store',[DivisionController::class, 'store'])->name('store_division');
+    });
+});
+
+Route::group(['prefix' => 'request-tickets'], function(){
+    Route::get('/',[RequestTicketController::class,'index'])->name('index_request_ticket');
     
+    Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
+        
+    });
+});
+
+Route::group(['prefix' => 'users','auth'], function(){
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
         Route::get('/',[HomeController::class,'index'])->name('index_users');
         Route::get('/create',[HomeController::class,'create'])->name('create_users');
@@ -47,7 +63,13 @@ Route::group(['prefix' => 'users','auth'], function(){
     });
 });
 
-Route::get('/chat', function() {
-
+// single request
+Route::group(['prefix' => 'profile','auth'], function(){
+     Route::get('/',[HomeController::class, 'profile'])->name('profile_users');
 });
     
+
+Route::get('/logout', function(){
+   Auth::logout();
+   return Redirect::to('/');
+});

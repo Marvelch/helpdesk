@@ -10574,6 +10574,14 @@ fieldset:disabled .btn {
     font-family: var(--bs-font-monospace) !important;
 }
 
+.font-raleway {
+    font-family: "Raleway", sans-serif;
+}
+
+.font-nunito {
+    font-family: "Nunito", sans-serif;
+}
+
 .fs-1 {
     font-size: calc(1.425rem + 2.1vw) !important;
 }
@@ -23720,7 +23728,7 @@ html {
 }
 
 .navbar-vertical .navbar-nav > .nav-item .nav-link.active .icon {
-    background-image: linear-gradient(310deg, #1b3d98 0%, #1b3d98 100%);
+    /* background-image: linear-gradient(310deg, #1b3d98 0%, #1b3d98 100%); */
 }
 
 .navbar-vertical

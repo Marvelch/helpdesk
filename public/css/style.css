@@ -23,6 +23,14 @@
     margin-top: 30%;
 }
 
-.active__menu {
-    color: white;
+.preview_image {
+    width: 10rem;
+    height: 10rem;
+}
+
+.fa-trash-can-position {
+    position: absolute;
+    z-index: 1;
+    top: 15px;
+    right: 18px;
 }
