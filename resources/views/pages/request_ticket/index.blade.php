@@ -36,8 +36,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="">Perusahaan</label>
-                                            <select name="user_id" class="form-select form-select-sm text-capitalize"
-                                                aria-label=".form-select-sm example">
+                                            <select name="user_id" class="js-example-basic-single form-select form-select-sm text-capitalize">
                                                 @foreach($companys as $items)
                                                 <option value="{{$items->id}}">{{$items->company}}</option>
                                                 @endforeach
@@ -119,7 +118,8 @@
             $("input[name=image]").val('');
             $('.preview_image').removeAttr('src');
         });
-    });
 
+        $('.js-example-basic-single').select2();
+    });
 </script>
 @endsection
