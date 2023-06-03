@@ -7,37 +7,45 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="row">
-                        <form action="{{route('store_users')}}" method="post">
+                        <form action="{{route('store_users')}}" method="post" autocomplete="off">
                             @csrf
                             <div class="row">
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="">Nama Pengguna</label>
-                                        <input name="name" type="text" class="form-control" autocomplete="off">
+                                        <input name="name" type="text" class="form-control form-control-sm" autocomplete="off">
                                     </div>
                                     <div class="form-group">
                                         <label for="">Email</label>
-                                        <input type="email" name="email" id="email" class="form-control" autocomplete="off">
+                                        <input type="email" name="email" id="email" class="form-control form-control-sm" autocomplete="off">
                                     </div>
                                     <div class="form-group">
                                         <label for="">Password</label>
-                                        <input type="password" name="password" id="password" class="form-control" autocomplete="off">
+                                        <input type="password" name="password" id="password" class="form-control form-control-sm" autocomplete="off">
                                     </div>
                                     <div class="form-group">
                                         <label for="">Konfirmasi Password</label>
-                                        <input type="password" name="confirm_password" id="confirm_password" class="form-control" autocomplete="off">
+                                        <input type="password" name="confirm_password" id="confirm_password" class="form-control form-control-sm" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="col-4 offset-md-1">
                                     <div class="form-group">
                                         <label for="">Telepon</label>
-                                        <input type="text" name="phone" id="phone" class="form-control" autocomplete="off">
+                                        <input type="text" name="phone" id="phone" class="form-control form-control-sm" autocomplete="off">
                                     </div>
                                     <div class="form-group">
-                                        <label for="">Devisi / Perusahaan</label>
-                                        <select name="company_id" id="company_id" class="form-control">
+                                        <label for="">Perusahaan</label>
+                                        <select name="company_id" id="company_id" class="form-control form-control-sm">
                                             @foreach($items as $item)
                                                 <option value="{{$item->id}}">{{$item->company}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Devisi</label>
+                                        <select name="division_id" id="company_id" class="form-control form-control-sm">
+                                            @foreach($divisions as $item)
+                                                <option value="{{$item->id}}">{{$item->division}}</option>
                                             @endforeach
                                         </select>
                                     </div>

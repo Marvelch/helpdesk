@@ -15,7 +15,7 @@ class CompanySeeder extends Seeder
     {
         $items = ['SKB','BPU'];
 
-        for ($i=0; $i > count($items); $i++) { 
+        for ($i=0; $i < count($items); $i++) { 
             company::create([
                 'company' => $items[$i]
             ]);

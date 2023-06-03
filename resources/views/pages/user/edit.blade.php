@@ -55,6 +55,14 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="">Devisi</label>
+                                        <select name="division_id" id="company_id" class="form-control">
+                                            @foreach($divisions as $item)
+                                                <option value="{{$item->id}}">{{$item->division}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                     <div class="alert alert-info error_password" role="alert"
                                         style="font-size: 12px; color: white;">
                                         <i class="fa-solid fa-bell" style="padding-right: 15px;"></i> Make sure the

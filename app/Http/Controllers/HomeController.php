@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\bankAccounts;
 use App\Models\company;
 use App\Models\devision;
+use App\Models\division;
 use App\Models\User;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\TryCatch;
@@ -34,7 +35,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $items = user::paginate(5);
+        $items = user::orderBy('created_at', 'DESC')->paginate(5);
 
         return view('pages.user.index',compact('items'));
     }
@@ -47,8 +48,9 @@ class HomeController extends Controller
     public function create()
     {
         $items = company::all();
+        $divisions = division::all();
 
-        return view('pages.user.create',compact('items'));
+        return view('pages.user.create',compact('items','divisions'));
     }
 
     /**
@@ -60,8 +62,9 @@ class HomeController extends Controller
     {
         $items = User::find(Crypt::decryptString($id));
         $companys = company::all();
+        $divisions = division::all();
         
-        return view('pages.user.edit',compact('items','companys'));
+        return view('pages.user.edit',compact('items','companys','divisions'));
     }
 
     /**
@@ -126,7 +129,7 @@ class HomeController extends Controller
                     ]);
 
                     DB::commit();
-                    return redirect('/index_users');
+                    return redirect('users')->with('success','Pembaharuan Informasi Pengguna Berhasil !');
                 }else{
                     DB::rollback();
                     return back()->with('failed','Make sure the password is correct');
@@ -140,7 +143,7 @@ class HomeController extends Controller
                 ]);
 
                 DB::commit();
-                return redirect('/index_users');
+                return redirect('users')->with('success','Pembaharuan Informasi Pengguna Berhasil !');
             }
             
         } catch (\Throwable $th) {

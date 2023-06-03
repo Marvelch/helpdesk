@@ -16,12 +16,12 @@
             </div>
             <div class="col-auto my-auto">
                 <div class="h-100">
-                    <h5 class="mb-1">
+                    <h5 class="mb-1 text-capitalize">
                         {{Auth::user()->name}}
                     </h5>
-                    <p class="mb-0 font-weight-bold text-sm">
+                    <!-- <p class="mb-0 font-weight-bold text-sm">
                         {{Auth::user()->email}}
-                    </p>
+                    </p> -->
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
@@ -117,47 +117,42 @@
     <div class="row">
         <div class="col-12">
             <div class="card h-100">
-                <div class="card-header pb-0 p-3">
-                    <div class="row">
-                        <div class="col-md-8 d-flex align-items-center">
-                            <h6 class="mb-0">Detail Pengguna</h6>
+                <div class="card-body p-3">
+                    <div class="row m-3">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-phone-volume"
+                                            style="padding-right: 12px;"></i></span>
+                                    <input type="text" class="form-control text-capitalize" aria-label="Phone"
+                                        aria-describedby="basic-addon1" value="{{Auth::user()->phone}}">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1"><i
+                                            class="fa-solid fa-envelope-circle-check"
+                                            style="padding-right: 12px;"></i></span>
+                                    <input type="text" class="form-control ml-5" aria-label="Email"
+                                        aria-describedby="basic-addon1" value="{{Auth::user()->email}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-key"
+                                            style="padding-right: 12px;"></i></span>
+                                    <input type="text" class="form-control text-capitalize" aria-label="Phone"
+                                        aria-describedby="basic-addon1" value="{{Auth::user()->status}}">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user-shield"
+                                            style="padding-right: 12px;"></i></span>
+                                    <input type="text" class="form-control ml-5 text-uppercase" aria-label="Email"
+                                        aria-describedby="basic-addon1" value="{{Auth::user()->level->level}}">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-body p-3">
-                    <p class="text-sm">
-                        Hi, {{Auth::user()->name}} bagikan informasi lebih banyak untuk mempermuda tim lain mengenal
-                        {{Auth::user()->name}}. Tambahkan IP Address, Anydesk, Etc untuk mempermudah pengelolaan data
-                        setiap karyawan
-                        PT Sekar Bumi Group & PT Bumi Pangan Utama.
-                    </p>
-                    <hr class="horizontal gray-light my-4">
-                    <ul class="list-group">
-                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">
-                                Nama :</strong> &nbsp; {{Auth::user()->name}}</li>
-                        <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Phone :</strong>
-                            &nbsp; {{Auth::user()->phone}}</li>
-                        <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email :</strong>
-                            &nbsp; {{Auth::user()->email}}</li>
-                        <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Status :</strong>
-                            &nbsp; Karyawan</li>
-                        <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Level :</strong>
-                            &nbsp;
-                            {{Auth::user()->level->level}}
-                        </li>
-                        <li class="list-group-item border-0 ps-0 pb-0">
-                            <strong class="text-dark text-sm">Social:</strong> &nbsp;
-                            <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
-                                <i class="fab fa-facebook fa-lg"></i>
-                            </a>
-                            <a class="btn btn-twitter btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
-                                <i class="fab fa-twitter fa-lg"></i>
-                            </a>
-                            <a class="btn btn-instagram btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
-                                <i class="fab fa-instagram fa-lg"></i>
-                            </a>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\devision;
+use App\Models\jobPosition;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class DevisionController extends Controller
+class JobPositionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,7 +35,7 @@ class DevisionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(devision $devision)
+    public function show(jobPosition $jobPosition)
     {
         //
     }
@@ -43,7 +43,7 @@ class DevisionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(devision $devision)
+    public function edit(jobPosition $jobPosition)
     {
         //
     }
@@ -51,7 +51,7 @@ class DevisionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, devision $devision)
+    public function update(Request $request, jobPosition $jobPosition)
     {
         //
     }
@@ -59,7 +59,7 @@ class DevisionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(devision $devision)
+    public function destroy(jobPosition $jobPosition)
     {
         //
     }
