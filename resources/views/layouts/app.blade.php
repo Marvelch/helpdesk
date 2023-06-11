@@ -13,47 +13,9 @@
         @include('components.navbar')
         <!-- End Navbar -->
         @yield('contents')
+        <!-- Check sini  -->
     </main>
-    @if(Auth::user()->level->special_character ?? '' == env('LEVEL_ADMIN'))
-    <div class="fixed-plugin">
-        <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
-            <i class="fa fa-cog py-2"> </i>
-        </a>
-        <div class="card shadow-lg ">
-            <div class="card-header pb-0 pt-3 ">
-                <div class="float-start">
-                    <h5 class="mt-3 mb-0">Settings {{env('APP_NAME')}}</h5>
-                </div>
-                <div class="float-end mt-4">
-                    <button class="btn btn-link text-dark p-0 fixed-plugin-close-button">
-                        <i class="fa fa-close"></i>
-                    </button>
-                </div>
-                <!-- End Toggle Button -->
-            </div>
-            <hr class="horizontal dark my-1">
-            <div class="card-body text-capitalize pt-sm-3 pt-0">
-                <!-- Sidenav Type -->
-                <div class="mt-3 font-raleway">
-                    <h6 class="mb-0"> Divisi Perusahaan</h6>
-                    <p class="text-sm">Pengelolaan divisi perusahaan</p>
-                </div>
-                <div class="d-flex">
-                    <a class="btn bg-gradient-primary w-100 px-3 mb-2 active" data-class="bg-transparent"
-                        onclick="sidebarType(this)" href="{{route('create_division')}}"><i class="fa-solid fa-code-branch"></i> Kelola</a>
-                    <!-- <button class="btn bg-gradient-primary w-100 px-3 mb-2 ms-2" data-class="bg-white"
-                        onclick="sidebarType(this)">White</button> -->
-                </div>
-                <hr class="horizontal dark my-sm-4">
-                <a class="btn bg-gradient-dark w-100" href="{{url('logout')}}">
-                    Logout</a>
-                <!-- <a class="btn btn-outline-dark w-100"
-                    href="https://www.creative-tim.com/learning-lab/bootstrap/license/soft-ui-dashboard">View
-                    documentation</a> -->
-            </div>
-        </div>
-    </div>
-    @endif
+    
     <!-- @include('components.footer') -->
     <!--   Core JS Files   -->
     <script src="{{asset('./assets/js/core/popper.min.js')}}"></script>
@@ -245,7 +207,7 @@
     <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="{{asset('./assets/js/soft-ui-dashboard.min.js?v=1.0.7')}}"></script>
+    <script src="{{asset('./assets/js/soft-ui-dashboard.min.js')}}"></script>
 </body>
 
 </html>

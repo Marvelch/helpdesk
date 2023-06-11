@@ -8,7 +8,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4">
-                            <img src="{{asset('./assets/img/2.png')}}" alt="" srcset="" style="max-width: 100%;">
+                            <!-- <img src="{{asset('./assets/img/2.png')}}" alt="" srcset="" style="max-width: 100%;"> -->
                         </div>
                         <div class="col-md-8">
                             @if ($alert = Session::get('failed'))
@@ -25,7 +25,7 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="">Pilih Perusahaan</label>
-                                    <select name="company_id" class="form-select" aria-label=".form-select-sm example">
+                                    <select name="company_id" class="form-control form-select-sm" aria-label="example">
                                         @foreach($items as $item)
                                         <option value="{{$item->id}}">{{$item->company}}</option>
                                         @endforeach
@@ -34,12 +34,12 @@
                                 <div class="form-group">
                                     <label>Divisi</label>
                                     <div class="mb-3">
-                                        <input type="division" name="division" class="form-control"
+                                        <input type="division" name="division" class="form-control form-control-sm"
                                             aria-label="division" aria-describedby="division">
                                     </div>
                                 </div>
-                                <div class="text-center col-md-3">
-                                    <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">simpan</button>
+                                <div class="text-center d-flex justify-content-end">
+                                    <button type="submit" class="btn bg-gradient-info w-30 mt-4 mb-0">simpan</button>
                                 </div>
                             </form>
                         </div>

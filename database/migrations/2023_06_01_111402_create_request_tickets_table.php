@@ -16,20 +16,20 @@ return new class extends Migration
             $table->unsignedBigInteger('request_on_user_id')->nullable();
             $table->foreign('request_on_user_id')->references('id')->on('users');
             $table->unsignedBigInteger('assignment_on_user_id')->nullable();
+            $table->foreign('assignment_on_user_id')->references('id')->on('users');
             $table->string('title')->nullable();
             $table->unsignedBigInteger('company_id')->nullable();
             $table->foreign('company_id')->references('id')->on('companies');
             $table->unsignedBigInteger('division_id')->nullable();
             $table->foreign('division_id')->references('id')->on('divisions');
             $table->date('deadline')->nullable();
+            $table->unsignedBigInteger('type_of_work_id')->nullable();
+            $table->foreign('type_of_work_id')->references('id')->on('type_of_works');
             $table->integer('status')->nullable();
-            $table->integer('approvement')->nullable();
-            $table->unsignedBigInteger('approvement_by_user_id');
-            $table->foreign('approvement_by_user_id')->references('id')->on('users');
-            $table->string('type_of_work')->nullable();
+            $table->integer('priority')->nullable();
             $table->string('location')->nullable();
             $table->string('description')->nullable();
-            $table->string('photo')->nullable();
+            $table->string('docs')->nullable();
             $table->timestamps();
         });
     }

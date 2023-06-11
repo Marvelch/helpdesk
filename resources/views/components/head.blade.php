@@ -16,9 +16,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital@1&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{{asset('./css/all.min.css')}}">
+    <link rel="stylesheet" href="{{asset('./css/all.css')}}">
     <!-- CSS Files -->
-    <link id="pagestyle" href="{{asset('./assets/css/soft-ui-dashboard.css?v=1.0.7')}}" rel="stylesheet" />
+    <link id="pagestyle" href="{{asset('./assets/css/soft-ui-dashboard.css')}}" rel="stylesheet" />
     <link rel="stylesheet" href="{{asset('./css/style.css')}}">
     <!-- Jquery -->
     <script src="{{asset('./js/jquery-3.7.0.js')}}"></script>

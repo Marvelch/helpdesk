@@ -12,7 +12,14 @@ class bankAccounts extends Model
     protected $table = 'bank_accounts';
 
     protected $fillable = [
-        'user_id',
+        'email',
+        'fullname',
+        'username',
+        'url',
+        'description',
+        'password',
+        'attachment',
+        'created_by_user_id',
         'ip_address',
         'anydesk'
     ];

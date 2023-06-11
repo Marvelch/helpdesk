@@ -114,7 +114,7 @@
 
 body {
     margin: 0;
-    font-family: var(--bs-body-font-family);
+    font-family: var(--bs-font-raleway);
     font-size: var(--bs-body-font-size);
     font-weight: var(--bs-body-font-weight);
     line-height: var(--bs-body-line-height);
@@ -21054,7 +21054,8 @@ fieldset:disabled .btn {
 }
 
 .card .card-body {
-    font-family: "Open Sans";
+    /* font-family: "Open Sans"; */
+    font-family: var(--bs-font-raleway);
     padding: 1.5rem;
 }
 
@@ -27165,15 +27166,13 @@ pre[class*="language-"] {
 /*
  * Scrollbar rail styles
  */
-.ps__rail-x {
+/* .ps__rail-x {
     display: none;
     opacity: 0;
     transition: background-color 0.2s linear, opacity 0.2s linear;
     -webkit-transition: background-color 0.2s linear, opacity 0.2s linear;
     height: 15px;
-    /* there must be 'bottom' or 'top' for ps__rail-x */
     bottom: 0px;
-    /* please don't change 'position' */
     position: absolute;
 }
 
@@ -27183,9 +27182,7 @@ pre[class*="language-"] {
     transition: background-color 0.2s linear, opacity 0.2s linear;
     -webkit-transition: background-color 0.2s linear, opacity 0.2s linear;
     width: 15px;
-    /* there must be 'right' or 'left' for ps__rail-y */
     right: 0;
-    /* please don't change 'position' */
     position: absolute;
 }
 
@@ -27212,20 +27209,18 @@ pre[class*="language-"] {
 .ps .ps__rail-y.ps--clicking {
     background-color: #eee;
     opacity: 0.9;
-}
+} */
 
 /*
  * Scrollbar thumb styles
  */
-.ps__thumb-x {
+/* .ps__thumb-x {
     background-color: #aaa;
     border-radius: 6px;
     transition: background-color 0.2s linear, height 0.2s ease-in-out;
     -webkit-transition: background-color 0.2s linear, height 0.2s ease-in-out;
     height: 6px;
-    /* there must be 'bottom' for ps__thumb-x */
     bottom: 2px;
-    /* please don't change 'position' */
     position: absolute;
 }
 
@@ -27235,9 +27230,7 @@ pre[class*="language-"] {
     transition: background-color 0.2s linear, width 0.2s ease-in-out;
     -webkit-transition: background-color 0.2s linear, width 0.2s ease-in-out;
     width: 6px;
-    /* there must be 'right' for ps__thumb-y */
     right: 2px;
-    /* please don't change 'position' */
     position: absolute;
 }
 
@@ -27253,7 +27246,7 @@ pre[class*="language-"] {
 .ps__rail-y.ps--clicking .ps__thumb-y {
     background-color: #999;
     width: 11px;
-}
+} */
 
 /* MS supports */
 @supports (-ms-overflow-style: none) {
