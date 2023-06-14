@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RequestBooksController;
 use App\Http\Controllers\RequestTicketController;
 use App\Http\Controllers\TypeOfWorkController;
+use App\Http\Controllers\UsersController;
 use App\Models\company;
 use App\Models\requestTicket;
 use Illuminate\Support\Facades\Route;
@@ -21,11 +22,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function () { 
     return view('welcome');
 });
 
 Auth::routes();
+
+Route::get('/usersas',[UsersController::class,'index'])->name('users.index');
 
 Route::get('/home', function() {
     return view('pages.dashboard.index');
@@ -35,9 +38,12 @@ Route::group(['prefix' => 'bank-accounts','middleware' => ['auth']], function(){
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
         Route::get('/',[BankAccountsController::class,'index']);
         Route::get('/create',[BankAccountsController::class,'create'])->name('create_bank_accounts');
-        Route::get('/{id}/edit',[BankAccountsController::class,'edit']);
+        Route::get('/{id}/edit',[BankAccountsController::class,'edit'])->name('edit_bank_accounts');
+        Route::get('/{id}/show',[BankAccountsController::class,'show'])->name('show_bank_accounts');
         Route::put('/{id}/update',[BankAccountsController::class,'update']);
         Route::post('/store',[BankAccountsController::class,'store'])->name('store_bank_accounts');
+        Route::get('/download/{id}',[BankAccountsController::class,'download'])->name('download_bank_accounts');
+        Route::post('/destroy/{id}',[BankAccountsController::class,'destroy'])->name('destroy_bank_accounts');
     });
 });
 

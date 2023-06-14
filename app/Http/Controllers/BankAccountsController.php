@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 use DB;
 use Auth;
 Use Alert;
@@ -18,9 +20,9 @@ class BankAccountsController extends Controller
      */
     public function index()
     {
-        $items = bankAccounts::all();
+        $bankAccounts = bankAccounts::all();
 
-        return view('pages.bank_account.index',compact('items'));
+        return view('pages.bank_account.index',compact('bankAccounts'));
     }
 
     /**
@@ -44,9 +46,7 @@ class BankAccountsController extends Controller
             'username'      => 'required|min:3|max:40',
             'password'      => 'required|min:3|max:40',
             'url'           => 'required|min:3|max:50',
-            'attachment'    => 'required|mimes:csv,txt,xls,xlx,xlsx,xls,pdf,jpg,png|max:5048,',
-            'anydesk'       => 'required|min:3|max:40',
-            'ip_address'    => 'required|min:3|max:40',
+            'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,xls,pdf,jpg,png|max:5048,',
             'description'   => 'required|max:255',
             'email'         => 'required|email',
         ]);
@@ -54,11 +54,9 @@ class BankAccountsController extends Controller
         DB::beginTransaction();
         
         try {
-            $path = $request->file('attachment')->store('bankaccount');
-            
-            if(!$path) {
-                abort(403);
-            } 
+            if($request->file('attachment')) {
+                $attachment = $request->file('attachment')->store('bankaccount');
+            }
 
             bankAccounts::create([
                 'email'             => $request->email,
@@ -66,7 +64,7 @@ class BankAccountsController extends Controller
                 'username'          => $request->username,
                 'password'          => $request->password,
                 'url'               => $request->url,
-                'attachment'        => $path,
+                'attachment'        => @$attachment,
                 'anydesk'           => $request->anydesk,
                 'ip_address'        => $request->ip_address,
                 'description'       => $request->description,
@@ -82,20 +80,21 @@ class BankAccountsController extends Controller
         } catch (\Throwable $th) {
             DB::rollback();
 
-            // Alert::error('Approve', 'Sorry, the system has crashed. Check the transaction again');
+            Alert::error('Approve', 'Sorry, the system has crashed. Check the transaction again');
 
-            // return redirect('/bank-accounts');
-
-            return $th;
+            return redirect('/bank-accounts');
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(bankAccounts $bankAccounts)
+    public function show(bankAccounts $bankAccounts,$id)
     {
-        //
+        $bankAccounts = bankAccounts::where('id',Crypt::decryptString($id))->first();
+        $item_users = User::all();
+
+        return view('pages.bank_account.show',compact('bankAccounts','item_users'));
     }
 
     /**
@@ -103,10 +102,10 @@ class BankAccountsController extends Controller
      */
     public function edit(bankAccounts $bankAccounts, $id)
     {
-        $item = bankAccounts::where('user_id',$id)->first();
+        $bankAccounts = bankAccounts::where('id',Crypt::decryptString($id))->first();
         $item_users = User::all();
 
-        return view('pages.bank_account.edit',compact('item','item_users'));
+        return view('pages.bank_account.edit',compact('bankAccounts','item_users'));
     }
 
     /**
@@ -114,6 +113,8 @@ class BankAccountsController extends Controller
      */
     public function update(Request $request, bankAccounts $bankAccounts, $id)
     {
+        DB::beginTransaction();
+
         try {
             bankAccounts::where('user_id',$id)->update([
                 'ip_address' => $request->ipaddress,
@@ -136,8 +137,43 @@ class BankAccountsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(bankAccounts $bankAccounts)
+    public function destroy(bankAccounts $bankAccounts, $id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            bankAccounts::find(Crypt::decryptString($id))->delete();
+
+            DB::commit();
+
+            Alert::success('Deleted','The deletion has been performed successfully');
+            return back();
+        } catch (\Throwable $th) {
+            //throw $th;
+
+             DB::commit();
+
+            Alert::error('Failed','Deletion encountered a problem, try again');
+            return back();
+        }
+    }
+
+    /**
+     * Download files from storage
+     */
+    public function download($id) 
+    {
+        DB::beginTransaction();
+
+        try {
+            DB::commit();
+            return Storage::download(Crypt::decryptString($id));
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            DB::rollback();
+            return $th->getMessage();
+            // Alert::error('Failed','Problem files contact the company website manager');
+        }
     }
 }

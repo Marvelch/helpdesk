@@ -66,26 +66,6 @@
                                     <p class="error__required">* {{ $message }}</p>
                                     @enderror
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label for="">Anydesk</label>
-                                            <input name="anydesk" type="text" class="form-control form-control-sm" value="{{old('anydesk')}}">
-                                            @error('anydesk')
-                                            <p class="error__required">* {{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label for="">IP Address</label>
-                                            <input name="ip_address" type="text" class="form-control form-control-sm" value="{{old('ip_address')}}">
-                                            @error('ip_address')
-                                            <p class="error__required">* {{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="form-group">
                                     <label for="">Keterangan</label>
                                     <textarea name="description" id="" cols="10" rows="5"

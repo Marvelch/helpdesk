@@ -27,4 +27,7 @@
     <!-- Select2 -->
     <link href="{{asset('./css/select2.min.css')}}" rel="stylesheet" />
     <script src="{{asset('./js/select2.min.js')}}"></script>
+    <!-- Datatables -->
+    <link rel="stylesheet" href="{{asset('./css/dataTables.css')}}" />    
+    <script src="{{asset('js/dataTables.js')}}"></script>
 </head>
