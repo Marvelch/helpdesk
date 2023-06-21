@@ -4,88 +4,118 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
+            @if ($alert = Session::get('success'))
+            <div class="alert alert-success" role="alert" style="font-size: 12px; color: white;">
+                <i class="fa-solid fa-bell" style="padding-right: 15px;"></i>{{$alert}}
+            </div>
+            @endif
             <div class="card mb-4">
-                <div class="card-body">
-                    <div class="row font-raleway">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <div class="d-flex justify-content-center">
-                                    <div class="card shadow mt-5">
-                                        <div class="card-body">
-                                            <!-- <div class="preview_image font-raleway text-center" id="preview__images"></div> -->
-                                            <img class="preview_image">
-                                            <i class="fa-solid fa-square-minus fa-beat fa-trash-can-position"
-                                                id="preview_delete" title="Delete"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="m-3 d-flex justify-content-center">
-                                    <input name="image" class="form-control form-control-sm select__image" type="file"
-                                        style="width: 80%;">
-                                </div>
+                <div class="card-header pb-0">
+                    <div class="row">
+                        <div class="my-auto text-end">
+                            <div class="dropdown float-lg-end pe-4">
+                                <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-secondary"></i>
+                                </a>
+                                <ul class="ticket__tables dropdown-menu px-2 py-3 ms-sm-n4 ms-n5"
+                                    aria-labelledby="dropdownTable">
+                                    <li><a
+                                            class="dropdown-item border-radius-md small"
+                                            href="{{route('create_request_ticket')}}"><i
+                                                class="fa-solid fa-ticket fa-lg" style="margin-right: 10px;"></i>
+                                            Buat Ticket</a></li>
+                                    <!-- <li><a
+                                            class="dropdown-item border-radius-md small"
+                                            href="{{route('create_bank_accounts')}}"><i
+                                                class="fa-light fa-caret-right fa-lg" style="margin-right: 10px;"></i>
+                                            Ticket Approve</a></li>
+                                    <li class="shadow-sm mb-1 p-1 bg-white rounded"><a
+                                            class="dropdown-item border-radius-md small"
+                                            href="{{route('create_request_ticket')}}"><i
+                                                class="fa-light fa-caret-right fa-lg" style="margin-right: 10px;"></i>
+                                            Tambah</a></li>
+                                    <li class="shadow-sm mb-1 p-1 bg-white rounded"><a
+                                            class="dropdown-item border-radius-md small"
+                                            href="{{route('approve_request_ticket')}}"><i
+                                                class="fa-light fa-caret-right fa-lg" style="margin-right: 10px;"></i>
+                                            Ticket Approve </a></li> -->
+                                </ul>
                             </div>
-                            <!-- <img src="{{asset('./assets/img/3.png')}}" alt="" srcset="" style="max-width: 100%;"> -->
                         </div>
-                        <div class="col-md-7 m-2">
-                            <div class="form-group">
-                                <label for="">Permintaan Troubleshoot</label>
-                                <input type="text" class="form-control form-select-sm">
-                            </div>
-                            <form>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label for="">Perusahaan</label>
-                                            <select name="user_id" class="js-example-basic-single form-select form-select-sm text-capitalize">
-                                                @foreach($companys as $items)
-                                                <option value="{{$items->id}}">{{$items->company}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label for="">Devisi</label>
-                                            <select name="user_id" class="form-select form-select-sm text-capitalize"
-                                                aria-label=".form-select-sm example">
-                                                @foreach($divisions as $items)
-                                                <option value="{{$items->id}}">{{$items->division}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Tenggat waktu</label>
-                                            <div class="mb-3">
-                                                <input type="date" name="deadline" class="form-control form-select-sm"
-                                                    aria-label="deadline" aria-describedby="deadline"
-                                                    value="{{date('Y-m-d')}}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <label for="">Jenis Pekerjaan</label>
-                                        <select name="" id="" class="form-control form-control-sm">
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Lokasi</label>
-                                    <input type="text" class="form-control form-select-sm">
-                                </div>
-                                <div class="form-group">
-                                    <label>Keterangan</label>
-                                    <textarea id="myeditorinstance"></textarea>
-                                </div>
-                                <div class="text-center col-md-3">
-                                    <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">KIRIM</button>
-                                </div>
-                            </form>
-                        </div>
+                    </div>
+                </div>
+                <div class="card-body m-1">
+                    <div class="table-responsive">
+                        <table id="myTable" data-order='[[ 1, "asc" ]]' data-page-length='10' class="table table-striped align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Permintaan Dari</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Ditugaskan</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Masalah</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Perusahaan</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Divisi
+                                    </th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Status
+                                    </th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Batas Waktu
+                                    </th>
+                                    <th>
+                                        <!-- Kosong -->
+                                    </th>
+                                </tr>
+                            </thead>
+                            @foreach($requestTickets as $item)
+                            <tbody>
+                                <td class="align-middle text-sm">
+                                    <span class="text-xs font-weight-bold">{{$item->usersReq->name}}</span>
+                                </td>
+                                <td class="align-middle text-sm">
+                                    <span class="text-xs font-weight-bold">{{@$item->usersAss->name}}</span>
+                                </td>
+                                <td class="align-middle text-sm">
+                                    <span class="text-xs font-weight-bold">{{@$item->title}}</span>
+                                </td>
+                                <td class="align-middle text-sm">
+                                    <span class="text-xs font-weight-bold">{{@$item->company->company}}</span>
+                                </td>
+                                <td class="align-middle text-sm">
+                                    <span class="text-xs font-weight-bold">{{@$item->division->division}}</span>
+                                </td>
+                                <td class="align-middle text-sm text-center">
+                                    @if($item->status == 0) 
+                                        
+                                    @elseif($item->status == 1) 
+                                        <span class="text-xs font-weight-bold"><i class="fa-duotone fa-calendar-clock fa-lg" title="process "></i></span>
+                                    @else
+                                        <span class="text-xs font-weight-bold"><i class="fa-duotone fa-lock-keyhole fa-xl" title="Complated"></i></span>
+                                    @endif
+                                </td>
+                                <td class="align-middle text-sm">
+                                    <span
+                                        class="text-xs font-weight-bold">{{@date('d-m-Y', strtotime($item->deadline))}}</span>
+                                </td>
+                                <td class="align-middle text-center text-sm">
+                                    <span class="text-xs font-weight-bold"><a
+                                            href="{{route('show_request_ticket',['id' => Crypt::encryptString($item->id)])}}"><i
+                                                class="fa-duotone fa-up-right-from-square"></i></a></span>
+                                </td>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -93,33 +123,16 @@
     </div>
 </div>
 <script>
-    $('#preview_delete').hide();
-
     $(document).ready(function () {
-        $(".select__image").on("change", function () {
-
-            /* Current this object refer to input element */
-            var $input = $(this);
-            var reader = new FileReader();
-
-            reader.onload = function () {
-                $(".preview_image").attr("src", reader.result);
-            }
-            reader.readAsDataURL($input[0].files[0]);
-
-            if ($(".select__image").val()) {
-                $('#preview_delete').show();
-            } else {
-                $('#preview_delete').hide();
-            }
+        $('#myTable').DataTable({
+            select: true,
+            // info: false,
+            // lengthChange: false,
+            "oLanguage": {
+                "sSearch": " "
+            },
         });
-
-        $('#preview_delete').on('click', function () {
-            $("input[name=image]").val('');
-            $('.preview_image').removeAttr('src');
-        });
-
-        $('.js-example-basic-single').select2();
     });
+
 </script>
 @endsection

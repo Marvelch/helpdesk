@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\bankAccounts;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 use DB;
 use Auth;
 Use Alert;
+use Illuminate\Validation\Rules\Exists;
 
 class BankAccountsController extends Controller
 {
@@ -16,9 +22,9 @@ class BankAccountsController extends Controller
      */
     public function index()
     {
-        $items = bankAccounts::all();
+        $bankAccounts = bankAccounts::all();
 
-        return view('pages.bank_account.index',compact('items'));
+        return view('pages.bank_account.index',compact('bankAccounts'));
     }
 
     /**
@@ -36,35 +42,61 @@ class BankAccountsController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'fullname'      => 'required|min:2|max:80',
+            'username'      => 'required|min:3|max:40',
+            'password'      => 'required|min:3|max:40',
+            'url'           => 'required|min:3|max:50',
+            'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,xls,pdf,jpg,png|max:5048,',
+            'description'   => 'required|max:255',
+            'email'         => 'required|email',
+        ]);
+
         DB::beginTransaction();
         
         try {
-            bankAccounts::firstOrCreate([
-                'user_id'   => $request->user_id,
-            ],
-            [
-                'ip_address' => $request->ipaddress,
-                'anydesk'   => $request->anydesk
-            ]
-            );
+            if($request->file('attachment')) {
+                $attachment = $request->file('attachment')->store('bankaccount');
+            }
+
+            bankAccounts::create([
+                'email'             => $request->email,
+                'fullname'          => $request->fullname,
+                'username'          => $request->username,
+                'password'          => $request->password,
+                'url'               => $request->url,
+                'attachment'        => @$attachment,
+                'description'       => $request->description,
+                'created_by_user_id'=> Auth::user()->id,
+            ]);
             
             DB::commit();
-            Alert::success('Success Title', 'Success Message');
+
+            Alert::success('Approve', 'Account creation has been successful');
+
             return redirect('/bank-accounts');
+
         } catch (\Throwable $th) {
             DB::rollback();
+ 
+            Log::warning('Error pada log Bank Account');
 
-            // return redirect()->back();
-            return $th;
+            Alert::error('Approve', 'Sorry, the system has crashed. Check the transaction again');
+
+            return redirect('/bank-accounts');
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(bankAccounts $bankAccounts)
+    public function show(bankAccounts $bankAccounts,$id)
     {
-        //
+        $bankAccounts = bankAccounts::where('id',Crypt::decryptString($id))->first();
+        $item_users = User::all();
+
+        return view('pages.bank_account.show',compact('bankAccounts','item_users'));
     }
 
     /**
@@ -72,41 +104,94 @@ class BankAccountsController extends Controller
      */
     public function edit(bankAccounts $bankAccounts, $id)
     {
-        $item = bankAccounts::where('user_id',$id)->first();
+        $bankAccounts = bankAccounts::where('id',Crypt::decryptString($id))->first();
         $item_users = User::all();
 
-        return view('pages.bank_account.edit',compact('item','item_users'));
+        return view('pages.bank_account.edit',compact('bankAccounts','item_users'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, bankAccounts $bankAccounts, $id)
-    {
-        try {
-            bankAccounts::where('user_id',$id)->update([
-                'ip_address' => $request->ipaddress,
-                'anydesk' => $request->anydesk
-            ]);
+    {   
+        // $request->validate([
+        //     'fullname'      => 'required|min:2|max:80',
+        //     'username'      => 'required|min:3|max:40',
+        //     'password'      => 'required|min:3|max:40',
+        //     'url'           => 'required|min:3|max:50',
+        //     'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,xls,pdf,jpg,png|max:5048',
+        //     'description'   => 'required|max:255',
+        //     'email'         => 'required|email',
+        // ]);
 
-            DB::commit();
+        return $request->hasFile('attachment');
 
-            return redirect()->back();
+        // DB::beginTransaction();
 
-        } catch (\Throwable $th) {
-            //throw $th;
+        // try {
+        //     bankAccounts::where('id',$id)->update([
+        //         'fullname'      => $request->fullname,
+        //         'username'      => $request->username,
+        //         'password'      => $request->password,
+        //         'url'           => $request->url,
+        //         'attachment'    => $request->username,
+        //         'description'   => $request->description,
+        //         'email'         => $request->email
+        //     ]);
 
-            DB::rollback();
+        //     DB::commit();
 
-            return $th->getMessage();
-        }
+        //     return redirect()->back();
+
+        // } catch (\Throwable $th) {
+        //     //throw $th;
+
+        //     DB::rollback();
+
+        //     return $th->getMessage();
+        // }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(bankAccounts $bankAccounts)
+    public function destroy(bankAccounts $bankAccounts, $id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            bankAccounts::find($id)->delete();
+
+            DB::commit();
+
+            Alert::success('Deleted','The deletion has been performed successfully');
+            return back();
+        } catch (\Throwable $th) {
+
+             DB::rollback();
+
+            Alert::error('Failed','Deletion encountered a problem, try again');
+            return back();
+        }
+    }
+
+    /**
+     * Download files from storage
+     */
+    public function download($id) 
+    {
+        DB::beginTransaction();
+
+        try {
+            DB::commit();
+            return Storage::download(Crypt::decryptString($id));
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            DB::rollback();
+            return $th->getMessage();
+            // Alert::error('Failed','Problem files contact the company website manager');
+        }
     }
 }

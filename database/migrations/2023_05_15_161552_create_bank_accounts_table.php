@@ -13,10 +13,15 @@ return new class extends Migration
     {
         Schema::create('bank_accounts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->string('ip_address')->nullable();
-            $table->string('anydesk'); 
+            $table->string('email')->nullable();
+            $table->string('fullname')->nullable();
+            $table->string('username')->nullable();
+            $table->string('url')->nullable();
+            $table->string('password')->nullable();
+            $table->string('description')->nullable();
+            $table->string('attachment')->nullable();
+            $table->unsignedBigInteger('created_by_user_id');
+            $table->foreign('created_by_user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

@@ -9,9 +9,9 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Pending Task</p>
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Approve Task</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    12
+                            
                                 </h5>
                             </div>
                         </div>

@@ -6,6 +6,7 @@ use App\Models\bankAccounts;
 use App\Models\company;
 use App\Models\devision;
 use App\Models\division;
+use App\Models\requestTicket;
 use App\Models\User;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\TryCatch;
@@ -15,6 +16,7 @@ use Illuminate\Support\Composer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use App\Events\MyEvent;
 
 class HomeController extends Controller
 {
@@ -154,5 +156,4 @@ class HomeController extends Controller
             return back()->with('failed','Pembaharuan Data Tidak Berhasil!');
         }
     }
-
 }

@@ -16,9 +16,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital@1&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{{asset('./css/all.min.css')}}">
+    <link rel="stylesheet" href="{{asset('./css/all.css')}}">
     <!-- CSS Files -->
-    <link id="pagestyle" href="{{asset('./assets/css/soft-ui-dashboard.css?v=1.0.7')}}" rel="stylesheet" />
+    <link id="pagestyle" href="{{asset('./assets/css/soft-ui-dashboard.css')}}" rel="stylesheet" />
     <link rel="stylesheet" href="{{asset('./css/style.css')}}">
     <!-- Jquery -->
     <script src="{{asset('./js/jquery-3.7.0.js')}}"></script>
@@ -27,4 +27,26 @@
     <!-- Select2 -->
     <link href="{{asset('./css/select2.min.css')}}" rel="stylesheet" />
     <script src="{{asset('./js/select2.min.js')}}"></script>
+    <!-- Datatables -->
+    <link rel="stylesheet" href="{{asset('./css/dataTables.css')}}" />
+    <script src="{{asset('js/dataTables.js')}}"></script>
+    <!-- Pusher -->
+    @if(Auth::check())
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script>
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('c16ba877d6981d017714', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('private.{{Auth::user()->id}}');
+        channel.bind('my-event', function (data) {
+            // alert(JSON.stringify(data));
+            $('.pusher-append').append("<li class='mb-2'><a class='dropdown-item border-radius-md' href='javascript:;'><div class='d-flex py-1'><div class='my-auto'><img src='../assets/img/team-2.jpg' class='avatar avatar-sm  me-3 '></div><div class='d-flex flex-column justify-content-center'><h6 class='text-sm font-weight-normal mb-1'><span class='font-weight-bold'>New message</span> from Laur</h6><p class='text-xs text-secondary mb-0 '><i class='fa fa-clock me-1'></i>13 minutes ago</p></div></div></a></li>");
+        });
+
+    </script>
+    @endif
 </head>
