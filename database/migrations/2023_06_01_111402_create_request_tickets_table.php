@@ -29,7 +29,7 @@ return new class extends Migration
             $table->integer('priority')->nullable();
             $table->string('location')->nullable();
             $table->string('description')->nullable();
-            $table->string('docs')->nullable();
+            $table->string('attachment')->nullable();
             $table->timestamps();
         });
     }

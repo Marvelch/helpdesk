@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bank_accounts', function (Blueprint $table) {
+        Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->nullable();
-            $table->string('fullname')->nullable();
-            $table->string('username')->nullable();
-            $table->string('url')->nullable();
-            $table->string('password')->nullable();
+            $table->string('item_name');
+            $table->string('item_code')->nullable();
             $table->string('description')->nullable();
-            $table->string('attachment')->nullable();
+            $table->integer('stock')->nullable();
             $table->unsignedBigInteger('created_by_user_id');
             $table->foreign('created_by_user_id')->references('id')->on('users');
             $table->timestamps();
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bank_accounts');
+        Schema::dropIfExists('inventories');
     }
 };

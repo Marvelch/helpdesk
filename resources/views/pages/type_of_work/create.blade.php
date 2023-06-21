@@ -5,8 +5,8 @@
     <div class="card mb-4">
         <div class="card-body">
             <div class="row justify-content-center">
-
-                <form action="{{route('store_type_of_work')}}" method="post" autocomplete="off">
+                <div class="col-8">
+                    <form action="{{route('store_type_of_work')}}" method="post" autocomplete="off">
                     @csrf
                     <div class="row">
                         @if ($message = Session::get('success'))
@@ -17,13 +17,14 @@
                             </div>
                         </div>
                         @endif
-                       @if ($message = Session::get('failed'))
+                        @if ($message = Session::get('failed'))
                         <div class="alert alert-info d-flex align-items-center text-light">
                             <i class="fa-regular fa-circle-check m-1"></i>
                             <div>
                                 <small>{{ $message }}</small>
                             </div>
                         </div>
+                        @endif
                         @if ($errors->any())
                         @foreach ($errors->all() as $error)
                         <div class="alert alert-danger d-flex align-items-center text-light"><small>
@@ -34,14 +35,14 @@
                         <div class="alert alert-info d-flex align-items-center text-light" role="alert">
                             <i class="fa-solid fa-lightbulb m-1"></i>
                             <div>
-                                <small class="ml-3">Perhatikan penginputan data tidak duplikat untuk memastikan cek pada
-                                    master terlebih dahulu</small>
+                                <small style="margin-left: 10px;">Perhatikan penginputan pada master, pastikan
+                                    pengecekan terlebih dahulu</small>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
                             <!-- kosong -->
                         </div>
-                        <div class="col-6">
+                        <div class="col-8">
                             <div class="form-group">
                                 <label for="">Nama Jenis Pekerjaan</label>
                                 <input name="typeofwork" type="text" class="form-control form-control-sm"
@@ -57,6 +58,7 @@
                             </div>
                         </div>
                 </form>
+                </div>
             </div>
         </div>
     </div>

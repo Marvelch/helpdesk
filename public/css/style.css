@@ -58,3 +58,14 @@
 ::-webkit-scrollbar-button {
     display: none;
 }
+
+.form-control-transparent {
+    background-color: transparent;
+    pointer-events: none;
+}
+
+/* -----------------------------------------------------------------------
+|
+| General access css 
+|
+---------------------------------------------------------------------------*/

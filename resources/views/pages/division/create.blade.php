@@ -6,11 +6,15 @@
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <!-- <img src="{{asset('./assets/img/2.png')}}" alt="" srcset="" style="max-width: 100%;"> -->
-                        </div>
+                    <div class="row justify-content-md-center">
                         <div class="col-md-8">
+                            <div class="alert alert-info d-flex align-items-center text-light" role="alert">
+                                <i class="fa-solid fa-lightbulb m-1"></i>
+                                <div>
+                                    <small style="margin-left: 10px;">Perhatikan penginputan pada master, pastikan
+                                        pengecekan terlebih dahulu</small>
+                                </div>
+                            </div>
                             @if ($alert = Session::get('failed'))
                             <div class="alert alert-primary" role="alert" style="font-size: 12px; color: white;">
                                 <i class="fa-solid fa-bell" style="padding-right: 15px;"></i>{{$alert}}

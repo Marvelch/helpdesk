@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\BankAccountsController;
 use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\GeneralAccessController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\RequestBooksController;
+use App\Http\Controllers\RequestHardwareSoftwareController;
 use App\Http\Controllers\RequestTicketController;
 use App\Http\Controllers\TypeOfWorkController;
 use App\Http\Controllers\UsersController;
@@ -40,7 +43,7 @@ Route::group(['prefix' => 'bank-accounts','middleware' => ['auth']], function(){
         Route::get('/create',[BankAccountsController::class,'create'])->name('create_bank_accounts');
         Route::get('/{id}/edit',[BankAccountsController::class,'edit'])->name('edit_bank_accounts');
         Route::get('/{id}/show',[BankAccountsController::class,'show'])->name('show_bank_accounts');
-        Route::put('/{id}/update',[BankAccountsController::class,'update']);
+        Route::put('/{id}/update',[BankAccountsController::class,'update'])->name('update_bank_accounts');
         Route::post('/store',[BankAccountsController::class,'store'])->name('store_bank_accounts');
         Route::get('/download/{id}',[BankAccountsController::class,'download'])->name('download_bank_accounts');
         Route::post('/destroy/{id}',[BankAccountsController::class,'destroy'])->name('destroy_bank_accounts');
@@ -54,6 +57,13 @@ Route::group(['prefix' => 'division','middleware' => ['auth']], function(){
     });
 });
 
+Route::group(['prefix' => 'general_access','middleware' => ['auth']], function(){
+    Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
+        Route::get('/',[GeneralAccessController::class, 'index'])->name('index_general_access');
+    });
+});
+
+
 Route::group(['prefix' => 'request-tickets','middleware' => ['auth']], function(){
     Route::get('/',[RequestTicketController::class,'index'])->name('index_request_ticket');
     Route::get('/create',[RequestTicketController::class,'create'])->name('create_request_ticket');
@@ -61,13 +71,18 @@ Route::group(['prefix' => 'request-tickets','middleware' => ['auth']], function(
     Route::get('/show/{id}',[RequestTicketController::class,'show'])->name('show_request_ticket');
     Route::put('/update/{id}',[RequestTicketController::class,'update'])->name('update_request_ticket');
     Route::get('/approve',[RequestTicketController::class,'approve'])->name('approve_request_ticket');
-
-    // search 
-    Route::get('/search-company',[RequestTicketController::class,'search_company']);
-    Route::get('/search-division/{id}',[RequestTicketController::class,'search_division']);
-
+    Route::get('/search-company',[RequestTicketController::class,'searchCompany']);
+    Route::get('/search-division/{id}',[RequestTicketController::class,'searchDivision']);
+    Route::get('/searching-users',[RequestTicketController::class,'searchUsers']);
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
         
+    });
+});
+
+Route::group(['prefix' => 'request-hardware-software','middleware' => ['auth']], function(){
+    
+    Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
+        Route::get('/create/{id}/request-ticket',[RequestHardwareSoftwareController::class,'createRequestTicket'])->name('create_ticket_request_hardware_software');
     });
 });
 
@@ -86,13 +101,26 @@ Route::group(['prefix' => 'type-of-work','auth'], function(){
     Route::post('/store',[TypeOfWorkController::class,'store'])->name('store_type_of_work');
 });
 
-// single request
 Route::group(['prefix' => 'profile','auth'], function(){
      Route::get('/',[HomeController::class, 'profile'])->name('profile_users');
 });
-    
+
+Route::group(['prefix' => 'inventory','middleware' => ['auth']], function(){
+    Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
+        Route::get('/',[InventoryController::class,'index'])->name('index_inventory');
+        Route::get('/create',[InventoryController::class,'create'])->name('create_inventory');
+        Route::post('/store',[InventoryController::class,'store'])->name('store_inventory');
+        Route::get('/search/items',[InventoryController::class,'searchItemName']);
+    });
+});
 
 Route::get('/logout', function(){
    Auth::logout();
    return Redirect::to('/');
 });
+
+Route::get('/pusher', function(){
+   return view('pusher');
+});
+
+Route::get('test',[HomeController::class,'pusherNotif']);

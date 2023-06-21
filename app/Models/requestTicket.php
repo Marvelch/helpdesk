@@ -22,11 +22,9 @@ class requestTicket extends Model
         'deadline',
         'type_of_work_id',
         'status',
-        'approvement',
-        'approvement_by_user_id',
         'location',
         'description',
-        'photo'
+        'attachment'
     ];
 
     public function usersReq() {

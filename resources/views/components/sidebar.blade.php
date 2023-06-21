@@ -42,7 +42,7 @@
             </li>
             @endif
             <li class="nav-item">
-                @if(@Auth::user()->level->special_character == env('LEVEL_ADMIN') OR @Auth::user()->level->special_character == env('LEVEL_EDITOR'))
+                <!-- @if(@Auth::user()->level->special_character == env('LEVEL_ADMIN') OR @Auth::user()->level->special_character == env('LEVEL_EDITOR'))
                 <a class="nav-link {{ (request()->is('request-tickets*')) ? 'active' : '' }}" href="{{route('index_request_ticket')}}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -58,8 +58,44 @@
                     </div>
                     <span class="nav-link-text ms-1">Request Ticket</span>
                 </a>
-                @endif
+                @endif -->
+                <a class="nav-link {{ (request()->is('request-tickets*')) ? 'active' : '' }}" href="{{route('index_request_ticket')}}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-book fa-xl" style="color: #1b3d98; font-size: 14px;"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Request Ticket</span>
+                </a>
             </li>
+            @if(@Auth::user()->level->special_character == env('LEVEL_ADMIN') OR @Auth::user()->level->special_character == env('LEVEL_EDITOR'))
+            <li class="nav-item">
+                <a class="nav-link {{ (request()->is('general_access*')) ? 'active' : '' }}" href="{{route('index_general_access')}}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa-duotone fa-lock fa-xl" style="color: #1b3d98; font-size: 14px;"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">General</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ (request()->is('general_access*')) ? 'active' : '' }}" href="{{route('index_general_access')}}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-microchip fa-xl" style="color: #1b3d98; font-size: 14px;"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Hardware / Software</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ (request()->is('inventory*')) ? 'active' : '' }}" href="{{route('create_inventory')}}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-box-circle-check fa-xl" style="color: #1b3d98; font-size: 14px;"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Inventory</span>
+                </a>
+            </li>
+            @endif
             <!-- <li class="nav-item">
                 <a class="nav-link  " href="../pages/rtl.html">
                     <div

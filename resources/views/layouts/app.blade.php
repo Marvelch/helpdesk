@@ -13,8 +13,9 @@
         @include('components.navbar')
         <!-- End Navbar -->
         @yield('contents')
+        @stack('custom-scripts')
     </main>
-    
+
     <!-- @include('components.footer') -->
     <!--   Core JS Files   -->
     <script src="{{asset('./assets/js/core/popper.min.js')}}"></script>

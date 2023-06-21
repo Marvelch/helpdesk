@@ -8,11 +8,11 @@
                 @csrf
                 <div class="card">
                     <div class="card-body">
-                        <div class="row mt-2">
-                            <div class="col-4 d-flex align-items-center">
+                        <div class="row mt-5 mb-3 justify-content-md-center">
+                            <div class="col-2 align-self-center">
                                 <img src="{{asset('./assets/img/1.gif')}}" class="w-100" alt="" srcset="">
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-6">
                                 <div class="form-group">
                                     <label for="">Nama Pengguna</label>
                                     <input name="fullname" type="text" class="form-control form-control-sm" value="{{old('fullname')}}">

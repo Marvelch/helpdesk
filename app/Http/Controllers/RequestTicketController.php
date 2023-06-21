@@ -10,8 +10,12 @@ use App\Models\typeOfWork;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use Pusher\Pusher;
+use Illuminate\Support\Facades\Storage;
 use DB;
 use Auth;
+use Alert;
+use App\Models\User;
 
 class RequestTicketController extends Controller
 {
@@ -45,6 +49,10 @@ class RequestTicketController extends Controller
         DB::beginTransaction();
 
         try {
+            if($request->file('attachment')) {
+                $attachment = $request->file('attachment')->store('bankaccount');
+            }
+
             requestTicket::create([
                 'request_on_user_id'    => Auth::user()->id,
                 'title'                 => $request->title,
@@ -53,18 +61,24 @@ class RequestTicketController extends Controller
                 'deadline'              => $request->deadline,
                 'type_of_work_id'       => $request->typeOfWork,
                 'location'              => $request->location,
-                'description'           => $request->description
+                'description'           => $request->description,
+                'status'                => 0,
+                'attachment'            => @$attachment
             ]);
 
             DB::commit();
 
-            return back()->with('success','The repair request has been received by the system');
+            Alert::success('Accepted','The repair request has been received');
+
+            return redirect()->route('index_request_ticket');
         } catch (\Throwable $th) {
             //throw $th;
 
             DB::rollback();
 
-            return back()->with('failed','There is a problem with the system, please inform the relevant department');
+            Alert::success('Failed','There is a problem with the system');
+
+            return redirect()->route('index_request_ticket');
         }
     }
 
@@ -95,23 +109,35 @@ class RequestTicketController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'assignTo' => 'required'
+        ]);
+
         DB::beginTransaction();
 
         try {
             requestTicket::find($id)->update([
-                'approvement' => $request->approvement,
-                'approvement_by_user_id' => Auth::user()->id
+                'assignment_on_user_id'     => $request->assignTo,
+                'status'                    => 1,
             ]);
+
+            $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER')));
+            $data = User::find($request->assignTo);
+            $pusher->trigger("private.$request->assignTo",'my-event',$data);
 
             DB::commit();
 
-            return back()->with('success','Successfully provided check mark');
+            Alert::success('Success','Status updates and assignments have been successful');
+
+            return back();
         } catch (\Throwable $th) {
             //throw $th;
 
             DB::rollback();
 
-            return $th->getMessage();
+            Alert::error('Failed','There was a problem while saving');
+            
+            return back();
         }
     }
 
@@ -126,10 +152,9 @@ class RequestTicketController extends Controller
     /**
      * Division search query to display on select button
      */
-    public function search_division(Request $request,$id)
+    public function searchDivision(Request $request,$id)
     {
-        $data = division::where('company_id',$id)
-                        ->where('division',request('q'))->paginate(5);
+        $data = division::where('division',request('q'))->paginate(5);
 
         return response()->json($data);
     }
@@ -137,7 +162,7 @@ class RequestTicketController extends Controller
     /**
      * Division search query to display on select button
      */
-    public function search_company(Request $request)
+    public function searchCompany(Request $request)
     {
         $data = company::where('company','LIKE','%'.request('q').'%')->paginate(5);
 
@@ -153,4 +178,34 @@ class RequestTicketController extends Controller
 
         return view('pages.request_ticket.approve',compact('requestTickets'));
     }
+    
+    /**
+     * look up the user in the users table
+     */
+    public function searchUsers(Request $request)
+    {
+        $data = User::where('name','LIKE','%'.request('q').'%')->paginate(5);
+
+        return response()->json($data);
+    }
+
+    /**
+     * Download files from storage
+     */
+    public function download($id) 
+    {
+        DB::beginTransaction();
+
+        try {
+            DB::commit();
+            return Storage::download(Crypt::decryptString($id));
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            DB::rollback();
+            return $th->getMessage();
+            // Alert::error('Failed','Problem files contact the company website manager');
+        }
+    }
+
 }

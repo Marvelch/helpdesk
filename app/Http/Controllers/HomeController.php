@@ -16,6 +16,7 @@ use Illuminate\Support\Composer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use App\Events\MyEvent;
 
 class HomeController extends Controller
 {
@@ -155,5 +156,4 @@ class HomeController extends Controller
             return back()->with('failed','Pembaharuan Data Tidak Berhasil!');
         }
     }
-
 }

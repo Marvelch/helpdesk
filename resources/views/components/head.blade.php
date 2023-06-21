@@ -28,6 +28,25 @@
     <link href="{{asset('./css/select2.min.css')}}" rel="stylesheet" />
     <script src="{{asset('./js/select2.min.js')}}"></script>
     <!-- Datatables -->
-    <link rel="stylesheet" href="{{asset('./css/dataTables.css')}}" />    
+    <link rel="stylesheet" href="{{asset('./css/dataTables.css')}}" />
     <script src="{{asset('js/dataTables.js')}}"></script>
+    <!-- Pusher -->
+    @if(Auth::check())
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script>
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('c16ba877d6981d017714', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('private.{{Auth::user()->id}}');
+        channel.bind('my-event', function (data) {
+            // alert(JSON.stringify(data));
+            $('.pusher-append').append("<li class='mb-2'><a class='dropdown-item border-radius-md' href='javascript:;'><div class='d-flex py-1'><div class='my-auto'><img src='../assets/img/team-2.jpg' class='avatar avatar-sm  me-3 '></div><div class='d-flex flex-column justify-content-center'><h6 class='text-sm font-weight-normal mb-1'><span class='font-weight-bold'>New message</span> from Laur</h6><p class='text-xs text-secondary mb-0 '><i class='fa fa-clock me-1'></i>13 minutes ago</p></div></div></a></li>");
+        });
+
+    </script>
+    @endif
 </head>
