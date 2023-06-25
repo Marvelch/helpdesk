@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+use Alert;
+use Illuminate\Support\Str;
 
 class InventoryController extends Controller
 {
@@ -33,21 +35,29 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $request->validate([
+            'itemsName'     => 'required|min:3|max:255',
+            'itemCode'      => 'required',
+            'stock'         => 'required|numeric|min:0|not_in:0'
+        ]);
+
         DB::beginTransaction();
 
         try {
-            inventory::firstOrCreate([
-                'item_name'         => $request->itemsName
+
+            inventory::updateOrCreate([
+                'item_name'         => Str::lower($request->itemsName)
             ],
             [
-                'item_code'             => $request->item_code,
-                'description'           => $request->description,
-                'stock'                 => $request->stock,
+                'item_code'             => $request->itemCode,
+                'description'           => Str::lower($request->description),
+                'stock'                 => DB::raw("IFNULL(stock,0) + $request->stock"),
                 'created_by_user_id'    => Auth::user()->id
             ]);
 
             DB::commit();
+
+            Alert::success('Aprrove','Inventory has increased');
 
             return redirect()->back();
 

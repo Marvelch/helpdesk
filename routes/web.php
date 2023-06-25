@@ -82,7 +82,11 @@ Route::group(['prefix' => 'request-tickets','middleware' => ['auth']], function(
 Route::group(['prefix' => 'request-hardware-software','middleware' => ['auth']], function(){
     
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
+        Route::get('/',[RequestHardwareSoftwareController::class,'index'])->name('index_request_hardware_softwaret');
         Route::get('/create/{id}/request-ticket',[RequestHardwareSoftwareController::class,'createRequestTicket'])->name('create_ticket_request_hardware_software');
+        Route::get('/searching-inventory',[RequestHardwareSoftwareController::class,'searchInventory']);
+        Route::get('/create',[RequestHardwareSoftwareController::class,'create'])->name('create_request_hardware_software');
+        Route::post('/store',[RequestHardwareSoftwareController::class,'store'])->name('store_request_hardware_software');
     });
 });
 

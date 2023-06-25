@@ -78,7 +78,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ (request()->is('general_access*')) ? 'active' : '' }}" href="{{route('index_general_access')}}">
+                <a class="nav-link {{ (request()->is('request-hardware-software*')) ? 'active' : '' }}" href="{{route('index_request_hardware_softwaret')}}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa-solid fa-microchip fa-xl" style="color: #1b3d98; font-size: 14px;"></i>

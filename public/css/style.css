@@ -66,6 +66,30 @@
 
 /* -----------------------------------------------------------------------
 |
-| General access css 
+| Title and descripsition for all page
 |
 ---------------------------------------------------------------------------*/
+
+.title h5 span {
+    padding-left: 10px;
+}
+
+.title .sub__title {
+    font-size: 10px;
+    padding-left: 50px;
+}
+
+.title__row hr {
+    border: 2px solid #344767;
+    border-radius: 5px;
+    width: 50%;
+}
+
+.title__row label {
+    /* color: #54b95b; */
+    font-family: var(--bs-font-roboto);
+}
+
+thead > tr > th {
+    font-family: var(--bs-font-roboto);
+}

@@ -23,7 +23,7 @@
                                     <li><a
                                             class="dropdown-item border-radius-md small"
                                             href="{{route('create_request_ticket')}}"><i
-                                                class="fa-solid fa-ticket fa-lg" style="margin-right: 10px;"></i>
+                                                class="fa-solid fa-right-left-large" style="margin-right: 10px;"></i>
                                             Buat Ticket</a></li>
                                     <!-- <li><a
                                             class="dropdown-item border-radius-md small"
@@ -81,7 +81,7 @@
                             @foreach($requestTickets as $item)
                             <tbody>
                                 <td class="align-middle text-sm">
-                                    <span class="text-xs font-weight-bold">{{$item->usersReq->name}}</span>
+                                    <span class="text-xs font-weight-bold">{{@$item->usersReq->name}}</span>
                                 </td>
                                 <td class="align-middle text-sm">
                                     <span class="text-xs font-weight-bold">{{@$item->usersAss->name}}</span>

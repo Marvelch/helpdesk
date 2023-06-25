@@ -14,7 +14,7 @@
                                     <div class="m-1">
                                         <div class="card">
                                             <div class="card-body shadow" style="height: 250px;">
-                                                <img src="{{asset('./assets/img/file-not-found.jpg')}}" alt="" srcset=""
+                                                <img src="{{asset('./assets/img/file-not-found.gif')}}" alt="" srcset=""
                                                     style="width: 100%;" class="preview_image">
                                                 <i class="fa-solid fa-square-minus fa-beat fa-trash-can-position"
                                                     id="preview_delete" title="Delete"></i>

@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('request_hardware_software', function (Blueprint $table) {
             $table->id();
+            $table->string('unique_request')->unique();
+            $table->string('requests_from_users')->nullable();
+            $table->string('description')->nullable();
+            $table->date('transaction_date');
+            $table->unsignedBigInteger('created_by_user_id');
+            $table->foreign('created_by_user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
