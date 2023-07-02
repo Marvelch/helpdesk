@@ -154,7 +154,8 @@ class RequestTicketController extends Controller
      */
     public function searchDivision(Request $request,$id)
     {
-        $data = division::where('division',request('q'))->paginate(5);
+        $data = division::where('division','LIKE','%'.request('q').'%')
+                        ->where('company_id',$id)->paginate(5);
 
         return response()->json($data);
     }

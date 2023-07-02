@@ -113,7 +113,7 @@
                                             <label>Email</label>
                                             <div class="mb-3">
                                                 <input id="email" type="email"
-                                                    class="form-control @error('email') is-invalid @enderror"
+                                                    class="form-control form-control-sm @error('email') is-invalid @enderror"
                                                     placeholder="Email" aria-label="Email"
                                                     aria-describedby="email-addon" name="email"
                                                     value="{{ old('email') }}" required autocomplete="email" autofocus>

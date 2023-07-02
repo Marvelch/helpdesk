@@ -18,8 +18,10 @@ return new class extends Migration
             $table->foreign('items_id')->references('id')->on('inventories');
             $table->string('items_new_request')->nullable();
             $table->integer('qty')->nullable();
+            $table->string('availability')->nullable();
             $table->string('transaction_status')->nullable();
             $table->string('description')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

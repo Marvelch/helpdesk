@@ -8,9 +8,9 @@
                 @csrf
                 <div class="card">
                     <div class="card-body">
-                        <div class="row mt-5 mb-3 justify-content-md-center">
-                            <div class="col-2 align-self-center">
-                                <img src="{{asset('./assets/img/1.gif')}}" class="w-100" alt="" srcset="">
+                        <div class="row mt-5 justify-content-md-center align-self-center">
+                            <div class="col-4">
+                                <img src="{{asset('./assets/img/5.png')}}" style="width: 100%;" alt="" srcset="">
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
@@ -36,7 +36,7 @@
                                             <div class="input-group input-group-sm">
                                                 <span class="input-group-text" id="inputGroup-sizing-sm"><i
                                                         class="fa-regular fa-lock"></i></span>
-                                                <input name="password" value="{{old('password')}}" type="text" class="form-control">
+                                                <input name="password" type="password" class="form-control form-coontrol-sm" value="{{old('password')}}">
                                             </div>
                                             @error('password')
                                             <p class="error__required">* {{ $message }}</p>
@@ -56,7 +56,7 @@
                                     <input name="email" type="text" class="form-control form-control-sm" value="{{old('email')}}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Dokumen PDF / JPG</label>
+                                    <label for="">Dokumen</label>
                                     <div class="input-group input-group-sm">
                                         <span class="input-group-text" id="inputGroup-sizing-sm"></span>
                                         <input name="attachment" type="file" class="form-control"

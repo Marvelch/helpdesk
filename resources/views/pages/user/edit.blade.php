@@ -14,12 +14,12 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="">Nama Pengguna</label>
-                                        <input name="name" type="text" class="form-control" autocomplete="off"
+                                        <input name="name" type="text" class="form-control form-control-sm" autocomplete="off"
                                             value="{{$items->name}}" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Email</label>
-                                        <input type="email" name="email" id="email" class="form-control"
+                                        <input type="email" name="email" id="email" class="form-control form-control-sm"
                                             autocomplete="off" value="{{$items->email}}" required>
                                     </div>
                                     <div class="form-group pt-2">
@@ -32,24 +32,24 @@
                                     </div>
                                     <div class="form-group password">
                                         <label for="">Kata Sandi</label>
-                                        <input type="password" name="password" id="password" class="form-control"
+                                        <input type="password" name="password" id="password" class="form-control form-control-sm"
                                             autocomplete="off">
                                     </div>
                                     <div class="form-group confirm_password">
                                         <label for="">Konfirmasi Kata Sandi</label>
                                         <input type="password" name="confirm_password" id="confirm_password"
-                                            class="form-control" autocomplete="off">
+                                            class="form-control form-control-sm" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="col-4 offset-md-1">
                                     <div class="form-group">
                                         <label for="">Telepon</label>
-                                        <input type="text" name="phone" id="phone" class="form-control"
+                                        <input type="text" name="phone" id="phone" class="form-control form-control-sm"
                                             autocomplete="off" value="{{$items->phone}}" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Devisi / Perusahaan</label>
-                                        <select name="company_id" id="company_id" class="form-control">
+                                        <select name="company_id" id="company_id" class="form-control form-control-sm">
                                             @foreach($companys as $company)
                                             <option value="{{$company->id}}">{{$company->company}}</option>
                                             @endforeach
@@ -57,7 +57,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="">Devisi</label>
-                                        <select name="division_id" id="company_id" class="form-control">
+                                        <select name="division_id" id="company_id" class="form-control form-control-sm">
                                             @foreach($divisions as $item)
                                                 <option value="{{$item->id}}">{{$item->division}}</option>
                                             @endforeach

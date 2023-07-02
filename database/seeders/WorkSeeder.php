@@ -2,22 +2,22 @@
 
 namespace Database\Seeders;
 
-use App\Models\company;
+use App\Models\typeOfWork;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CompanySeeder extends Seeder
+class WorkSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $items = ['SKB','BPU'];
+        $items = ['Maintenance','Network','Software','Training'];
 
         foreach ($items as $key => $item) {
-            company::create([
-                'company' => $item
+            typeOfWork::create([
+                'typeofwork'  => $item
             ]);
         }
     }

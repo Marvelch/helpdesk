@@ -19,11 +19,11 @@
                                     <i class="fa fa-ellipsis-v text-secondary"></i>
                                 </a>
                                 <ul class="ticket__tables dropdown-menu px-2 py-3 ms-sm-n4 ms-n5"
-                                    aria-labelledby="dropdownTable">
+                                    aria-labelledby="dropdownTable" style="font-family: var(--bs-font-roboto);">
                                     <li><a
                                             class="dropdown-item border-radius-md small"
                                             href="{{route('create_request_ticket')}}"><i
-                                                class="fa-solid fa-right-left-large" style="margin-right: 10px;"></i>
+                                                class="fa-thin fa-ticket" style="margin-right: 10px;"></i>
                                             Buat Ticket</a></li>
                                     <!-- <li><a
                                             class="dropdown-item border-radius-md small"
@@ -99,7 +99,7 @@
                                     @if($item->status == 0) 
                                         
                                     @elseif($item->status == 1) 
-                                        <span class="text-xs font-weight-bold"><i class="fa-duotone fa-calendar-clock fa-lg" title="process "></i></span>
+                                        <span class="text-xs font-weight-bold"><i class="fa-duotone fa-alarm-clock fa-lg" title="In Process"></i></span>
                                     @else
                                         <span class="text-xs font-weight-bold"><i class="fa-duotone fa-lock-keyhole fa-xl" title="Complated"></i></span>
                                     @endif

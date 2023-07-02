@@ -43,7 +43,7 @@
                                 </div>
                                 @else
                                 <div class="card-body shadow" style="height: 250px;">
-                                    <img src="https://s.smallpdf.com/static/ef08c0c199f39523d073.svg" alt="" srcset=""
+                                    <img src="https://static.vecteezy.com/system/resources/previews/022/597/326/original/3d-file-doc-icon-illustration-png.png" alt="" srcset=""
                                         style="width: 100%;">
                                 </div>
                                 @endif
@@ -97,6 +97,13 @@
                                 <div class="form-group mt-3">
                                     <small>Perhatikan pembaharuan status permintaan dan pemilihan penugasan akan
                                         mempengaruhi GPM dari setiap karyawan</small>
+                                </div>
+                                <div class="form-group">
+                                    <select name="" id="" class="form-control form-control-sm w-60">
+                                        <option value="">Open</option>
+                                        <option value="">In Progress</option>
+                                        <option value="">Close</option>
+                                    </select>
                                 </div>
                                 <div class="form-group mt-2">
                                     <small>Perbaharui status dan assign kepada :</small>
