@@ -2538,6 +2538,7 @@ progress {
 .table-striped > tbody > tr:nth-of-type(odd) > * {
     --bs-table-accent-bg: var(--bs-table-striped-bg);
     color: var(--bs-table-striped-color);
+    font-size: 12px;
 }
 
 .table-striped-columns > :not(caption) > tr > :nth-child(even) {
@@ -21714,7 +21715,7 @@ fieldset:disabled .btn {
 }
 
 .input-group .form-control + .input-group-text {
-    position: absolute;
+    /* position: absolute; */
     border-left: 0;
     border-right: 1px solid #d2d6da;
 }
@@ -21739,8 +21740,8 @@ fieldset:disabled .btn {
 
 .form-control {
     border-radius: 0.5rem;
-    border-top-right-radius: 0.5rem !important;
-    border-bottom-right-radius: 0.5rem !important;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
     border-left-width: 1px;
 }
 

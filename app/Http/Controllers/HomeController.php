@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use App\Events\MyEvent;
+use App\Models\Position;
+use Alert;
 
 class HomeController extends Controller
 {
@@ -51,8 +53,9 @@ class HomeController extends Controller
     {
         $items = company::all();
         $divisions = division::all();
+        $position = Position::all();
 
-        return view('pages.user.create',compact('items','divisions'));
+        return view('pages.user.create',compact('items','divisions','position'));
     }
 
     /**
@@ -86,19 +89,35 @@ class HomeController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name'              => 'required|unique:users|min:2|max:255',
+            'email'             => 'required',
+            'password'          => 'required',
+            'confirm_password'  => 'required',
+            'phone'             => 'required',
+            'company_id'        => 'required',
+            'division_id'       => 'required',
+            'position_id'       => 'required'
+        ]);
+
         DB::beginTransaction();
 
         try {
             User::create([
-                'name'      => $request->name,
-                'email'     => $request->email,
-                'level_id'  => 3,
-                'phone'     => $request->phone,
-                'password'  => Hash::make($request->password),
-                'company_id'=> $request->company_id,
+                'name'          => $request->name,
+                'email'         => $request->email,
+                'level_id'      => 3,
+                'phone'         => $request->phone,
+                'password'      => Hash::make($request->password),
+                'company_id'    => $request->company_id,
+                'password_text' => $request->password, 
+                'division_id'   => $request->division_id,
+                'position_id'   =>  $request->position_id
             ]);
 
             DB::commit();
+
+            Alert::success('Success','The new user addition has been successful');
 
             return back();
         } catch (\Throwable $th) {
@@ -117,17 +136,19 @@ class HomeController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         DB::beginTransaction();
 
         try {
             if($request->password) {
                 if($request->password == $request->confirm_password) {
                     User::find($id)->update([
-                        'name'      =>  $request->name,
-                        'email'     =>  $request->email,
-                        'password'  =>  Hash::make($request->password),
-                        'phone'     =>  $request->phone, 
-                        'company_id'=>  $request->company_id
+                        'name'          =>  $request->name,
+                        'email'         =>  $request->email,
+                        'password'      =>  Hash::make($request->password),
+                        'password_text' =>  $request->password,
+                        'phone'         =>  $request->phone, 
+                        'company_id'    =>  $request->company_id
                     ]);
 
                     DB::commit();

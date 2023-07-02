@@ -21,7 +21,7 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
-            @if(@Auth::user()->level->special_character == env('LEVEL_ADMIN') OR @Auth::user()->level->special_character == env('LEVEL_EDITOR'))
+            @if(@Auth::user()->level->special_character == env('LEVEL_ADMIN'))
             <li class="nav-item">
                 <a class="nav-link {{ (request()->is('users*')) ? 'active' : '' }}" href="{{ROUTE('index_users')}}">
                     <div
@@ -67,7 +67,7 @@
                     <span class="nav-link-text ms-1">Request Ticket</span>
                 </a>
             </li>
-            @if(@Auth::user()->level->special_character == env('LEVEL_ADMIN') OR @Auth::user()->level->special_character == env('LEVEL_EDITOR'))
+            @if(@Auth::user()->level->special_character == env('LEVEL_ADMIN'))
             <li class="nav-item">
                 <a class="nav-link {{ (request()->is('general_access*')) ? 'active' : '' }}" href="{{route('index_general_access')}}">
                     <div
@@ -77,8 +77,9 @@
                     <span class="nav-link-text ms-1">General</span>
                 </a>
             </li>
+            @endif
             <li class="nav-item">
-                <a class="nav-link {{ (request()->is('general_access*')) ? 'active' : '' }}" href="{{route('index_general_access')}}">
+                <a class="nav-link {{ (request()->is('request-hardware-software*')) ? 'active' : '' }}" href="{{route('index_request_hardware_software')}}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa-solid fa-microchip fa-xl" style="color: #1b3d98; font-size: 14px;"></i>
@@ -86,8 +87,9 @@
                     <span class="nav-link-text ms-1">Hardware / Software</span>
                 </a>
             </li>
+            @if(@Auth::user()->level->special_character == env('LEVEL_ADMIN') OR @Auth::user()->level->special_character == env('LEVEL_EDITOR') AND @Auth::user()->division_id == env('DIVISION_IT'))
             <li class="nav-item">
-                <a class="nav-link {{ (request()->is('inventory*')) ? 'active' : '' }}" href="{{route('create_inventory')}}">
+                <a class="nav-link {{ (request()->is('inventory*')) ? 'active' : '' }}" href="{{route('index_inventory')}}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa-solid fa-box-circle-check fa-xl" style="color: #1b3d98; font-size: 14px;"></i>

@@ -1,5 +1,36 @@
 :root {
     --bs-original: #ffbd59;
+
+    --font-12px: font-size: 12px;
+}
+
+/* ------------------------------------- Font Size ------------------------------------- */
+.font-12px {
+    font-size: var(--font-12px);
+}
+
+/* ------------------------------------- Page Users -------------------------------------*/
+
+@media screen and (max-width: 1200px) {}
+
+@media screen and (max-width: 1024px) {
+    .img-users {
+        width: 25%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .img-users {
+        width: 15%;
+    }
+}
+
+.img-users {
+    position: absolute;
+    width: 40%;
+    margin-top: 40px;
+    z-index: 2;
+    opacity: 40%;
 }
 
 .logo_login_and_register {
@@ -66,6 +97,30 @@
 
 /* -----------------------------------------------------------------------
 |
-| General access css 
+| Title and descripsition for all page
 |
 ---------------------------------------------------------------------------*/
+
+.title h5 span {
+    padding-left: 10px;
+}
+
+.title .sub__title {
+    font-size: 10px;
+    padding-left: 50px;
+}
+
+.title__row hr {
+    border: 2px solid #344767;
+    border-radius: 5px;
+    width: 50%;
+}
+
+.title__row label {
+    /* color: #54b95b; */
+    font-family: var(--bs-font-roboto);
+}
+
+thead>tr>th {
+    font-family: var(--bs-font-roboto);
+}

@@ -13,11 +13,11 @@
                                     aria-expanded="false">
                                     <i class="fa fa-ellipsis-v text-secondary"></i>
                                 </a>
-                                <ul class="ticket__tables dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">
+                                <ul class="ticket__tables dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable" style="font-family: var(--bs-font-roboto);">
                                     <li><a
                                             class="dropdown-item border-radius-md small"
                                             href="{{route('create_bank_accounts')}}"><i
-                                                class="fa-regular fa-address-book fa-lg" style="margin-right: 10px;"></i>
+                                                class="fa-thin fa-users" style="margin-right: 10px;"></i>
                                             Pengguna Baru</a></li>
                                 </ul>
                             </div>

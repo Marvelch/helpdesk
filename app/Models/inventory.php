@@ -16,6 +16,6 @@ class inventory extends Model
         'item_code',
         'description',
         'stock',
-        'created_by_user_id'
+        'inventory_unique'
     ];
 }

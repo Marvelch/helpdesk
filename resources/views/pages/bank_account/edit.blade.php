@@ -24,7 +24,7 @@
                                     </div>
                                     @else
                                     <div class="card-body shadow" style="height: 250px;">
-                                        <img src="https://s.smallpdf.com/static/ef08c0c199f39523d073.svg" alt=""
+                                        <img src="https://static.vecteezy.com/system/resources/previews/022/597/326/original/3d-file-doc-icon-illustration-png.png" alt=""
                                             srcset="" style="width: 100%;">
                                     </div>
                                     @endif

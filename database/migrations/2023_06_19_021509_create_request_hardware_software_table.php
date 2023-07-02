@@ -13,6 +13,22 @@ return new class extends Migration
     {
         Schema::create('request_hardware_software', function (Blueprint $table) {
             $table->id();
+            $table->string('unique_request')->unique();
+            $table->string('requests_from_users')->nullable();
+            $table->string('status')->nullable()->comment('1 : waiting aprovement, 2 : approved, 3 : not approved');
+            $table->string('description')->nullable();
+            $table->date('transaction_date');
+            $table->boolean('approval_supervisor')->default(0)->nullable();
+            $table->boolean('approval_manager')->default(0)->nullable();
+            $table->boolean('approval_general_manager')->default(0)->nullable();
+            $table->unsignedBigInteger('user_supervisor')->nullable( );
+            $table->foreign('user_supervisor')->references('id')->on('users');
+            $table->unsignedBigInteger('user_manager_id')->nullable( );
+            $table->foreign('user_manager_id')->references('id')->on('users');
+            $table->unsignedBigInteger('user_general_manager_id')->nullable();
+            $table->foreign('user_general_manager_id')->references('id')->on('users');
+            $table->unsignedBigInteger('created_by_user_id')->nullable();
+            $table->foreign('created_by_user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

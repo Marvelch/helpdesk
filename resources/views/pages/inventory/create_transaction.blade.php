@@ -4,17 +4,37 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
-            <form action="{{route('store_inventory')}}" method="post" enctype="multipart/form-data">
+            <form action="{{route('store_transaction_inventory')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="card">
+                    <div class="card-header pb-0">
+                            <div class="row">
+                                <div class="my-auto text-end">
+                                    <div class="dropdown float-lg-end pe-4">
+                                        <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v text-secondary"></i>
+                                        </a>
+                                        <ul class="ticket__tables dropdown-menu px-2 py-3 ms-sm-n4 ms-n5"
+                                            aria-labelledby="dropdownTable">
+                                            <li><a class="dropdown-item border-radius-md small"
+                                                    href="{{route('create_inventory')}}"><i
+                                                        class="fa-solid fa-right-left-large"
+                                                        style="margin-right: 10px;"></i>
+                                                    Kelola Master</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <div class="card-body">
                         <div class="row mt-3 title__row justify-content-md-center">
                             <div class="col-md-7 title ">
-                                <div class="form-group" style="margin-left: 40px; margin-bottom: -15px; margin-top: 15px;">
-                                    <h5><i class="fa-solid fa-box-circle-check fa-xl"></i> <span>Pembuatan Master
+                                <div class="form-group"
+                                    style="margin-left: 40px; margin-bottom: -15px; margin-top: 15px;">
+                                    <h5><i class="fa-solid fa-scanner-gun fa-xl"></i> <span>Pengelolaan
                                             Inventory</span></h5>
-                                    <p class="sub__title">Pengelolaan penyimpanan untuk inventori dikelolah
-                                        Teknologi
+                                    <p class="sub__title">Transaksi barang masuk untuk inventory Teknologi
                                         Informasi</p>
                                 </div>
                                 <div class="card bg-white rounded">
@@ -44,17 +64,6 @@
                                                     aria-describedby="basic-addon1">
                                             </div>
                                             @error('stock')
-                                            <p class="error__required">* {{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="">Kode Barang</label>
-                                            <input name="itemCode" type="text" class="form-control form-control-sm">
-                                            <small class="text-danger" value="{{old('itemCode')}}"
-                                                style="font-size: 10px;"><i>*
-                                                    Penginputan kode bisa menggikuti ERP atau
-                                                    Accurate</i></small>
-                                            @error('itemCode')
                                             <p class="error__required">* {{ $message }}</p>
                                             @enderror
                                         </div>

@@ -104,8 +104,9 @@
 }
 
 .select2-results__option {
-    padding: 6px;
+    padding: 9px;
     user-select: none;
+    font-size: 12px;
     -webkit-user-select: none;
 }
 

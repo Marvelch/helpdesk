@@ -46,9 +46,9 @@ class BankAccountsController extends Controller
         $request->validate([
             'fullname'      => 'required|min:2|max:80',
             'username'      => 'required|min:3|max:40',
-            'password'      => 'required|min:3|max:40',
+            'password'      => 'required',
             'url'           => 'required|min:3|max:50',
-            'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,xls,pdf,jpg,png|max:5048,',
+            'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,pdf,jpg,png',
             'description'   => 'required|max:255',
             'email'         => 'required|email',
         ]);
@@ -56,6 +56,7 @@ class BankAccountsController extends Controller
         DB::beginTransaction();
         
         try {
+            
             if($request->file('attachment')) {
                 $attachment = $request->file('attachment')->store('bankaccount');
             }
@@ -66,7 +67,7 @@ class BankAccountsController extends Controller
                 'username'          => $request->username,
                 'password'          => $request->password,
                 'url'               => $request->url,
-                'attachment'        => @$attachment,
+                'attachment'        => @$attachment,    
                 'description'       => $request->description,
                 'created_by_user_id'=> Auth::user()->id,
             ]);

@@ -81,8 +81,16 @@ Route::group(['prefix' => 'request-tickets','middleware' => ['auth']], function(
 
 Route::group(['prefix' => 'request-hardware-software','middleware' => ['auth']], function(){
     
+    Route::get('/',[RequestHardwareSoftwareController::class,'index'])->name('index_request_hardware_software');
+    Route::get('/searching-inventory',[RequestHardwareSoftwareController::class,'searchInventory']);
+    Route::get('/create',[RequestHardwareSoftwareController::class,'create'])->name('create_request_hardware_software');
+    Route::post('/store',[RequestHardwareSoftwareController::class,'store'])->name('store_request_hardware_software');
+    Route::get('/edit/{id}',[RequestHardwareSoftwareController::class,'edit'])->name('edit_request_hardware_software');
+    
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
         Route::get('/create/{id}/request-ticket',[RequestHardwareSoftwareController::class,'createRequestTicket'])->name('create_ticket_request_hardware_software');
+        Route::post('/delete/{id}/detail',[RequestHardwareSoftwareController::class,'destroyDetail'])->name('delete_detail_request_hardware_software');
+        Route::put('/update',[RequestHardwareSoftwareController::class,'update'])->name('update_request_hardware_software');
     });
 });
 
@@ -109,8 +117,11 @@ Route::group(['prefix' => 'inventory','middleware' => ['auth']], function(){
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
         Route::get('/',[InventoryController::class,'index'])->name('index_inventory');
         Route::get('/create',[InventoryController::class,'create'])->name('create_inventory');
+        Route::get('/create/transaction',[InventoryController::class,'createTransaction'])->name('create_transaction_inventory');
         Route::post('/store',[InventoryController::class,'store'])->name('store_inventory');
+        Route::post('/store/transaction',[InventoryController::class,'storeTransaction'])->name('store_transaction_inventory');
         Route::get('/search/items',[InventoryController::class,'searchItemName']);
+        Route::get('/show/{id}',[InventoryController::class,'show'])->name('show_inventory');
     });
 });
 
