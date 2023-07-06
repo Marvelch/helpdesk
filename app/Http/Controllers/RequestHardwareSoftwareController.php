@@ -23,7 +23,11 @@ class RequestHardwareSoftwareController extends Controller
      */
     public function index()
     {
-        $requestHardwareSoftware = RequestHardwareSoftware::all();
+        if(Auth::user()->level_id == env('ADMIN_ACCESS') OR Auth::user()->level_id == env('EDITOR_ACCESS')) {
+            $requestHardwareSoftware = RequestHardwareSoftware::all();
+        }else{
+            $requestHardwareSoftware = RequestHardwareSoftware::where('created_by_user_id',Auth::User()->id)->get();
+        }
 
         return view('pages.request_hardware_software.index',compact('requestHardwareSoftware'));
     }
@@ -75,7 +79,7 @@ class RequestHardwareSoftwareController extends Controller
                     'qty'                   => $request->qty[$key],
                     'availability'          => inventory::where('item_name',Str::lower($item))->exists() ? 'EXISTS' : 'NOT_EXISTS',
                     'description'           => $request->description[$key],
-                    'transaction_status'    => 0
+                    'transaction_status'    => 1
                 ]);
             }
 
@@ -169,13 +173,18 @@ class RequestHardwareSoftwareController extends Controller
                                                                             ->where('approval_manager',1)
                                                                             ->where('approval_general_manager',1)
                                                                             ->exists()) {
-            foreach($request->itemId as $key => $id) {
-                detailRequestHardwareSoftware::find($id)->update([
-                    'transaction_status'    => $request->transaction_status[$key]
-                ]);
+
+            foreach(array_values(array_filter($request->itemId, 'strlen' )) as $key => $id) {
+                if($id != NULL) {
+                    detailRequestHardwareSoftware::find($id)->update([
+                        'transaction_status'    => $request->transaction_status[$key]
+                    ]);
+                }
             }
 
-            // detailRequestHardwareSoftware::whereNotIn('id',$request->itemId)->delete();
+            detailRequestHardwareSoftware::whereNotIn('id',$request->itemId)
+                                            ->where('unique_request',$request->id_transaction)
+                                            ->delete();
 
             }
 
