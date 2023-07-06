@@ -3,7 +3,7 @@
 @section('contents')
 <div class="container-fluid py-4">
     <div class="row">
-        <div class="col-11">
+        <div class="col-12">
             @if ($alert = Session::get('success'))
             <div class="alert alert-success" role="alert" style="font-size: 12px; color: white;">
                 <i class="fa-solid fa-bell" style="padding-right: 15px;"></i>{{$alert}}
@@ -34,7 +34,7 @@
                             class="display table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Nama Pengguna</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -55,7 +55,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody class="text-capitalize">
+                            <tbody>
                                 @foreach($items as $item)
                                 <tr>
                                     <td>
@@ -74,7 +74,15 @@
                                         <span class="text-xs font-weight-bold">{{$item->email}}</span>
                                     </td>
                                     <td class="align-middle text-sm text-center">
-                                        <span class="text-xs font-weight-bold">{{$item->level->level}}</span>
+                                        <span class="text-xs font-weight-bold">
+                                            @if($item->level_id == 1)
+                                                <i class="fa-regular fa-user-shield fa-lg" title="admin"></i>
+                                            @elseif($item->level_id == 2)
+                                                <i class="fa-regular fa-user-gear fa-lg" title="editor"></i>
+                                            @else
+                                                <i class="fa-regular fa-users fa-lg" title="pengguna"></i>
+                                            @endif
+                                        </span>
                                     </td>
                                     <td class="align-middle text-sm text-center">
                                         <span class="text-xs font-weight-bold">{{$item->phone}}</span>
@@ -96,7 +104,6 @@
                     </div>
                 </div>
             </div>
-            <!-- {{ $items->onEachSide(1)->links('components.pagination') }} -->
         </div>
     </div>
 </div>

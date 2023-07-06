@@ -100,7 +100,7 @@
                                     <tr>
                                         <td>
                                             <div class="form-group">
-                                                <input type="text" class="form-control form-control-sm text-capitalize"
+                                                <input type="text" name="itemName[]" class="form-control form-control-sm text-capitalize"
                                                     value="{{$detail->items_id ?  $detail->inventorys->item_name : $detail->items_new_request}}"
                                                     disabled>
                                                 <!-- <select name="itemName[]" id=""
@@ -113,7 +113,7 @@
                                                 <!-- <select name="itemsId[]" id="itemsId"
                                                         class="itemsId form-select form-select-sm text-capitalize">
                                                     </select> -->
-                                                <input type="hidden" name="itemId[]" value="{{@$detail->id}}">
+                                                <input type="hidden" name="itemId[]" value="{{$detail->transaction_status == '1' ? $detail->id : NULL}}">
                                             </div>
                                         </td>
                                         <td>
@@ -138,6 +138,7 @@
                                                     @endif
                                                     {{$detail->transaction_status == '2' ? 'disabled' : ''}}
                                                     {{$detail->transaction_status == '3' ? 'disabled' : ''}}
+                                                    {{Auth::user()->level_id == env('NORMAL_ACCESS') ? 'disabled' : ''}}
                                                     >
                                                     <option value="1" @selected($detail->transaction_status == '1')>In
                                                         Progress</option>

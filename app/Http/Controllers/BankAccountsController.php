@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use DB;
 use Auth;
 Use Alert;
+use App\Models\inventory;
 use Illuminate\Validation\Rules\Exists;
 
 class BankAccountsController extends Controller
@@ -162,7 +163,7 @@ class BankAccountsController extends Controller
         DB::beginTransaction();
 
         try {
-            bankAccounts::find($id)->delete();
+            inventory::find($id)->delete();
 
             DB::commit();
 

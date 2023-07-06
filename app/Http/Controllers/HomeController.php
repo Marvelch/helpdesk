@@ -39,7 +39,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $items = user::orderBy('created_at', 'DESC')->paginate(5);
+        $items = user::orderBy('created_at', 'DESC')->get();
 
         return view('pages.user.index',compact('items'));
     }

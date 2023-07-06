@@ -26,7 +26,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive table-responsive-sm">
-                        <table id="myTable" data-order='[[ 1, "asc" ]]' data-page-length='10'
+                        <table id="myTable" data-page-length='10'
                             class="display table-striped table-hover">
                             <thead>
                                 <tr>
@@ -79,9 +79,9 @@
                                             @if($item->status == 1)
                                             <i class="fa-solid fa-clock-rotate-left" title="In Process"></i>
                                             @elseif($item->status == 2)
-                                            <i class="fa-solid fa-square-check fa-lg" title="Approved"></i>
+                                            <i class="fa-regular fa-file-circle-check" title="Approved"></i>
                                             @else
-                                            <i class="fa-solid fa-square-xmark fa-lg" title="Not Approved"></i>
+                                            <i class="fa-regular fa-file-circle-xmark" title="Not Approved"></i>
                                             @endif
                                         </span>
                                     </td>
@@ -245,6 +245,7 @@
             "oLanguage": {
                 "sSearch": " "
             },
+            "order": [[3, 'desc']],
         });
     });
 
