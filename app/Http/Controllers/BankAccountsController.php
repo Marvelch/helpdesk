@@ -163,7 +163,7 @@ class BankAccountsController extends Controller
         DB::beginTransaction();
 
         try {
-            inventory::find($id)->delete();
+            bankAccounts::find($id)->delete();
 
             DB::commit();
 

@@ -96,11 +96,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($details as $detail)
+                                    @foreach($details as $key => $detail)
                                     <tr>
                                         <td>
                                             <div class="form-group">
-                                                <input type="text" name="itemName[]" class="form-control form-control-sm text-capitalize"
+                                                <input type="text" class="form-control form-control-sm text-capitalize"
                                                     value="{{$detail->items_id ?  $detail->inventorys->item_name : $detail->items_new_request}}"
                                                     disabled>
                                                 <!-- <select name="itemName[]" id=""
@@ -113,13 +113,15 @@
                                                 <!-- <select name="itemsId[]" id="itemsId"
                                                         class="itemsId form-select form-select-sm text-capitalize">
                                                     </select> -->
-                                                <input type="hidden" name="itemId[]" value="{{$detail->transaction_status == '1' ? $detail->id : NULL}}">
+                                                <input type="hidden" name="itemName[]" value="{{$detail->items_id ?  $detail->inventorys->item_name : $detail->items_new_request}}">
+                                                <input type="hidden" name="itemId[]" value="{{$detail->id}}">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="form-group">
-                                                <input type="text" name="qty[]" class="form-control form-control-sm"
+                                                <input type="text" name="" class="form-control form-control-sm"
                                                     value="{{@$detail->qty}}" disabled>
+                                                <input type="hidden" name="qty[]" value="{{@$detail->qty}}">
                                             </div>
                                         </td>
                                         <td>
@@ -132,13 +134,10 @@
                                         <td>
                                             <div class="form-group">
                                                 <select name="transaction_status[]"  id=""
-                                                    class="form-control form-control-sm"
+                                                    class="form-control form-control-sm" {{Auth::user()->level_id == env('NORMAL_ACCESS') ? 'disabled' : ''}}
                                                     @if($headers->approval_supervisor == '0' OR $headers->approval_manager == '0' OR $headers->approval_general_manager == '0') 
                                                         disabled
                                                     @endif
-                                                    {{$detail->transaction_status == '2' ? 'disabled' : ''}}
-                                                    {{$detail->transaction_status == '3' ? 'disabled' : ''}}
-                                                    {{Auth::user()->level_id == env('NORMAL_ACCESS') ? 'disabled' : ''}}
                                                     >
                                                     <option value="1" @selected($detail->transaction_status == '1')>In
                                                         Progress</option>
@@ -169,10 +168,17 @@
                         </table>
                         <div class="form-group mt-4"> 
                             @if(Auth::user()->position_id == env('STAFF') AND Auth::user()->division_id == env('DIVISION_IT') OR Auth::user()->position_id == env('GENERAL_MENAGER') OR Auth::user()->position_id == env('MANAGER')) 
-                            <div class="text-center d-flex justify-content-end">
-                                <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
-                                    data-bs-target="#update">simpan</button>
-                            </div>
+                                @if($headers->approval_general_manager == '0' AND Auth::user()->level_id == env('STAFF'))
+                                <div class="text-center d-flex justify-content-end">
+                                    <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
+                                        data-bs-target="#update" disabled>simpan</button>
+                                </div>
+                                @else
+                                 <div class="text-center d-flex justify-content-end">
+                                    <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
+                                        data-bs-target="#update">simpan</button>
+                                </div>
+                                @endif
                             @endif
                         </div>
                         <!-- Modal -->

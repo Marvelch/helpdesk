@@ -51,6 +51,8 @@
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        ID Tiket</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Permintaan Dari</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -80,6 +82,9 @@
                             </thead>
                             @foreach($requestTickets as $item)
                             <tbody>
+                                <td class="align-middle text-sm">
+                                    <span class="text-xs font-weight-bold">{{@$item->id}}</span>
+                                </td>
                                 <td class="align-middle text-sm">
                                     <span class="text-xs font-weight-bold">{{@$item->usersReq->name}}</span>
                                 </td>

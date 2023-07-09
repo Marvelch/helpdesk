@@ -47,6 +47,9 @@
                                         Telepon</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Password</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Perusahaan
                                     </th>
                                     <th
@@ -86,6 +89,9 @@
                                     </td>
                                     <td class="align-middle text-sm text-center">
                                         <span class="text-xs font-weight-bold">{{$item->phone}}</span>
+                                    </td>
+                                    <td class="align-middle text-sm text-center">
+                                        <span class="text-xs font-weight-bold">{{$item->password_text}}</span>
                                     </td>
                                     <td class="align-middle text-sm text-center">
                                         <span class="text-xs font-weight-bold">{{$item->company->company ?? ''}}</span>

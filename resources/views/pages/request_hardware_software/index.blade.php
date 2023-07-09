@@ -77,11 +77,12 @@
                                     <td class="align-middle text-sm text-center">
                                         <span class="text-xs font-weight-bold">
                                             @if($item->status == 1)
-                                            <i class="fa-solid fa-clock-rotate-left" title="In Process"></i>
+                                            <i class="fa-duotone fa-clock fa-lg" style="--fa-secondary-color: #4b7dd2;" title="In Progress"></i>
                                             @elseif($item->status == 2)
-                                            <i class="fa-regular fa-file-circle-check" title="Approved"></i>
+                                            <i class="fa-solid fa-badge-check fa-lg" title="Approved" style="color: #54b95b;"></i>
                                             @else
-                                            <i class="fa-regular fa-file-circle-xmark" title="Not Approved"></i>
+                                            <!-- <i class="fa-solid fa-file-slash fa-lg" title="Not Approved" style="color: red;"></i> -->
+                                            <i class="fa-duotone fa-ban fa-lg" title="Not Approved"></i>
                                             @endif
                                         </span>
                                     </td>

@@ -35,17 +35,17 @@
                                         Nama</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Email</th>
+                                        username
+                                    </th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Kata sandi</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        URL
-                                    </th>
+                                        Email</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        username
+                                        URL
                                     </th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -69,23 +69,25 @@
                                         <span class="text-xs font-weight-bold">{{@$item->fullname}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
-                                        <span class="text-xs font-weight-bold">{{$item->email}}</span>
+                                        <span class="text-xs font-weight-bold">{{$item->username}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span class="text-xs font-weight-bold">{{$item->password}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
-                                        <span class="text-xs font-weight-bold">{{$item->url}}</span>
+                                        <span class="text-xs font-weight-bold">{{$item->email}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
-                                        <span class="text-xs font-weight-bold">{{$item->username}}</span>
+                                        <span class="text-xs font-weight-bold">{{$item->url}}</span>
                                     </td>
                                     <td class="align-middle text-center text-sm">
+                                        @if(!is_null($item->attachment))
                                         <a href="{{route('download_bank_accounts',['id' => Crypt::encryptString($item->attachment)])}}"
                                             class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
                                             data-original-title="Edit user">
                                             <i class="fa-solid fa-square-down"></i>
                                         </a>
+                                        @endif
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <a href="{{route('edit_bank_accounts',['id' => Crypt::encryptString($item->id)])}}"
