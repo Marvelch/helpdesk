@@ -64,7 +64,7 @@
                                     <td>
                                         <div class="d-flex px-2 py-1">
                                             <div>
-                                                <img src="https://d2pas86kykpvmq.cloudfront.net/images/humans-3.0/ava-1.png"
+                                                <img src="{{ Avatar::create($item->name)->setDimension(50)->setFontSize(18)->toBase64() }}"
                                                     class="avatar avatar-sm me-3" alt="xd"
                                                     style="padding: 2px; background-color: #54b95b; border-radius: 50%;">
                                             </div>

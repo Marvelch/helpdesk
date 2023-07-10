@@ -109,21 +109,32 @@ class RequestTicketController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'assignTo' => 'required'
-        ]);
 
         DB::beginTransaction();
 
         try {
-            requestTicket::find($id)->update([
-                'assignment_on_user_id'     => $request->assignTo,
-                'status'                    => 1,
-            ]);
+            if($request->approvement == 1) {
+                if($request->assignTo == NULL) {
+                    DB::rollback();
 
-            $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER')));
-            $data = User::find($request->assignTo);
-            $pusher->trigger("private.$request->assignTo",'my-event',$data);
+                    Alert::info('Info','Status diterima form assign to harus terisi !');
+                    return redirect()->back();
+                }else{
+                    requestTicket::find($id)->update([
+                        'assignment_on_user_id'     => $request->assignTo,
+                        'status'                    => 1,
+                    ]);
+
+                    $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER')));
+                    $data = User::find($request->assignTo);
+                    $pusher->trigger("private.$request->assignTo",'my-event',$data);
+                }
+            }else{
+                DB::rollback();
+
+                Alert::info('Info','Tidak ada tindakan apapun!');
+                return redirect()->back();
+            }
 
             DB::commit();
 
