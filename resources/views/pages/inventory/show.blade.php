@@ -41,27 +41,29 @@
                         </div>
                         <div class="form-group mt-5">
                             <div class="table-responsive table-responsive-sm">
-                                <table id="myTable" data-order='[[ 1, "asc" ]]' data-page-length='10'
+                                <table id="myTable" data-page-length='10'
                                     class="display table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kode Barang</th>
+                                            <!-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kode Barang</th> -->
                                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Stok Masuk</th>
                                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Stok Keluar</th>
                                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Adjustment</th>
                                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Keterangan</th>
                                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dibuat Oleh</th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($details as $detail)
                                         <tr>
-                                            <td class="align-middle small"><span class="text-xs font-weight-bold text-capitalize">{{$detail->inventory_unique}}</span></td>
+                                            <!-- <td class="align-middle small"><span class="text-xs font-weight-bold text-capitalize">{{$detail->inventory_unique}}</span></td> -->
                                             <td class="align-middle small"><span class="text-xs font-weight-bold text-capitalize">{{$detail->stock_in}}</span></td>
                                             <td class="align-middle small"><span class="text-xs font-weight-bold text-capitalize">{{$detail->stock_out}}</span></td>
                                             <td class="align-middle small"><span class="text-xs font-weight-bold text-capitalize">{{$detail->adjustment}}</span></td>
                                             <td class="align-middle small"><span class="text-xs font-weight-bold text-capitalize">{{$detail->description}}</span></td>
                                             <td class="align-middle small"><span class="text-xs font-weight-bold text-capitalize">{{$detail->users->name}}</span></td>
+                                            <td class="align-middle small"><span class="text-xs font-weight-bold text-capitalize">{{$detail->created_at}}</span></td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -84,6 +86,7 @@
             // "oLanguage": {
             //     "sSearch": " "
             // },
+            order: [[4, 'desc']]
         });
     });
 

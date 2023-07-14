@@ -54,7 +54,6 @@ class InventoryController extends Controller
     {
         $request->validate([
             'item_name'     => 'required|min:3|unique:inventories|max:255',
-            'itemCode'      => 'required',
             'stock'         => 'required|numeric|min:0|not_in:0'
         ]);
 

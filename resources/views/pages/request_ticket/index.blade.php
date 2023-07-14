@@ -51,6 +51,8 @@
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        ID Tiket</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Permintaan Dari</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -81,6 +83,9 @@
                             @foreach($requestTickets as $item)
                             <tbody>
                                 <td class="align-middle text-sm">
+                                    <span class="text-xs font-weight-bold">{{@$item->id}}</span>
+                                </td>
+                                <td class="align-middle text-sm">
                                     <span class="text-xs font-weight-bold">{{@$item->usersReq->name}}</span>
                                 </td>
                                 <td class="align-middle text-sm">
@@ -97,11 +102,11 @@
                                 </td>
                                 <td class="align-middle text-sm text-center">
                                     @if($item->status == 0) 
-                                        
+                                        <i class="fa-solid fa-circle-exclamation" style="color: #f73640;" title="WAITING"></i>
                                     @elseif($item->status == 1) 
-                                        <span class="text-xs font-weight-bold"><i class="fa-duotone fa-alarm-clock fa-lg" title="In Process"></i></span>
+                                        <i class="fa-duotone fa-pen-circle fa-lg" title="IN PROGRESS" style="--fa-primary-color: #5ba8fb; --fa-secondary-color: #5ba8fb;"></i>
                                     @else
-                                        <span class="text-xs font-weight-bold"><i class="fa-duotone fa-lock-keyhole fa-xl" title="Complated"></i></span>
+                                         <i class="fa-solid fa-badge-check fa-lg" title="APPROVED" style="color: #54b95b;"></i>
                                     @endif
                                 </td>
                                 <td class="align-middle text-sm">

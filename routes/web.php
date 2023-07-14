@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BankAccountsController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\GeneralAccessController;
@@ -27,9 +28,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () { 
     return view('welcome');
-});
+})->name('/');
 
-Auth::routes();
+Auth::routes([
+  'register' => false, 
+//   'login' => false, 
+]);
 
 Route::get('/usersas',[UsersController::class,'index'])->name('users.index');
 
@@ -37,9 +41,11 @@ Route::get('/home', function() {
     return view('pages.dashboard.index');
 })->name('home')->middleware('auth');
 
+Route::get('logout',[LoginController::class,'logout'])->middleware('auth');
+
 Route::group(['prefix' => 'bank-accounts','middleware' => ['auth']], function(){
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
-        Route::get('/',[BankAccountsController::class,'index']);
+        Route::get('/',[BankAccountsController::class,'index'])->name('index_bank_accounts');
         Route::get('/create',[BankAccountsController::class,'create'])->name('create_bank_accounts');
         Route::get('/{id}/edit',[BankAccountsController::class,'edit'])->name('edit_bank_accounts');
         Route::get('/{id}/show',[BankAccountsController::class,'show'])->name('show_bank_accounts');
@@ -85,6 +91,7 @@ Route::group(['prefix' => 'request-hardware-software','middleware' => ['auth']],
     Route::get('/searching-inventory',[RequestHardwareSoftwareController::class,'searchInventory']);
     Route::get('/create',[RequestHardwareSoftwareController::class,'create'])->name('create_request_hardware_software');
     Route::post('/store',[RequestHardwareSoftwareController::class,'store'])->name('store_request_hardware_software');
+    Route::post('/store/hardware-software',[RequestHardwareSoftwareController::class,'storeFromTicket'])->name('store_hardware_software_request_hardware_software');
     Route::get('/edit/{id}',[RequestHardwareSoftwareController::class,'edit'])->name('edit_request_hardware_software');
     
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){

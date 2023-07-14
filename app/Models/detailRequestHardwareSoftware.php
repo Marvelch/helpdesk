@@ -19,6 +19,7 @@ class detailRequestHardwareSoftware extends Model
         'items_id',
         'items_new_request',
         'qty',
+        'request_ticket_id',
         'availability',
         'transaction_status',
         'description'

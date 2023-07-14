@@ -4,63 +4,56 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
-            <div class="card mb-4">
+            <div class="card" style="z-index: 1; font-family: var(--bs-font-roboto);">
                 <div class="card-body">
-                    <div class="row">
-                        <form action="{{route('update_users',['id' => $items->id])}}" method="post">
+                    <div class="row mb-5 mt-5">
+                        <form action="{{route('update_users',['id' => $items->id])}}" method="post" autocomplete="off">
                             @method('PUT')
                             @csrf
-                            <div class="row">
+                            <div class="row justify-content-md-center">
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label for="">Nama Pengguna</label>
-                                        <input name="name" type="text" class="form-control form-control-sm" autocomplete="off"
+                                        <label for="">Nama Lengkap</label>
+                                        <input name="name" type="text" class="form-control form-control-sm" 
                                             value="{{$items->name}}" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Email</label>
                                         <input type="email" name="email" id="email" class="form-control form-control-sm"
-                                            autocomplete="off" value="{{$items->email}}" required>
+                                             value="{{$items->email}}" required>
                                     </div>
                                     <div class="form-group pt-2">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" id="checkbox" type="checkbox"
                                                 id="flexSwitchCheckDefault">
-                                            <label class="form-check-label" for="flexSwitchCheckDefault">Change
-                                                Password</label>
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Ubah Kata Sandi</label>
                                         </div>
                                     </div>
                                     <div class="form-group password">
                                         <label for="">Kata Sandi</label>
-                                        <input type="password" name="password" id="password" class="form-control form-control-sm"
-                                            autocomplete="off">
+                                        <input type="text" name="password" id="password" class="form-control form-control-sm"
+                                             value="{{$items->password_text}}">
                                     </div>
                                     <div class="form-group confirm_password">
                                         <label for="">Konfirmasi Kata Sandi</label>
-                                        <input type="password" name="confirm_password" id="confirm_password"
-                                            class="form-control form-control-sm" autocomplete="off">
+                                        <input type="text" name="confirm_password" id="confirm_password"
+                                            class="form-control form-control-sm" value="{{$items->password_text}}">
                                     </div>
                                 </div>
-                                <div class="col-4 offset-md-1">
+                                <div class="col-4">
                                     <div class="form-group">
                                         <label for="">Telepon</label>
                                         <input type="text" name="phone" id="phone" class="form-control form-control-sm"
-                                            autocomplete="off" value="{{$items->phone}}" required>
+                                             value="{{$items->phone}}" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="">Devisi / Perusahaan</label>
-                                        <select name="company_id" id="company_id" class="form-control form-control-sm">
-                                            @foreach($companys as $company)
-                                            <option value="{{$company->id}}">{{$company->company}}</option>
-                                            @endforeach
+                                        <label for="">Perusahaan</label>
+                                        <select name="company_id" id="selectCompany" class="selectCompany form-control form-control-sm">
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Devisi</label>
-                                        <select name="division_id" id="company_id" class="form-control form-control-sm">
-                                            @foreach($divisions as $item)
-                                                <option value="{{$item->id}}">{{$item->division}}</option>
-                                            @endforeach
+                                        <select name="division_id" id="company_id" class="selectDivision form-control form-control-sm">
                                         </select>
                                     </div>
                                     <div class="alert alert-info error_password" role="alert"
@@ -122,6 +115,53 @@
             $('.confirm_password').hide();
             $('.error_password').hide();
         }
+    });
+
+    $('.selectCompany').on("select2:select", function(e) { 
+        var data = "SKB";
+        console.log(data);
+    });
+
+    $('.selectCompany').select2({
+        ajax: {
+            url: '{{url("/request-tickets/search-company")}}',
+            dataType: 'json',
+            processResults: function ({
+                data
+            }) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            id: item.id,
+                            text: item.company
+                        }
+                    })
+                }
+            }
+        }
+    }).select2().select2('val','SKB');;
+
+    $('.selectCompany').on('select2:select select2:unselect', function (e) {
+        const id = $('.selectCompany').val();
+
+        $(".selectDivision").select2({
+            ajax: {
+                url: "{{url('request-tickets/search-division')}}/" + id,
+                dataType: 'json',
+                processResults: function ({
+                    data
+                }) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                id: item.id,
+                                text: item.division
+                            }
+                        })
+                    }
+                }
+            }
+        });
     });
 
 </script>

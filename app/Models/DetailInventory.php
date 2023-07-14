@@ -17,7 +17,7 @@ class DetailInventory extends Model
         'stock_out',
         'adjustment',
         'created_by_user_id',
-        'description'
+        'description',
     ];
 
     public function users() {

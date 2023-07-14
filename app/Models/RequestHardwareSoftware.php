@@ -19,6 +19,7 @@ class RequestHardwareSoftware extends Model
         'transaction_date',
         'approval_supervisor',
         'approval_manager',
+        'ticketId',
         'approval_general_manager',
         'user_supervisor',
         'user_manager_id',

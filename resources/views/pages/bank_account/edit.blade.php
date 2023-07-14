@@ -4,9 +4,10 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
-            <div class="card">
+            <div class="card" style="z-index: 1; font-family: var(--bs-font-roboto);">
                 <div class="card-body">
-                    <form action="{{route('update_bank_accounts',['id' => $bankAccounts->id])}}" method="post">
+                    <form action="{{route('update_bank_accounts',['id' => $bankAccounts->id])}}" method="post"
+                        enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
                         <div class="row mt-5 justify-content-md-center">
@@ -14,8 +15,8 @@
                                 <div class="card">
                                     @if(!$bankAccounts->attachment)
                                     <div class="card-body shadow" style="height: 250px;">
-                                        <img src="{{asset('./assets/img/file-not-found.jpg')}}" alt="" srcset=""
-                                            style="width: 100%;">
+                                        <img src="https://static.vecteezy.com/system/resources/previews/010/878/976/original/3d-rendering-of-cute-icon-illustration-magnifying-glass-search-not-found-empty-state-png.png"
+                                            alt="" srcset="" style="width: 100%;">
                                     </div>
                                     @elseif(Str::contains($bankAccounts->attachment,['.jpg','.png']))
                                     <div class="card-body shadow" style="height: 250px;">
@@ -24,8 +25,8 @@
                                     </div>
                                     @else
                                     <div class="card-body shadow" style="height: 250px;">
-                                        <img src="https://static.vecteezy.com/system/resources/previews/022/597/326/original/3d-file-doc-icon-illustration-png.png" alt=""
-                                            srcset="" style="width: 100%;">
+                                        <img src="https://static.vecteezy.com/system/resources/previews/022/597/326/original/3d-file-doc-icon-illustration-png.png"
+                                            alt="" srcset="" style="width: 100%;">
                                     </div>
                                     @endif
                                 </div>
@@ -53,56 +54,68 @@
                                             aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    @error('attachment')
+                                    <p class="error__required">* {{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="col-md-6 small" style="margin-left: 30px;">
                                 <div class="table-responsive">
                                     <div class="form-group">
                                         <label for="">Nama Lengkap</label>
-                                        <div class="input-group mb-3 text-center">
-                                            <span class="input-group-text pr-3" id="basic-addon1"
-                                                style="padding-right: 17px;"><i class="fa-duotone fa-user"></i></span>
-                                            <input type="text" class="form-control form-control-sm"
-                                                value="{{$bankAccounts->fullname}}" aria-label="Username"
-                                                aria-describedby="basic-addon1">
-                                        </div>
+                                        <input type="text" name="fullName"
+                                            class="form-control form-control-sm text-capitalize"
+                                            value="{{$bankAccounts->fullname}}" aria-label="Username"
+                                            aria-describedby="basic-addon1">
+                                        @error('fullName')
+                                        <p class="error__required">* {{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Email</label>
+                                        <input type="text" name="email" class="form-control form-control-sm"
+                                            value="{{Str::ucfirst($bankAccounts->email)}}" aria-label="Username"
+                                            aria-describedby="basic-addon1">
+                                        @error('email')
+                                        <p class="error__required">* {{ $message }}</p>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="">Username</label>
-                                        <div class="input-group mb-3 text-center">
-                                            <span class="input-group-text pr-3" id="basic-addon1"
-                                                style="padding-right: 17px;"><i
-                                                    class="fa-duotone fa-user-shield"></i></span>
-                                            <input type="text" class="form-control form-control-sm"
-                                                value="{{$bankAccounts->username}}" aria-label="Username"
-                                                aria-describedby="basic-addon1">
-                                        </div>
+                                        <input type="text" name="userName"
+                                            class="form-control form-control-sm text-capitalize"
+                                            value="{{$bankAccounts->username}}" aria-label="Username"
+                                            aria-describedby="basic-addon1">
+                                        @error('userName')
+                                        <p class="error__required">* {{ $message }}</p>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="">URL</label>
-                                        <div class="input-group mb-3 text-center">
-                                            <span class="input-group-text pr-3" id="basic-addon1"
-                                                style="padding-right: 17px;"><i
-                                                    class="fa-regular fa-browser"></i></span>
-                                            <input type="text" class="form-control form-control-sm"
-                                                value="{{$bankAccounts->url}}" aria-label="Username"
-                                                aria-describedby="basic-addon1">
-                                        </div>
+                                        <input type="text" name="url" class="form-control form-control-sm"
+                                            value="{{$bankAccounts->url}}" aria-label="Username"
+                                            aria-describedby="basic-addon1">
+                                        @error('url')
+                                        <p class="error__required">* {{ $message }}</p>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="">Kata Sandi</label>
-                                        <div class="input-group mb-3 text-center">
-                                            <span class="input-group-text pr-3" id="basic-addon1"
-                                                style="padding-right: 17px;"><i
-                                                    class="fa-duotone fa-lock-keyhole"></i></span>
-                                            <input type="text" class="form-control form-control-sm"
-                                                value="{{$bankAccounts->password}}" aria-label="Username"
-                                                aria-describedby="basic-addon1">
-                                        </div>
+                                        <input type="text" name="password" class="form-control form-control-sm"
+                                            value="{{$bankAccounts->password}}" aria-label="Username"
+                                            aria-describedby="basic-addon1">
+                                        @error('password')
+                                        <p class="error__required">* {{ $message }}</p>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="">Keterangan</label>
-                                        <textarea name="" id="" cols="30" rows="5"
-                                            class="form-control">{{$bankAccounts->description}}</textarea>
+                                        <textarea name="description" id="" cols="30" rows="5"
+                                            class="form-control text-capitalize">{{$bankAccounts->description}}</textarea>
+                                        @error('description')
+                                        <p class="error__required">* {{ $message }}</p>
+                                        @enderror
                                     </div>
                                     <div class="d-flex justify-content-end">
                                         <div class="form-group">

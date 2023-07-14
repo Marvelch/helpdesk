@@ -47,7 +47,7 @@
                                             <p class="error__required">* {{ $message }}</p>
                                             @enderror
                                         </div>
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <label for="">Kode Barang</label>
                                             <input name="itemCode" type="text" class="form-control form-control-sm">
                                             <small class="text-danger" value="{{old('itemCode')}}"
@@ -57,7 +57,7 @@
                                             @error('itemCode')
                                             <p class="error__required">* {{ $message }}</p>
                                             @enderror
-                                        </div>
+                                        </div> -->
                                         <div class="form-group">
                                             <label for="">Keterangan</label>
                                             <textarea name="description" id="" cols="10" rows="5"

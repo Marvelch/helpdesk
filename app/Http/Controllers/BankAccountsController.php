@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
+use Illuminate\Support\Str;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
@@ -50,7 +51,6 @@ class BankAccountsController extends Controller
             'password'      => 'required',
             'url'           => 'required|min:3|max:50',
             'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,pdf,jpg,png',
-            'description'   => 'required|max:255',
             'email'         => 'required|email',
         ]);
 
@@ -63,30 +63,28 @@ class BankAccountsController extends Controller
             }
 
             bankAccounts::create([
-                'email'             => $request->email,
-                'fullname'          => $request->fullname,
-                'username'          => $request->username,
-                'password'          => $request->password,
-                'url'               => $request->url,
+                'email'             => Str::lower($request->email),
+                'fullname'          => Str::lower($request->fullname),
+                'username'          => Str::lower($request->username),
+                'password'          => Str::lower($request->password),
+                'url'               => Str::lower($request->url),
                 'attachment'        => @$attachment,    
-                'description'       => $request->description,
+                'description'       => Str::lower($request->description),
                 'created_by_user_id'=> Auth::user()->id,
             ]);
             
             DB::commit();
 
-            Alert::success('Approve', 'Account creation has been successful');
+            Alert::success('Berhasil', 'Penambahan akun baru pengguna telah berhasil !');
 
-            return redirect('/bank-accounts');
+            return redirect()->route('index_bank_accounts');
 
         } catch (\Throwable $th) {
             DB::rollback();
- 
-            Log::warning('Error pada log Bank Account');
 
-            Alert::error('Approve', 'Sorry, the system has crashed. Check the transaction again');
+            Alert::error('Gagal', 'Pembuatan akun gagal tolong cek kembali !');
 
-            return redirect('/bank-accounts');
+            return back();
         }
     }
 
@@ -117,42 +115,46 @@ class BankAccountsController extends Controller
      */
     public function update(Request $request, bankAccounts $bankAccounts, $id)
     {   
-        // $request->validate([
-        //     'fullname'      => 'required|min:2|max:80',
-        //     'username'      => 'required|min:3|max:40',
-        //     'password'      => 'required|min:3|max:40',
-        //     'url'           => 'required|min:3|max:50',
-        //     'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,xls,pdf,jpg,png|max:5048',
-        //     'description'   => 'required|max:255',
-        //     'email'         => 'required|email',
-        // ]);
+        $request->validate([
+            'fullName'      => 'required|min:2|max:80',
+            'userName'      => 'required|min:3|max:40',
+            'password'      => 'required|min:3|max:40',
+            'url'           => 'required|min:3|max:50',
+            'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,xls,pdf,jpg,png|max:5048',
+            'description'   => 'required|max:255',
+            'email'         => 'required|email',
+        ]);
 
-        return $request->hasFile('attachment');
+        DB::beginTransaction();
 
-        // DB::beginTransaction();
+        try {
 
-        // try {
-        //     bankAccounts::where('id',$id)->update([
-        //         'fullname'      => $request->fullname,
-        //         'username'      => $request->username,
-        //         'password'      => $request->password,
-        //         'url'           => $request->url,
-        //         'attachment'    => $request->username,
-        //         'description'   => $request->description,
-        //         'email'         => $request->email
-        //     ]);
+            if($request->file('attachment')) {
+                $attachment = $request->file('attachment')->store('bankaccount');
+            }
+            
+            bankAccounts::where('id',$id)->update([
+                'fullname'      => $request->fullName,
+                'email'         => $request->email,
+                'username'      => $request->userName,
+                'password'      => $request->password,
+                'url'           => $request->url,
+                'attachment'    => @$attachment,
+                'description'   => $request->description,
+                'email'         => $request->email
+            ]);
 
-        //     DB::commit();
+            DB::commit();
 
-        //     return redirect()->back();
+            return redirect()->back();
 
-        // } catch (\Throwable $th) {
-        //     //throw $th;
+        } catch (\Throwable $th) {
+            //throw $th;
 
-        //     DB::rollback();
+            DB::rollback();
 
-        //     return $th->getMessage();
-        // }
+            return $th->getMessage();
+        }
     }
 
     /**
@@ -163,7 +165,7 @@ class BankAccountsController extends Controller
         DB::beginTransaction();
 
         try {
-            inventory::find($id)->delete();
+            bankAccounts::find($id)->delete();
 
             DB::commit();
 

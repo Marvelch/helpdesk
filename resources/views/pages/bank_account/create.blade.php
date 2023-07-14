@@ -4,13 +4,13 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
-            <form action="{{route('store_bank_accounts')}}" method="post" enctype="multipart/form-data">
+            <form action="{{route('store_bank_accounts')}}" method="post" enctype="multipart/form-data" autocomplete="off">
                 @csrf
-                <div class="card">
+                <div class="card" style="z-index: 1; font-family: var(--bs-font-roboto);">
                     <div class="card-body">
                         <div class="row mt-5 justify-content-md-center align-self-center">
                             <div class="col-4">
-                                <img src="{{asset('./assets/img/5.png')}}" style="width: 100%;" alt="" srcset="">
+                                <img src="https://www.getillustrations.com/photos/pack/video/55895-3D-AVATAR-ANIMATION.gif" style="width: 100%;" alt="" srcset="">
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
@@ -36,7 +36,7 @@
                                             <div class="input-group input-group-sm">
                                                 <span class="input-group-text" id="inputGroup-sizing-sm"><i
                                                         class="fa-regular fa-lock"></i></span>
-                                                <input name="password" type="password" class="form-control form-coontrol-sm" value="{{old('password')}}">
+                                                <input name="password" type="text" class="form-control form-coontrol-sm" value="{{old('password')}}">
                                             </div>
                                             @error('password')
                                             <p class="error__required">* {{ $message }}</p>
