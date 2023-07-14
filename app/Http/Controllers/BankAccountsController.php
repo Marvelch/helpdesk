@@ -115,45 +115,46 @@ class BankAccountsController extends Controller
      */
     public function update(Request $request, bankAccounts $bankAccounts, $id)
     {   
-        // $request->validate([
-        //     'fullname'      => 'required|min:2|max:80',
-        //     'username'      => 'required|min:3|max:40',
-        //     'password'      => 'required|min:3|max:40',
-        //     'url'           => 'required|min:3|max:50',
-        //     'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,xls,pdf,jpg,png|max:5048',
-        //     'description'   => 'required|max:255',
-        //     'email'         => 'required|email',
-        // ]);
+        $request->validate([
+            'fullName'      => 'required|min:2|max:80',
+            'userName'      => 'required|min:3|max:40',
+            'password'      => 'required|min:3|max:40',
+            'url'           => 'required|min:3|max:50',
+            'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,xls,pdf,jpg,png|max:5048',
+            'description'   => 'required|max:255',
+            'email'         => 'required|email',
+        ]);
 
-        // if($request->file('attachment')) {
-        //     $attachment = $request->file('attachment')->store('bankaccount');
-        //     return $attachment;
-        // }
-        dd($request->file('attachment'));
-        // DB::beginTransaction();
+        DB::beginTransaction();
 
-        // try {
-        //     bankAccounts::where('id',$id)->update([
-        //         'fullname'      => $request->fullname,
-        //         'username'      => $request->username,
-        //         'password'      => $request->password,
-        //         'url'           => $request->url,
-        //         'attachment'    => $request->username,
-        //         'description'   => $request->description,
-        //         'email'         => $request->email
-        //     ]);
+        try {
 
-        //     DB::commit();
+            if($request->file('attachment')) {
+                $attachment = $request->file('attachment')->store('bankaccount');
+            }
+            
+            bankAccounts::where('id',$id)->update([
+                'fullname'      => $request->fullName,
+                'email'         => $request->email,
+                'username'      => $request->userName,
+                'password'      => $request->password,
+                'url'           => $request->url,
+                'attachment'    => @$attachment,
+                'description'   => $request->description,
+                'email'         => $request->email
+            ]);
 
-        //     return redirect()->back();
+            DB::commit();
 
-        // } catch (\Throwable $th) {
-        //     //throw $th;
+            return redirect()->back();
 
-        //     DB::rollback();
+        } catch (\Throwable $th) {
+            //throw $th;
 
-        //     return $th->getMessage();
-        // }
+            DB::rollback();
+
+            return $th->getMessage();
+        }
     }
 
     /**
