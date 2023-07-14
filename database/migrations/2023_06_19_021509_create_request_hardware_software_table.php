@@ -29,6 +29,8 @@ return new class extends Migration
             $table->foreign('user_general_manager_id')->references('id')->on('users');
             $table->unsignedBigInteger('created_by_user_id')->nullable();
             $table->foreign('created_by_user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('request_ticket_id')->nullable();
+            $table->foreign('request_ticket_id')->references('id')->on('request_tickets');
             $table->timestamps();
         });
     }

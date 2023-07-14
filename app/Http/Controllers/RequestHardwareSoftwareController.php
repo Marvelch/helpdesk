@@ -49,8 +49,9 @@ class RequestHardwareSoftwareController extends Controller
     public function createRequestTicket($id)
     {
         $requestTickets = requestTicket::find(Crypt::decryptString($id));
+        $inventorys = inventory::all();
 
-        return view('pages.request_hardware_software.create_ticket',compact('requestTickets'));
+        return view('pages.request_hardware_software.create_ticket',compact('requestTickets','inventorys'));
     }
 
     /**
@@ -96,6 +97,67 @@ class RequestHardwareSoftwareController extends Controller
             DB::rollback();
 
             return $th;
+        }
+    }
+
+     /**
+     * Display the specified resource.
+     */
+    public function storeFromTicket(Request $request)
+    {
+
+        DB::beginTransaction();
+
+        try {
+            $uniqueTransaction = generateUniqueCode();
+
+            RequestHardwareSoftware::create([
+                'unique_request'        => $uniqueTransaction,
+                'requests_from_users'   => Auth::user()->id,
+                'status'                => 1,
+                'description'           => 'Request From Ticket',
+                'request_ticket_id'     => $request->ticketId,
+                'transaction_date'      => Now(),
+            ]);
+            
+            foreach($request->itemName as $key => $item) {
+                $inventory = inventory::select('stock','id')->where('item_name',Str::lower($item))->first();
+
+                if($request->qty[$key] >= 0) {
+                    if($inventory) {
+                        detailRequestHardwareSoftware::create([
+                            'unique_request'    => $uniqueTransaction,
+                            'items_id'          => $inventory->id,
+                            'qty'               => $request->qty[$key],
+                            'availability'      => 'EXISTS',
+                            'transaction_status'=> 0,
+                            'description'       => 'Permintaan dari ',$request->ticketId,
+                        ]);
+                    }else{
+                        detailRequestHardwareSoftware::create([
+                            'unique_request'    => $uniqueTransaction,
+                            'items_new_request' => $item,
+                            'qty'               => $request->qty[$key],
+                            'availability'      => 'NOT_EXISTS',
+                            'transaction_status'=> 0,
+                            'description'       => 'Permintaan dari ',$request->ticketId,
+                        ]);
+                    }
+                }
+            }
+
+            DB::commit();
+
+            Alert::success('Tersimpan','Permintaan software dan hardware berhasil !');
+
+            return redirect()->route('index_request_hardware_software');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+
+            Alert::error('Gagal','Permintaan software dan hardware gagal, ulang lagi !');
+
+            return redirect()->back();
         }
     }
 

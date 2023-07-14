@@ -60,8 +60,12 @@
                 </ul>
             </div>
             <div class="card-body">
-                <form action="{{route('store_request_hardware_software')}}" method="post">
+                @error('qty')
+                    <p class="error__required">* {{ $message }}</p>
+                @enderror
+                <form action="{{route('store_hardware_software_request_hardware_software')}}" method="post">
                     @csrf
+                    <input type="hidden" name="ticketId" value="{{$requestTickets->id}}">
                     <table class="table-responsive">
                         <div class="table table-stiped" id="myTable">
                             <thead>
@@ -75,14 +79,17 @@
                                 <tr>
                                     <td style="width: 33%; padding: 0px 10px 0px 0px; margin-top:-50px">
                                         <div class="form-group">
-                                            <select name="itemsName[]" id="itemsName"
-                                                class="itemsName form-select form-select-sm text-capitalize">
+                                            <select name="itemName[]" id="itemName"
+                                                class="itemName form-select form-select-sm text-capitalize">
+                                                @foreach($inventorys as $inventory)
+                                                    <option name="">{{$inventory->item_name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </td>
                                     <td style="width: 33%; padding: 10px;">
                                         <div class="form-group">
-                                            <input type="text" name="stock[]" class="form-control form-control-sm">
+                                            <input type="text" name="qty[]" class="form-control form-control-sm">
                                         </div>
                                     </td>
                                     <td style="width: 33%; padding: 10px;">
@@ -114,47 +121,15 @@
     $('.new-button').on('click', function () {
         ++i;
         $('tbody').append(
-            "<tr> <td style='width: 33%; padding: 0px 10px 0px 0px; margin-top:-50px'> <div class='form-group'> <select name='itemsName[]' id='itemsName" +
-            i + "' class='itemsName" + i +
-            " form-select form-select-sm text-capitalize'> </select> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input type='text' class='form-control form-control-sm'> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input type='text' class='form-control form-control-sm'> </div> </td> <td> <div class='form-group'> <i class='remove-button fa-solid fa-circle-minus fa-lg' style='color: #ec2727;'></i> </div> </td> </tr>"
-            ).delay(800).fadeIn(400);
-        $('.itemsName' + i + '').select2({
-            ajax: {
-                url: '{{url("/request-hardware-software/searching-inventory")}}',
-                dataType: 'json',
-                processResults: function ({
-                    data
-                }) {
-                    return {
-                        results: $.map(data, function (item) {
-                            return {
-                                id: item.id,
-                                text: item.item_name
-                            }
-                        })
-                    }
-                }
-            }
+            "<tr> <td style='width: 33%; padding: 0px 10px 0px 0px; margin-top:-50px'> <div class='form-group'> <select name='itemName[]' id='' class='itemName"+i+" form-control form-control-sm'> @foreach($inventorys as $inventory) <option name=''>{{$inventory->item_name}}</option> @endforeach </select> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input name='qty[]' type='text' class='form-control form-control-sm'> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input type='text' name='description[]' class='form-control form-control-sm'> </div> </td> <td> <div class='form-group'> <i class='remove-button fa-solid fa-circle-minus fa-lg' style='color: #ec2727;'></i> </div> </td> </tr>"
+        ).delay(800).fadeIn(400);
+        $('.itemName' + i + '').select2({
+            tags: true
         });
     });
 
-    $('.itemsName').select2({
-        ajax: {
-            url: '{{url("/request-hardware-software/searching-inventory")}}',
-            dataType: 'json',
-            processResults: function ({
-                data
-            }) {
-                return {
-                    results: $.map(data, function (item) {
-                        return {
-                            id: item.id,
-                            text: item.item_name
-                        }
-                    })
-                }
-            }
-        }
+    $(".itemName").select2({
+        tags: true
     });
 
     $(document).on('click', '.remove-button', function () {

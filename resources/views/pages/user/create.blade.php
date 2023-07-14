@@ -4,23 +4,15 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
-            <div class="card" style="z-index: 1;">
+            <div class="card" style="z-index: 1; font-family: var(--bs-font-roboto);">
                 <div class="card-body">
                     <div class="row mb-5 mt-5">
-                        <form action="{{route('store_users')}}" method="post" autocomplete="off">
+                        <form action="{{route('store_users')}}" method="post" autocomplete="off" enctype="multipart/form-data">
                             @csrf
-                            <div class="col-4">
-                                <img src="https://static.vecteezy.com/system/resources/previews/011/153/370/original/3d-web-development-illustration-png.png"
-                                    class="img-users" alt="" srcset="">
-                            </div>
-                            <!-- <div class="col-4">
-                                <img src="https://img.freepik.com/free-psd/3d-illustration-bald-person-with-glasses_23-2149436184.jpg"
-                                    style="margin-left: 20px; z-index: 2;" alt="" srcset="">
-                            </div> -->
-                            <div class="row justify-content-md-center" style="padding-left: 17%;">
+                            <div class="row justify-content-md-center">
                                 <div class="col-4" style="z-index: 3;">
                                     <div class="form-group">
-                                        <label for="">Nama Pengguna</label>
+                                        <label for="">Nama Lengkap</label>
                                         <input name="name" type="text" class="form-control form-control-sm">
                                         @error('name')
                                         <p class="error__required">* {{ $message }}</p>
@@ -66,6 +58,13 @@
                                     </div>
                                 </div>
                                 <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="">Username</label>
+                                        <input type="text" name="username" id="username" class="form-control form-control-sm">
+                                        @error('username')
+                                        <p class="error__required">* {{ $message }}</p>
+                                        @enderror
+                                    </div>
                                     <div class="form-group">
                                         <label for="">Telepon</label>
                                         <input type="text" name="phone" id="phone" class="form-control form-control-sm">

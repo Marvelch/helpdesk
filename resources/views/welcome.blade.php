@@ -64,11 +64,11 @@
                   </a>
                 </li>
               </ul> -->
-                            <li class="nav-item d-flex align-items-center">
+                            <!-- <li class="nav-item d-flex align-items-center">
                                 <a class="btn btn-round btn-sm mb-0 btn-outline-primary me-2" target="_blank"
                                     href="https://www.creative-tim.com/builder?ref=navbar-soft-ui-dashboard">Online
                                     Builder</a>
-                            </li>
+                            </li> -->
                             <ul class="navbar-nav d-lg-block d-none">
                                 <li class="nav-item">
                                     <a href="https://www.creative-tim.com/product/soft-ui-dashboard"
@@ -104,21 +104,21 @@
                             <div class="card card-plain mt-8">
                                 <div class="card-header pb-0 text-left bg-transparent">
                                     <h3 class="font-weight-bolder text-info text-gradient">Selamat Datang</h3>
-                                    <small class="mb-0">Sign in menggunakan email dan password</small>
+                                    <small class="mb-0">Sign in menggunakan user dan password</small>
                                 </div>
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
                                     <div class="card-body">
                                         <form role="form">
-                                            <label>Email</label>
+                                            <label>username</label>
                                             <div class="mb-3">
-                                                <input id="email" type="email"
-                                                    class="form-control form-control-sm @error('email') is-invalid @enderror"
-                                                    placeholder="Email" aria-label="Email"
-                                                    aria-describedby="email-addon" name="email"
-                                                    value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                                <input id="username" type="username"
+                                                    class="form-control form-control-sm @error('username') is-invalid @enderror"
+                                                    placeholder="username" aria-label="username"
+                                                    aria-describedby="username-addon" name="username"
+                                                    value="{{ old('username') }}" required autocomplete="username" autofocus>
                                             </div>
-                                            @error('email')
+                                            @error('username')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -153,7 +153,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
-                                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
+                                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 w-95 z-index-0 ms-n6"
                                     style="background-image:url('./assets/img/curved-images/curved6.png')"></div>
                             </div>
                         </div>

@@ -66,16 +66,16 @@
                                 @foreach($bankAccounts as $item)
                                 <tr>
                                     <td class="align-middle small">
-                                        <span class="text-xs font-weight-bold">{{@$item->fullname}}</span>
+                                        <span class="text-xs font-weight-bold text-capitalize">{{@$item->fullname}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
-                                        <span class="text-xs font-weight-bold">{{$item->username}}</span>
+                                        <span class="text-xs font-weight-bold text-capitalize">{{$item->username}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span class="text-xs font-weight-bold">{{$item->password}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
-                                        <span class="text-xs font-weight-bold">{{$item->email}}</span>
+                                        <span class="text-xs font-weight-bold">{{Str::ucfirst($item->email)}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span class="text-xs font-weight-bold">{{$item->url}}</span>

@@ -102,11 +102,11 @@
                                 </td>
                                 <td class="align-middle text-sm text-center">
                                     @if($item->status == 0) 
-                                        <i class="fa-duotone fa-calendar-clock" title="Menunggu Persetujuan"></i>
+                                        <i class="fa-solid fa-circle-exclamation" style="color: #f73640;" title="WAITING"></i>
                                     @elseif($item->status == 1) 
-                                        <span class="text-xs font-weight-bold"><i class="fa-duotone fa-alarm-clock fa-lg" title="In Process"></i></span>
+                                        <i class="fa-duotone fa-pen-circle fa-lg" title="IN PROGRESS" style="--fa-primary-color: #5ba8fb; --fa-secondary-color: #5ba8fb;"></i>
                                     @else
-                                         <i class="fa-solid fa-badge-check fa-lg" title="Diterima" style="color: #54b95b;"></i>
+                                         <i class="fa-solid fa-badge-check fa-lg" title="APPROVED" style="color: #54b95b;"></i>
                                     @endif
                                 </td>
                                 <td class="align-middle text-sm">

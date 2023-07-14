@@ -33,15 +33,15 @@
 
                                 <div class="row mb-3">
                                     <div class="form-group">
-                                        <label for="email"
-                                            class="form-control-sm col-form-label text-md-end">Email</label>
-                                        <input id="email" type="email"
-                                            class="form-control form-control-sm @error('email') is-invalid @enderror"
-                                            name="email" value="{{ old('email') }}" required autocomplete="email"
+                                        <label for="username"
+                                            class="form-control-sm col-form-label text-md-end">username</label>
+                                        <input id="username" type="text"
+                                            class="form-control form-control-sm @error('username') is-invalid @enderror"
+                                            name="username" value="{{ old('username') }}" required autocomplete="username"
                                             autofocus>
                                     </div>
 
-                                    @error('email')
+                                    @error('username')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

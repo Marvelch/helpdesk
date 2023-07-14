@@ -8,6 +8,7 @@ use App\Models\devision;
 use App\Models\division;
 use App\Models\requestTicket;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\TryCatch;
 use DB;
@@ -91,10 +92,11 @@ class HomeController extends Controller
     {
         $request->validate([
             'name'              => 'required|unique:users|min:2|max:255',
-            'email'             => 'required',
+            'email'             => 'required|unique:users',
+            'username'          => 'required|unique:users|min:2|max:255',
             'password'          => 'required',
             'confirm_password'  => 'required',
-            'phone'             => 'required',
+            'phone'             => 'required|unique:users',
             'company_id'        => 'required',
             'division_id'       => 'required',
             'position_id'       => 'required'
@@ -104,8 +106,9 @@ class HomeController extends Controller
 
         try {
             User::create([
-                'name'          => $request->name,
-                'email'         => $request->email,
+                'name'          => Str::lower($request->name),
+                'email'         => Str::lower($request->email),
+                'username'      => Str::lower($request->username),
                 'level_id'      => 3,
                 'phone'         => $request->phone,
                 'password'      => Hash::make($request->password),
@@ -117,15 +120,17 @@ class HomeController extends Controller
 
             DB::commit();
 
-            Alert::success('Success','The new user addition has been successful');
+            Alert::success('Berhasil','Penambahan pengguna berhasil tersimpan !');
 
-            return back();
+            return redirect()->route('index_users');
         } catch (\Throwable $th) {
             //throw $th;
 
             DB::rollback();
 
-            return $th->getMessage();
+            Alert::error('Gagal','Kesalahan penginputan silahkan coba lagi !');
+
+            return back();
         }
     }
 

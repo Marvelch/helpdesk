@@ -64,12 +64,12 @@
                                     <td>
                                         <div class="d-flex px-2 py-1">
                                             <div>
-                                                <img src="{{ Avatar::create($item->name)->setDimension(50)->setFontSize(18)->toBase64() }}"
+                                                <img src="{{ Avatar::create(Str::upper($item->name))->setDimension(50)->setFontSize(18)->toBase64() }}"
                                                     class="avatar avatar-sm me-3" alt="xd"
                                                     style="padding: 2px; background-color: #54b95b; border-radius: 50%;">
                                             </div>
                                             <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">{{$item->name}}</h6>
+                                                <h6 class="mb-0 text-sm">{{ucfirst(strtolower($item->name))}}</h6>
                                             </div>
                                         </div>
                                     </td>
@@ -79,11 +79,11 @@
                                     <td class="align-middle text-sm text-center">
                                         <span class="text-xs font-weight-bold">
                                             @if($item->level_id == 1)
-                                                <i class="fa-regular fa-user-shield fa-lg" title="admin"></i>
+                                                <i class="fa-duotone fa-shield-halved fa-lg" title="SUPER ADMIN" style="--fa-primary-color: #54b95b; --fa-secondary-color: #54b95b;"></i>
                                             @elseif($item->level_id == 2)
-                                                <i class="fa-regular fa-user-gear fa-lg" title="editor"></i>
+                                                <i class="fa-solid fa-pen-circle fa-lg" style="color: #75b922;" title="EDITOR"></i> 
                                             @else
-                                                <i class="fa-regular fa-users fa-lg" title="pengguna"></i>
+                                                <i class="fa-solid fa-circle-user fa-lg" title="PENGGUNA NORMAL" style="color: #ea8b1f;"></i>
                                             @endif
                                         </span>
                                     </td>
@@ -100,7 +100,7 @@
                                         <a href="{{ROUTE('edit_users',['id' => Crypt::encryptString($item->id)])}}"
                                             class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
                                             data-original-title="Edit user">
-                                            Edit
+                                            <i class="fa-duotone fa-pen-to-square"></i>
                                         </a>
                                     </td>
                                 </tr>
