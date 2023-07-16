@@ -33,8 +33,7 @@
                             <div class="form-group mt-2">
                                 @if(!$requestTickets->attachment)
                                 <div class="card-body shadow" style="height: 250px;">
-                                    <img src="{{asset('./assets/img/file-not-found.jpg')}}" alt="" srcset=""
-                                        style="width: 100%;">
+                                    <img src="{{asset('./assets/img/404.png')}}" alt="" srcset="" style="width: 100%;">
                                 </div>
                                 @elseif(Str::contains($requestTickets->attachment,['.jpg','.png']))
                                 <div class="card-body shadow" style="height: 250px;">
@@ -43,14 +42,16 @@
                                 </div>
                                 @else
                                 <div class="card-body shadow" style="height: 250px;">
-                                    <img src="https://static.vecteezy.com/system/resources/previews/022/597/326/original/3d-file-doc-icon-illustration-png.png" alt="" srcset=""
-                                        style="width: 100%;">
+                                    <img src="{{asset('./assets/img/docs.png')}}" alt="" srcset="" style="width: 100%;">
                                 </div>
                                 @endif
+                                <!-- Apabila bukan IT, user request dan user yang mengerjakan tidak bisa download file -->
+                                @if(Auth::user()->division_id == $requestTickets->division_id OR Auth::user()->id == $requestTickets->request_on_user_id OR Auth::user()->level_id == 1 OR Auth::user()->level_id == 2 )
                                 <div class="form-group mt-3">
                                     <a href="{{route('download_bank_accounts',['id' => Crypt::encryptString($requestTickets->attachment)])}}"
                                         class="btn btn-sm btn-primary w-100 font-roboto {{$requestTickets->attachment ? '': 'disabled'}}">Download</a>
                                 </div>
+                                @endif
                             </div>
                             <!-- <img src="{{asset('./assets/img/3.png')}}" alt="" srcset="" style="max-width: 100%;"> -->
                         </div>
@@ -58,33 +59,39 @@
                             <div class="card-body shadow">
                                 <table class="table table-borderless text-small">
                                     <tr>
-                                        <td style="width: 25%;">Permintaan Pengguna</td>
+                                        <td class="w-40">Permintaan Pengguna</td>
                                         <td>: {{@$requestTickets->title}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 25%;">Perusahaan</td>
+                                        <td>Perusahaan</td>
                                         <td>: {{@$requestTickets->company->company}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 25%;">Devisi</td>
+                                        <td>Devisi</td>
                                         <td>: {{@$requestTickets->division->division}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 25%;">Hingga Tanggal</td>
+                                        <td>Hingga Tanggal</td>
                                         <td>: {{@date('d-m-Y',strtotime($requestTickets->deadline))}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 25%;">Jenis Pekerjaan</td>
+                                        <td>Jenis Pekerjaan</td>
                                         <td>: {{@$requestTickets->typeOfWork->typeofwork}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 25%;">Lokasi</td>
+                                        <td>Lokasi</td>
                                         <td>: {{@$requestTickets->location}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 25%;">Keterangan</td>
+                                        <td>Keterangan</td>
                                         <td>: {!! strip_tags($requestTickets->description) !!}</td>
                                     </tr>
+                                    @if(@$requestTickets->assignment_on_user_id)
+                                    <tr>
+                                        <td>Ditugaskan Kepada</td>
+                                        <td>: {{$requestTickets->usersReq->name}}</td>
+                                    </tr>
+                                    @endif
                                 </table>
                             </div>
                             @if(@Auth::user()->level->special_character == env('LEVEL_ADMIN') OR
@@ -98,13 +105,6 @@
                                     <small>Perhatikan pembaharuan status permintaan dan pemilihan penugasan akan
                                         mempengaruhi GPM dari setiap karyawan</small>
                                 </div>
-                                <div class="form-group">
-                                    <select name="" id="" class="form-control form-control-sm w-60">
-                                        <option value="">Open</option>
-                                        <option value="">In Progress</option>
-                                        <option value="">Close</option>
-                                    </select>
-                                </div>
                                 <div class="form-group mt-2">
                                     <small>Perbaharui status dan assign kepada :</small>
                                     <select name="approvement" class="approvement w-60 mt-3 form-select form-select-sm"
@@ -114,17 +114,26 @@
                                     </select>
                                 </div>
                                 @endif
+                                @if(@$requestTickets->assignment_on_user_id)
+                                <p style="font-size: 11px; margin-top: 20px; margin-bottom: 5px;">Konfirmasi Status Permintaan</p>
+                                <select name="" id="" class="form-control form-control-sm w-50">
+                                    <option value="">SELESAI</option>
+                                    <option value="">BATAL</option>
+                                </select>
+                                @endif
                                 @if($requestTickets->status == 1)
                                 <div class="form-group mt-4 text-capitalize">
-                                    <small>Pemintaan untuk <a href="{{route('create_ticket_request_hardware_software',['id' => Crypt::encryptString($requestTickets->id)])}}"><u>pengadaan
+                                    <small>Pemintaan untuk <a
+                                            href="{{route('create_ticket_request_hardware_software',['id' => Crypt::encryptString($requestTickets->id)])}}"><u>pengadaan
                                                 hadware/software</u></a></small>
                                 </div>
                                 @endif
                                 @error('assignTo')
                                 <p class="error__required">* {{ $message }}</p>
                                 @enderror
+                                <input type="hidden" name="notification" value="{{Crypt::encryptString($requestTickets->id)}}">
                                 <div class="form-group" id="assignToToggle">
-                                    <!-- <small>Berikan Tugas Kepada</small> -->
+                                    <p style="margin-bottom: 12px; font-size: 11px;">Ditugaskan Kepada :</p>
                                     <select name="assignTo" id="assignTo"
                                         class="form-select assignTo form-select-sm w-60 mt-1 text-capitalize">
                                     </select>

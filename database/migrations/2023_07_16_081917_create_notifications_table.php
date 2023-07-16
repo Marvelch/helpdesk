@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inventories', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->string('item_name');
-            $table->string('item_code')->nullable();
-            $table->string('description')->nullable();
-            $table->string('barcode')->nullable();
-            $table->integer('stock')->nullable();
-            $table->string('inventory_unique')->nullable();
+            $table->unsignedBigInteger('users_id')->nullable();
+            $table->foreign('users_id')->references('id')->on('users');
+            $table->string('path')->nullable();
+            $table->boolean('read')->default(null)->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventories');
+        Schema::dropIfExists('notifications');
     }
 };

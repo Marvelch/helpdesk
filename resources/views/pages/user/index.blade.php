@@ -65,8 +65,7 @@
                                         <div class="d-flex px-2 py-1">
                                             <div>
                                                 <img src="{{ Avatar::create(Str::upper($item->name))->setDimension(50)->setFontSize(18)->toBase64() }}"
-                                                    class="avatar avatar-sm me-3" alt="xd"
-                                                    style="padding: 2px; background-color: #54b95b; border-radius: 50%;">
+                                                    class="avatar avatar-sm me-3" alt="xd">
                                             </div>
                                             <div class="d-flex flex-column justify-content-center">
                                                 <h6 class="mb-0 text-sm">{{ucfirst(strtolower($item->name))}}</h6>

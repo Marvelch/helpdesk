@@ -1,5 +1,6 @@
 <head>
     <meta charset="utf-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="{{asset('./assets/img/apple-icon.png')}}">
     <link rel="icon" type="image/png" href="{{asset('./assets/img/favicon.png')}}">
@@ -43,10 +44,10 @@
 
         var channel = pusher.subscribe('private.{{Auth::user()->id}}');
         channel.bind('my-event', function (data) {
-            // alert(JSON.stringify(data));
-            $('.pusher-append').append("<li class='mb-2'><a class='dropdown-item border-radius-md' href='javascript:;'><div class='d-flex py-1'><div class='my-auto'><img src='../assets/img/team-2.jpg' class='avatar avatar-sm  me-3 '></div><div class='d-flex flex-column justify-content-center'><h6 class='text-sm font-weight-normal mb-1'><span class='font-weight-bold'>New message</span> from Laur</h6><p class='text-xs text-secondary mb-0 '><i class='fa fa-clock me-1'></i>13 minutes ago</p></div></div></a></li>");
+            // console.log(JSON.stringify(data));
+            $('#counter__notif').text(data.countNotif);
+            $('.pusher-append').append("<li class='mb-2'><a class='dropdown-item border-radius-md' href='"+data.url+"'><div class='d-flex py-1'><div class='my-auto'><img src='https://static.vecteezy.com/system/resources/previews/016/716/169/original/notification-alert-3d-icon-png.png' class='avatar avatar-sm  me-3 '></div><div class='d-flex flex-column justify-content-center'><h6 class='text-sm font-weight-normal mb-1'><span class='font-weight-bold'>"+data.message+"</span> from Laur</h6><p class='text-xs text-secondary mb-0 '><i class='fa fa-clock me-1'></i>13 menit lalu</p></div></div></a></li>");
         });
-
     </script>
     @endif
 </head>

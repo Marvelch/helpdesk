@@ -15,7 +15,7 @@
                                 <div class="card">
                                     @if(!$bankAccounts->attachment)
                                     <div class="card-body shadow" style="height: 250px;">
-                                        <img src="https://static.vecteezy.com/system/resources/previews/010/878/976/original/3d-rendering-of-cute-icon-illustration-magnifying-glass-search-not-found-empty-state-png.png"
+                                        <img src="{{asset('./assets/img/404.png')}}"
                                             alt="" srcset="" style="width: 100%;">
                                     </div>
                                     @elseif(Str::contains($bankAccounts->attachment,['.jpg','.png']))

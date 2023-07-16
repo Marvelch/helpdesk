@@ -4,7 +4,7 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
-            <div class="card" style="z-index: 1; font-family: var(--bs-font-roboto);">
+            <div class="card" style="z-index: 1; font-family: var(--bs-font-roboto); background-image: url('/assets/img/background/2.jpg'); background-repeat:no-repeat; -webkit-background-size:cover; -moz-background-size:cover; -o-background-size:cover; background-size:cover; background-position:center;">
                 <div class="card-body">
                     <div class="row mb-5 mt-5">
                         <form action="{{route('update_users',['id' => $items->id])}}" method="post" autocomplete="off">

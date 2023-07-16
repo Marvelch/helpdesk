@@ -6,6 +6,7 @@ use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\GeneralAccessController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RequestBooksController;
 use App\Http\Controllers\RequestHardwareSoftwareController;
 use App\Http\Controllers\RequestTicketController;
@@ -93,7 +94,8 @@ Route::group(['prefix' => 'request-hardware-software','middleware' => ['auth']],
     Route::post('/store',[RequestHardwareSoftwareController::class,'store'])->name('store_request_hardware_software');
     Route::post('/store/hardware-software',[RequestHardwareSoftwareController::class,'storeFromTicket'])->name('store_hardware_software_request_hardware_software');
     Route::get('/edit/{id}',[RequestHardwareSoftwareController::class,'edit'])->name('edit_request_hardware_software');
-    
+    Route::get('/show/{id}',[RequestHardwareSoftwareController::class,'show'])->name('show_request_hardware_software');
+
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
         Route::get('/create/{id}/request-ticket',[RequestHardwareSoftwareController::class,'createRequestTicket'])->name('create_ticket_request_hardware_software');
         Route::post('/delete/{id}/detail',[RequestHardwareSoftwareController::class,'destroyDetail'])->name('delete_detail_request_hardware_software');
@@ -120,6 +122,10 @@ Route::group(['prefix' => 'profile','auth'], function(){
      Route::get('/',[HomeController::class, 'profile'])->name('profile_users');
 });
 
+Route::group(['prefix' => 'notification','auth'], function(){
+     Route::get('/',[NotificationController::class, 'index'])->name('index_notification');
+});
+
 Route::group(['prefix' => 'inventory','middleware' => ['auth']], function(){
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
         Route::get('/',[InventoryController::class,'index'])->name('index_inventory');
@@ -129,6 +135,9 @@ Route::group(['prefix' => 'inventory','middleware' => ['auth']], function(){
         Route::post('/store/transaction',[InventoryController::class,'storeTransaction'])->name('store_transaction_inventory');
         Route::get('/search/items',[InventoryController::class,'searchItemName']);
         Route::get('/show/{id}',[InventoryController::class,'show'])->name('show_inventory');
+        Route::post('/destroy/{id}',[InventoryController::class,'destroy'])->name('destroy_inventory');
+        Route::post('/scan',[InventoryController::class,'scanBercode'])->name('scan_inventory');
+        Route::post('/store-barcode',[InventoryController::class,'storeBercode'])->name('store_barcode_transaction_inventory');
     });
 });
 

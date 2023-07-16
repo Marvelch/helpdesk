@@ -11,54 +11,79 @@
                         @csrf
                         <div class="row mt-5 mb-3 justify-content-md-center">
                             <div style="margin-left: 53%; margin-bottom: 2%;">
-                                <h3 class="font-roboto">Permintaan Tiket</h3>
-                                <p style="font-size: 12px;">Pembuatan tiket dengan melengkapi form penginputan berikut</p>
+                                <h3 class="font-roboto"><i class="fa-solid fa-ticket"
+                                        style="font-size: 40px; margin-right: 15px;"></i>Permintaan Tiket </h3>
+                                <p style="font-size: 12px;">Pembuatan tiket dengan melengkapi form penginputan berikut :
+                                </p>
                             </div>
                             <div class="col-sm-6 small" style="margin-left: 30px;">
                                 <div class="form-group">
-                                    <input name="title" type="text" class="form-control form-select-sm" placeholder="Permintaan Troubleshoot">
+                                    <label for="">Permintaan Troubleshoot</label>
+                                    <input name="title" type="text" class="form-control form-select-sm"
+                                        placeholder="Masalah Jaringan Internet" value="{{old('title')}}">
+                                    @error('title')
+                                    <p class="error__required">* {{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
+                                            <label for="">Perusahaan</label>
                                             <select name="company" id="selectCompany"
                                                 class="selectCompany form-select form-select-sm text-capitalize">
                                                 <option value="" selected>Pilih Perusahaan</option>
                                             </select>
                                         </div>
+                                        @error('company')
+                                        <p class="error__required">* {{ $message }}</p>
+                                        @enderror
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
+                                            <label for="">Devisi</label>
                                             <select name="division" id="selectDivision"
                                                 class="selectDivision form-select form-select-sm text-capitalize">
                                                 <option value="" selected>Pilih Devisi</option>
                                             </select>
+                                            @error('division')
+                                            <p class="error__required">* {{ $message }}</p>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label for="">Lokasi</label>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" id="basic-addon1"><i
                                                 class="fa-duotone fa-location-pin-lock"></i></span>
                                         <input type="text" name="location" class="form-control form-control-sm"
-                                            aria-label="Username" aria-describedby="basic-addon1" placeholder="Lokasi">
+                                            aria-label="Username" aria-describedby="basic-addon1" placeholder="Lokasi" value="{{old('location')}}">
                                     </div>
+                                    @error('location')
+                                        <p class="error__required">* {{ $message }}</p>
+                                        @enderror
                                 </div>
                                 <div class="form-group">
-                                    <select name="typeOfWork" id="" class="form-control form-control-sm">
+                                    <label for="">Jenis Pekerjaan</label>
+                                    <select name="typeofwork" id="" class="form-control form-control-sm">
                                         <option value="" selected>Pilih Jenis Pekerjaan</option>
                                         @foreach($typeOfWorks as $item)
                                         <option value="{{$item->id}}">{{$item->typeofwork}}</option>
                                         @endforeach
                                     </select>
+                                    @error('typeofwork')
+                                    <p class="error__required">* {{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
+                                    <label for="">Dokumen</label>
                                     <input type="file" name="attachment"
-                                        class="form-control form-control-sm select__image">
+                                        class="form-control form-control-sm select__image" value="{{old('attachment')}}">
                                 </div>
                                 <div class="form-group">
+                                    <label for="">Keterangan</label>
                                     <textarea name="description" id="" class="form-control form-control-sm" cols="30"
-                                        rows="5" placeholder="Keterangan"></textarea>
+                                        rows="5" placeholder="Masalah Jaringan Internet Tidak Bisa Konek" value="{{old('description')}}"></textarea>
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <div class="text-center col-md-3">
