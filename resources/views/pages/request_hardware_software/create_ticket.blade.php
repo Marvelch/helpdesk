@@ -66,6 +66,7 @@
                 <form action="{{route('store_hardware_software_request_hardware_software')}}" method="post">
                     @csrf
                     <input type="hidden" name="ticketId" value="{{$requestTickets->id}}">
+                    @if(!$requestHardwareSoftwares)
                     <table class="table-responsive">
                         <div class="table table-stiped" id="myTable">
                             <thead>
@@ -106,6 +107,9 @@
                             </tbody>
                         </div>
                     </table>
+                    @else
+                    <small>Pengajuan barang telah dilakukan pada nomor transakai <b>#{{$requestHardwareSoftwares->unique_request}}</b></small>
+                    @endif
                     <div class="form-group mt-4">
                         <div class="text-center d-flex justify-content-end">
                             <button type="submit" class="btn bg-gradient-info w-15 mt-4 mb-0">simpan</button>

@@ -54,7 +54,7 @@ class InventoryController extends Controller
     {
         $request->validate([
             'item_name'     => 'required|min:3|unique:inventories|max:255',
-            'stock'         => 'required|numeric|min:0|not_in:0'
+            // 'stock'         => 'required|numeric|min:0|not_in:0'
         ]);
 
         DB::beginTransaction();
@@ -68,19 +68,22 @@ class InventoryController extends Controller
                 'description'           => Str::lower($request->description),
                 // 'stock'                 => DB::raw("IFNULL(stock,0) + $request->stock"),
                 'stock'                 => 0,
+                'barcode'               => $request->barcode,
                 'inventory_unique'      => $inventory_unique
             ]);
 
             DB::commit();
 
-            Alert::success('Aprrove','Inventory has increased');
+            Alert::success('Berhasil','Barang telah tersimpan pada inventory');
 
-            return redirect()->back();
+            return redirect()->route('index_inventory');
 
         } catch (\Throwable $th) {
             //throw $th;
 
-            return $th->getMessage();
+            Alert::error('Gagal','Inventori tidak tersedia karena gangguan !');
+
+            return redirect()->back();
         }
     }
 
@@ -89,11 +92,10 @@ class InventoryController extends Controller
      */
     public function storeTransaction(Request $request)
     {
-        // $request->validate([
-        //     'item_name'     => 'required|min:3|unique:inventories|max:255',
-        //     'itemCode'      => 'required',
-        //     'stock'         => 'required|numeric|min:0|not_in:0'
-        // ]);
+        $request->validate([
+            'item_name'     => 'required|min:3|max:255',
+            'stock'         => 'required|numeric|min:0|not_in:0'
+        ]);
 
         DB::beginTransaction();
 
@@ -129,14 +131,14 @@ class InventoryController extends Controller
             }else{
                 DB::rollback();
 
-                Alert::info('Failed','Sorry, the item name is not available in storage');
+                Alert::info('Gagal','Barang yang kamu pilih tidak terdaftar pada inventori !');
 
                 return redirect()->back();
             }
 
             DB::commit();
 
-            Alert::success('Aprrove','Inventory has increased');
+            Alert::success('Berhasil','Penambahan stok pada inbentori telah berhasil');
 
             return redirect()->back();
 
@@ -144,6 +146,52 @@ class InventoryController extends Controller
             //throw $th;
 
             return $th->getMessage();
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function storeBercode(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $items = inventory::select('inventory_unique')
+                                ->where('barcode',$request->barcode)
+                                ->first();
+
+            if(inventory::where('barcode',$request->barcode)->exists() AND $request->qty >= 1){
+                inventory::where('barcode',$request->barcode)->update([
+                    'stock'                 => DB::raw("IFNULL(stock,0) + $request->qty"),
+                ]);
+
+                DetailInventory::create([
+                    'inventory_unique'  => $items->inventory_unique,
+                    'stock_in'          => $request->qty,
+                    'created_by_user_id'=> Auth::user()->id,
+                    'description'       => 'Scanner Barcode'
+                ]);
+
+            }else{
+                DB::rollback();
+
+                Alert::info('Gagal','Barang yang kamu pilih tidak terdaftar pada inventori !');
+
+                return redirect()->back();
+            }
+
+            DB::commit();
+
+            Alert::success('Berhasil','Penambahan stok barang telah berhasil');
+
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            DB::rollback();
+
+            return $th;
         }
     }
 
@@ -178,9 +226,26 @@ class InventoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(inventory $inventory)
+    public function destroy(inventory $inventory, $id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            inventory::find($id)->delete();
+
+            DB::commit();
+
+            Alert::success('Berhasil','Penghapusan barang pada inventori berhasil');
+
+            return back();
+        } catch (\Throwable $th) {
+
+            DB::rollback();
+
+            Alert::error('Gagal','Oppss.. penghapusan barang pada inventori gagal');
+
+            return back();
+        }
     }
 
     /**
@@ -190,6 +255,16 @@ class InventoryController extends Controller
     {
         $data = inventory::where('item_name','LIKE','%'.request('q').'%')->paginate(5);
 
+        return response()->json($data);
+    }
+
+    /**
+     * Scan barcode
+     */
+    public function scanBercode(Request $request)
+    {
+        $data = inventory::where('barcode',$request->barcode)->first();
+        
         return response()->json($data);
     }
 

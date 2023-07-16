@@ -20,7 +20,7 @@
                                 <div class="card bg-white rounded">
                                     <div class="card-body m-2">
                                         <div class="form-group">
-                                            <label for="">Nama Barang / Item</label>
+                                            <label for="">Nama Barang</label>
                                             <select name="item_name" value="{{old('item_name')}}"
                                                 class="itemsName form-control form-control-sm text-capitalize">
                                                 @foreach($inventorys as $inventory)
@@ -34,11 +34,10 @@
                                             <p class="error__required">* {{ $message }}</p>
                                             @enderror
                                         </div>
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <label for="">Total Masuk</label>
                                             <div class="input-group">
-                                                <span class="input-group-text" id="basic-addon1"><i
-                                                        class="fa-solid fa-arrow-trend-up"></i></span>
+                                                <span class="input-group-text" id="basic-addon1"><i class="fa-sharp fa-regular fa-scanner-touchscreen" style="color: #49d05f;"></i></span>
                                                 <input name="stock" value="{{old('stock')}}" type="number"
                                                     class="form-control form-control-sm" aria-label="Username"
                                                     aria-describedby="basic-addon1">
@@ -46,6 +45,10 @@
                                             @error('stock')
                                             <p class="error__required">* {{ $message }}</p>
                                             @enderror
+                                        </div> -->
+                                        <div class="form-group">
+                                            <label for="">Scan Barcode</label>
+                                            <input name="barcode" type="text" class="barcode__scanner form-control form-control-sm">
                                         </div>
                                         <!-- <div class="form-group">
                                             <label for="">Kode Barang</label>
@@ -84,6 +87,12 @@
     $(".itemsName").select2({
         tags: true,
     });
+
+    $(".barcode__scanner").keypress(function (event) {
+        if (event.which == '10' || event.which == '13') {
+            event.preventDefault();
+        }
+    })
 
     // $('.itemsName').on('change keyup', function() {
     //     let itemsId = $('input[name=itemsName]').val()

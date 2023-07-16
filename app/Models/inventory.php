@@ -16,6 +16,7 @@ class inventory extends Model
         'item_code',
         'description',
         'stock',
+        'barcode',
         'inventory_unique'
     ];
 }

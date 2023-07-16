@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use DB;
 use Auth;
 use Alert;
+use App\Models\Notification;
 use App\Models\User;
 
 class RequestTicketController extends Controller
@@ -46,11 +47,19 @@ class RequestTicketController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title'         => 'required|min:3',
+            'company'       => 'required',
+            'division'      => 'required',
+            'location'      => 'required',
+            'typeofwork'    => 'required'
+        ]);
+
         DB::beginTransaction();
 
         try {
             if($request->file('attachment')) {
-                $attachment = $request->file('attachment')->store('bankaccount');
+                $attachment = $request->file('attachment')->store('ticket');
             }
 
             requestTicket::create([
@@ -68,7 +77,7 @@ class RequestTicketController extends Controller
 
             DB::commit();
 
-            Alert::success('Accepted','The repair request has been received');
+            Alert::success('Berhasil','Pembuatan tiket laporan telah berhasil');
 
             return redirect()->route('index_request_ticket');
         } catch (\Throwable $th) {
@@ -76,9 +85,9 @@ class RequestTicketController extends Controller
 
             DB::rollback();
 
-            Alert::success('Failed','There is a problem with the system');
+            Alert::success('Gagal','Oppsss... Gagal membuat tiket laporan');
 
-            return redirect()->route('index_request_ticket');
+            return redirect()->back();
         }
     }
 
@@ -126,19 +135,33 @@ class RequestTicketController extends Controller
                     ]);
 
                     $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER')));
-                    $data = User::find($request->assignTo);
-                    $pusher->trigger("private.$request->assignTo",'my-event',$data);
+                    // $data = User::find($request->assignTo);
+                    $data = requestTicket::find(Crypt::decryptString($request->notification));
+
+                    $count = Notification::where('users_id',$request->assignTo)
+                                ->where('read',null)
+                                ->count();
+
+                    $resultCount = $count + 1;
+
+                    $pusher->trigger("private.$request->assignTo",'my-event',['message' => 'Laporan Tiket #'.$data->id,'url' => '/request-tickets/show/'.$request->notification,'countNotif' => $resultCount]);
+
+                    Notification::create([
+                        'users_id'      => $request->assignTo,
+                        'path'          => '/request-tickets/show/'.$request->notification,
+                        'read'          => NULL
+                    ]);
                 }
             }else{
                 DB::rollback();
 
-                Alert::info('Info','Tidak ada tindakan apapun!');
+                Alert::info('Info','Perhatikan penginputan pada sistem Helpdesk !');
                 return redirect()->back();
             }
 
             DB::commit();
 
-            Alert::success('Success','Status updates and assignments have been successful');
+            Alert::success('Berhasil','Pembaharuan informasi pekerjaan telah berhasil !');
 
             return back();
         } catch (\Throwable $th) {
@@ -146,7 +169,7 @@ class RequestTicketController extends Controller
 
             DB::rollback();
 
-            Alert::error('Failed','There was a problem while saving');
+            Alert::error('Gagal','Gagal memperbaharui infomasi, silahkan cek kembali !');
             
             return back();
         }

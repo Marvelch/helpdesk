@@ -18,7 +18,7 @@
                                             class="dropdown-item border-radius-md small"
                                             href="{{route('create_bank_accounts')}}"><i
                                                 class="fa-thin fa-users" style="margin-right: 10px;"></i>
-                                            Pengguna Baru</a></li>
+                                            Bank Baru</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -66,24 +66,24 @@
                                 @foreach($bankAccounts as $item)
                                 <tr>
                                     <td class="align-middle small">
-                                        <span class="text-xs font-weight-bold text-capitalize">{{@$item->fullname}}</span>
+                                        <span class="text-xs text-capitalize">{{@$item->fullname}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
-                                        <span class="text-xs font-weight-bold text-capitalize">{{$item->username}}</span>
+                                        <span class="text-xs text-capitalize">{{$item->username}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
-                                        <span class="text-xs font-weight-bold">{{$item->password}}</span>
+                                        <span class="text-xs">{{$item->password}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
-                                        <span class="text-xs font-weight-bold">{{Str::ucfirst($item->email)}}</span>
+                                        <span class="text-xs">{{Str::ucfirst($item->email)}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
-                                        <span class="text-xs font-weight-bold">{{$item->url}}</span>
+                                        <span class="text-xs">{{$item->url}}</span>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         @if(!is_null($item->attachment))
                                         <a href="{{route('download_bank_accounts',['id' => Crypt::encryptString($item->attachment)])}}"
-                                            class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
+                                            class="text-secondary text-xs" data-toggle="tooltip"
                                             data-original-title="Edit user">
                                             <i class="fa-solid fa-square-down"></i>
                                         </a>

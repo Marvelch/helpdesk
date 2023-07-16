@@ -4,15 +4,15 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
-            <div class="card">
+            <div class="card"
+                style="background-image: url('/assets/img/background/2.jpg'); background-repeat:no-repeat; -webkit-background-size:cover; -moz-background-size:cover; -o-background-size:cover; background-size:cover; background-position:center;">
                 <div class="card-body">
                     <div class="row mt-5 justify-content-center">
                         <div class="col-md-3">
                             <div class="card">
                                 @if(!$bankAccounts->attachment)
                                 <div class="card-body shadow" style="height: 250px;">
-                                    <img src="{{asset('./assets/img/file-not-found.jpg')}}" alt="" srcset=""
-                                        style="width: 100%;">
+                                    <img src="{{asset('./assets/img/404.png')}}" alt="" srcset="" style="width: 100%;">
                                 </div>
                                 @elseif(Str::contains($bankAccounts->attachment,['.jpg','.png']))
                                 <div class="card-body shadow" style="height: 250px;">
@@ -21,8 +21,7 @@
                                 </div>
                                 @else
                                 <div class="card-body shadow" style="height: 250px;">
-                                    <img src="https://s.smallpdf.com/static/ef08c0c199f39523d073.svg" alt="" srcset=""
-                                        style="width: 100%;">
+                                    <img src="{{asset('./assets/img/docs.png')}}" alt="" srcset="" style="width: 100%;">
                                 </div>
                                 @endif
                             </div>
@@ -32,52 +31,37 @@
                             </div>
                         </div>
                         <div class="col-md-6" style="margin-left: 30px;">
-                            <div class="table-responsive form-control-disabled-transparent">
-                                <div class="form-group">
-                                    <label for="">Nama Lengkap</label>
-                                    <div class="input-group mb-3 text-center">
-                                        <span class="input-group-text pr-3" id="basic-addon1"
-                                            style="padding-right: 17px;"><i class="fa-duotone fa-user"></i></span>
-                                        <input type="text" class="form-control form-control-transparent form-control-sm"
-                                            value="{{$bankAccounts->fullname}}" aria-label="Username"
-                                            aria-describedby="basic-addon1">
+                            <div class="">
+                                <div class="card-body shadow-sm p-3 mb-5 bg-body rounded" style="font-size: 15px;">
+                                    <div class="table-responsive form-control-disabled-transparent">
+                                        <div class="table-responsive small">
+                                            <table class="table table-borderless ">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="w-30 fw-bold">Nama Lengkap</td>
+                                                        <td>: {{@Str::ucfirst($bankAccounts->fullname)}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-bold">Username</td>
+                                                        <td>: {{@Str::ucfirst($bankAccounts->username)}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-bold">URL</td>
+                                                        <td>: {{@Str::lower($bankAccounts->url)}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-bold">Kata Sandi</td>
+                                                        <td>: {{@$bankAccounts->password}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fw-bold">Keterangan</td>
+                                                        <td>: {{@$bankAccounts->description}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Username</label>
-                                    <div class="input-group mb-3 text-center">
-                                        <span class="input-group-text pr-3" id="basic-addon1"
-                                            style="padding-right: 17px;"><i class="fa-duotone fa-user-shield"></i></span>
-                                        <input type="text" class="form-control form-control-transparent form-control-sm"
-                                            value="{{$bankAccounts->username}}" aria-label="Username"
-                                            aria-describedby="basic-addon1">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">URL</label>
-                                    <div class="input-group mb-3 text-center">
-                                        <span class="input-group-text pr-3" id="basic-addon1"
-                                            style="padding-right: 17px;"><i class="fa-regular fa-browser"></i></span>
-                                        <input type="text" class="form-control form-control-transparent form-control-sm"
-                                            value="{{$bankAccounts->url}}" aria-label="Username"
-                                            aria-describedby="basic-addon1">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Kata Sandi</label>
-                                    <div class="input-group mb-3 text-center">
-                                        <span class="input-group-text pr-3" id="basic-addon1"
-                                            style="padding-right: 17px;"><i class="fa-duotone fa-lock-keyhole"></i></span>
-                                        <input type="text" class="form-control form-control-transparent form-control-sm"
-                                            value="{{$bankAccounts->password}}" aria-label="Username"
-                                            aria-describedby="basic-addon1">
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Keterangan</label>
-                                    <textarea name="" id="" cols="30" rows="5"
-                                        class="form-control form-control-transparent">{{$bankAccounts->description}}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -86,5 +70,4 @@
             </div>
         </div>
     </div>
-</div>
-@endsection
+    @endsection

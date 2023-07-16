@@ -13,7 +13,7 @@
                                 <div class="col-4" style="z-index: 3;">
                                     <div class="form-group">
                                         <label for="">Nama Lengkap</label>
-                                        <input name="name" type="text" class="form-control form-control-sm">
+                                        <input name="name" type="text" class="form-control form-control-sm" value="{{old('name')}}">
                                         @error('name')
                                         <p class="error__required">* {{ $message }}</p>
                                         @enderror
@@ -21,7 +21,7 @@
                                     <div class="form-group">
                                         <label for="">Email</label>
                                         <input type="email" name="email" id="email"
-                                            class="form-control form-control-sm">
+                                            class="form-control form-control-sm" value="{{old('email')}}">
                                         @error('email')
                                         <p class="error__required">* {{ $message }}</p>
                                         @enderror
@@ -32,7 +32,7 @@
                                             <input type="password" name="password" id="pwd"
                                                 class="form-control form-control-sm" aria-label="Recipient's username"
                                                 aria-describedby="basic-addon2"
-                                                style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
+                                                style="border-top-right-radius: 0px; border-bottom-right-radius: 0px" value="{{old('password')}}">
                                             <span class="input-group-text" id="basic-addon2"><i
                                                     class="password fa-solid fa-eye-slash"></i></span>
                                             @error('password')
@@ -48,7 +48,7 @@
                                             <input type="password" name="confirm_password" id="confirm_pwd"
                                                 class="form-control form-control-sm" aria-label="Recipient's username"
                                                 aria-describedby="basic-addon2"
-                                                style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
+                                                style="border-top-right-radius: 0px; border-bottom-right-radius: 0px" value="{{old('confirm_password')}}">
                                             <span class="input-group-text" id="basic-addon2"><i
                                                     class="confirm_password fa-solid fa-eye-slash"></i></span>
                                             @error('confirm_password')
@@ -60,14 +60,14 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="">Username</label>
-                                        <input type="text" name="username" id="username" class="form-control form-control-sm">
+                                        <input type="text" name="username" id="username" class="form-control form-control-sm" value="{{old('username')}}">
                                         @error('username')
                                         <p class="error__required">* {{ $message }}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="">Telepon</label>
-                                        <input type="text" name="phone" id="phone" class="form-control form-control-sm">
+                                        <input type="text" name="phone" id="phone" class="form-control form-control-sm" value="{{old('phone')}}">
                                         @error('phone')
                                         <p class="error__required">* {{ $message }}</p>
                                         @enderror

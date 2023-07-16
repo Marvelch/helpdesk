@@ -86,10 +86,10 @@
                                     <span class="text-xs font-weight-bold">{{@$item->id}}</span>
                                 </td>
                                 <td class="align-middle text-sm">
-                                    <span class="text-xs font-weight-bold">{{@$item->usersReq->name}}</span>
+                                    <span class="text-xs font-weight-bold">{{@Str::ucfirst($item->usersReq->name)}}</span>
                                 </td>
                                 <td class="align-middle text-sm">
-                                    <span class="text-xs font-weight-bold">{{@$item->usersAss->name}}</span>
+                                    <span class="text-xs font-weight-bold">{{@Str::ucfirst($item->usersAss->name)}}</span>
                                 </td>
                                 <td class="align-middle text-sm">
                                     <span class="text-xs font-weight-bold">{{@$item->title}}</span>
@@ -102,11 +102,11 @@
                                 </td>
                                 <td class="align-middle text-sm text-center">
                                     @if($item->status == 0) 
-                                        <i class="fa-solid fa-circle-exclamation" style="color: #f73640;" title="WAITING"></i>
+                                        <i class="fa-solid fa-circle-exclamation" style="color: #f73640;" title="MENUNGGU"></i>
                                     @elseif($item->status == 1) 
-                                        <i class="fa-duotone fa-pen-circle fa-lg" title="IN PROGRESS" style="--fa-primary-color: #5ba8fb; --fa-secondary-color: #5ba8fb;"></i>
+                                        <i class="fa-duotone fa-pen-circle fa-lg" title="DALAM PROSES" style="--fa-primary-color: #5ba8fb; --fa-secondary-color: #5ba8fb;"></i>
                                     @else
-                                         <i class="fa-solid fa-badge-check fa-lg" title="APPROVED" style="color: #54b95b;"></i>
+                                         <i class="fa-solid fa-badge-check fa-lg" title="DITERIMA" style="color: #54b95b;"></i>
                                     @endif
                                 </td>
                                 <td class="align-middle text-sm">

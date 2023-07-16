@@ -111,7 +111,7 @@
                                     </td>
                                     @endif
                                     <td class="align-middle text-center text-sm">
-                                        <a href="{{route('show_bank_accounts',['id' => Crypt::encryptString($item->id)])}}"
+                                        <a href="{{route('show_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
                                             class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
                                             data-original-title="Edit user">
                                             <i class="fa-solid fa-eye"></i>

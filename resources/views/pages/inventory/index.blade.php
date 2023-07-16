@@ -61,7 +61,7 @@
                                 @foreach($inventorys as $item)
                                 <tr>
                                     <td class="align-middle small">
-                                        <span class="text-xs font-weight-bold text-capitalize">{{@$item->item_name}}</span>
+                                        <span class="text-xs font-weight-bold">{{@Str::upper($item->item_name)}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span class="text-xs font-weight-bold">{{@$item->stock}}</span>
@@ -113,7 +113,7 @@
                                                             data-bs-dismiss="modal">Batal</button>
                                                         @if($item->stock <= 0)
                                                             <form
-                                                            action="{{route('destroy_bank_accounts',['id' => $item->id])}}"
+                                                            action="{{route('destroy_inventory',['id' => $item->id])}}"
                                                             method="post">
                                                             @csrf
                                                             <button type="submit"

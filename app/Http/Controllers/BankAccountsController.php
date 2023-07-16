@@ -121,7 +121,6 @@ class BankAccountsController extends Controller
             'password'      => 'required|min:3|max:40',
             'url'           => 'required|min:3|max:50',
             'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,xls,pdf,jpg,png|max:5048',
-            'description'   => 'required|max:255',
             'email'         => 'required|email',
         ]);
 
@@ -132,8 +131,8 @@ class BankAccountsController extends Controller
             if($request->file('attachment')) {
                 $attachment = $request->file('attachment')->store('bankaccount');
             }
-            
-            bankAccounts::where('id',$id)->update([
+
+            bankAccounts::find($id)->update([
                 'fullname'      => $request->fullName,
                 'email'         => $request->email,
                 'username'      => $request->userName,
@@ -146,12 +145,18 @@ class BankAccountsController extends Controller
 
             DB::commit();
 
-            return redirect()->back();
+            Alert::success('Berhasil','Pembaharuan informasi akun telah berhasil !');
+
+            return redirect()->route('index_bank_accounts');
 
         } catch (\Throwable $th) {
             //throw $th;
 
             DB::rollback();
+
+            // Alert::error('Gagal','Pembaharuan informasi akun gagal, ulangi kembali !');
+
+            // return $request->back();
 
             return $th->getMessage();
         }

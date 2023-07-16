@@ -108,7 +108,7 @@ class HomeController extends Controller
             User::create([
                 'name'          => Str::lower($request->name),
                 'email'         => Str::lower($request->email),
-                'username'      => Str::lower($request->username),
+                'username'      => str_replace(' ','',Str::lower($request->username)),
                 'level_id'      => 3,
                 'phone'         => $request->phone,
                 'password'      => Hash::make($request->password),

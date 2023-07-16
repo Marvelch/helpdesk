@@ -41,23 +41,19 @@
                                     <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                                         <div class="card card-blog card-plain">
                                             <div class="position-relative">
-                                                <a class="d-block shadow-xl border-radius-xl">
+                                                <a class="d-block shadow-xl border-radius-xl pb-3">
                                                     <img src="https://cdn3d.iconscout.com/3d/premium/thumb/multiverse-4976000-4149678.png" alt="img-blur-shadow"
                                                         class="img-fluid border-radius-lg" style="width: 200px; height: 200px;">
+                                                    <div class="form-group">
+                                                         <span class="small fw-bold" style="margin-left: 20px; font-size: 15px;">Devisi Perusahaan</span>
+                                                    </div>
                                                 </a>
                                             </div>
                                             <div class="card-body px-1 pb-0">
-                                                <a href="javascript:;">
-                                                    <h5>
-                                                        Divisi
-                                                    </h5>
-                                                </a>
-                                                <p class="mb-4 text-sm">
-                                                    Pengelolaan master untuk divisi dari setiap perusahaan SKB dan BPU
-                                                </p>
+                                                
                                                 <div class="d-flex align-items-center justify-content-between">
                                                     <a href="{{route('create_division')}}" type="button"
-                                                        class="btn btn-outline-primary btn-sm mb-0">TAMPILKAN</a>
+                                                        class="btn btn-outline-primary w-100 btn-sm mb-0">TAMPILKAN</a>
                                                 </div>
                                             </div>
                                         </div>
