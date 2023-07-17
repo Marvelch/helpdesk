@@ -65,7 +65,7 @@
                                         <span class="text-xs font-weight-bold">{{@$item->unique_request}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
-                                        <span class="text-xs font-weight-bold">{{@$item->requests_from_users}}</span>
+                                        <span class="text-xs font-weight-bold">{{@$item->requests_from_users ? $item->requests_from_users : $item->userRequest->name}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span class="text-xs font-weight-bold">{{@$item->description}}</span>
