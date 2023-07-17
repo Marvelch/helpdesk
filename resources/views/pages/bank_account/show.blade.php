@@ -43,7 +43,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="fw-bold">Username</td>
-                                                        <td>: {{@Str::ucfirst($bankAccounts->username)}}</td>
+                                                        <td>: {{@$bankAccounts->username}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="fw-bold">URL</td>
