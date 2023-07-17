@@ -53,6 +53,10 @@
                                     </th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Keterangan
+                                    </th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                     </th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -88,6 +92,9 @@
                                             <i class="fa-solid fa-square-down"></i>
                                         </a>
                                         @endif
+                                    </td>
+                                    <td class="align-middle text-sm">
+                                        <span class="text-xs">{{$item->description}}</span>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <a href="{{route('edit_bank_accounts',['id' => Crypt::encryptString($item->id)])}}"

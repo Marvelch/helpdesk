@@ -39,8 +39,9 @@
                     <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-bell cursor-pointer"></i>
-                        <span class="position-absolute translate-middle badge rounded-pill bg-danger" style="font-size: 7px; text-align: center;">
-                            <span id='counter__notif'>0</span>
+                        <span class="position-absolute translate-middle badge rounded-pill bg-danger"
+                            style="font-size: 7px; text-align: center;">
+                            <span id='counter__notif'>{{ $countNotif }}</span>
                         </span>
                     </a>
                     <!-- <a type="button" class="btn btn-primary position-relative">
@@ -52,6 +53,26 @@
                     </a> -->
                     <ul class="dropdown-menu pusher-append  dropdown-menu-end  px-2 py-3 me-sm-n4"
                         aria-labelledby="dropdownMenuButton">
+                        @foreach($notifList as $item)
+                        <li class="mb-2">
+                            <a class="dropdown-item border-radius-md" href="#">
+                                <div class="d-flex py-1">
+                                    <div class="my-auto">
+                                        <img src="https://static.vecteezy.com/system/resources/previews/016/716/169/original/notification-alert-3d-icon-png.png" class="avatar avatar-sm  me-3 ">
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="text-sm font-weight-normal mb-1">
+                                            <span class="font-weight-bold">Laporan tiket #{{$item->id}}</span> from Laur
+                                        </h6>
+                                        <p class="text-xs text-secondary mb-0 ">
+                                            <i class="fa fa-clock me-1"></i>
+                                            13 minutes ago
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        @endforeach
                     </ul>
                 </li>
             </ul>

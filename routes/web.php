@@ -36,7 +36,7 @@ Auth::routes([
 //   'login' => false, 
 ]);
 
-Route::get('/usersas',[UsersController::class,'index'])->name('users.index');
+// Route::get('/usersas',[UsersController::class,'index'])->name('users.index');
 
 Route::get('/home', function() {
     return view('pages.dashboard.index');
