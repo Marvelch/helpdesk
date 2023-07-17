@@ -73,7 +73,7 @@
                                         <span class="text-xs text-capitalize">{{@$item->fullname}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
-                                        <span class="text-xs text-capitalize">{{$item->username}}</span>
+                                        <span class="text-xs">{{$item->username}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span class="text-xs">{{$item->password}}</span>

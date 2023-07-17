@@ -50,8 +50,7 @@ class BankAccountsController extends Controller
             'username'      => 'required|min:3|max:40',
             'password'      => 'required',
             'url'           => 'required|min:3|max:50',
-            'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,pdf,jpg,png',
-            'email'         => 'required|email',
+            'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,pdf,jpg,png'
         ]);
 
         DB::beginTransaction();
@@ -65,8 +64,8 @@ class BankAccountsController extends Controller
             bankAccounts::create([
                 'email'             => Str::lower($request->email),
                 'fullname'          => Str::lower($request->fullname),
-                'username'          => Str::lower($request->username),
-                'password'          => Str::lower($request->password),
+                'username'          => $request->username,
+                'password'          => $request->password,
                 'url'               => Str::lower($request->url),
                 'attachment'        => @$attachment,    
                 'description'       => Str::lower($request->description),
@@ -120,8 +119,7 @@ class BankAccountsController extends Controller
             'userName'      => 'required|min:3|max:40',
             'password'      => 'required|min:3|max:40',
             'url'           => 'required|min:3|max:50',
-            'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,xls,pdf,jpg,png|max:5048',
-            'email'         => 'required|email',
+            'attachment'    => 'mimes:csv,txt,xls,xlx,xlsx,xls,pdf,jpg,png|max:5048'
         ]);
 
         DB::beginTransaction();

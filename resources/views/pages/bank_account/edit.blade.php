@@ -84,7 +84,7 @@
                                     <div class="form-group">
                                         <label for="">Username</label>
                                         <input type="text" name="userName"
-                                            class="form-control form-control-sm text-capitalize"
+                                            class="form-control form-control-sm"
                                             value="{{$bankAccounts->username}}" aria-label="Username"
                                             aria-describedby="basic-addon1">
                                         @error('userName')
