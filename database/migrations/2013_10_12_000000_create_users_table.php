@@ -28,6 +28,8 @@ return new class extends Migration
             $table->string('password_text')->nullable();
             $table->unsignedBigInteger('division_id')->nullable();
             $table->foreign('division_id')->references('id')->on('divisions');
+            $table->timestamp('last_seen')->nullable();
+            $table->string('photo')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

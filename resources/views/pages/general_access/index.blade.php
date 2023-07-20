@@ -7,160 +7,49 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="col-12 mt-4">
-                        <div class="card mb-4">
-                            <div class="card-header pb-0 p-3">
-                                <h6 class="mb-1">General Access</h6>
-                                <small class="text-sm">Pengelolaan akses untuk setiap menu Helpdesk</small>
-                            </div>
-                            <div class="card-body p-3">
-                                <div class="row">
-                                    <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
-                                        <div class="card card-blog card-plain">
-                                            <div class="position-relative">
-                                                <a class="d-block shadow-xl border-radius-xl">
-                                                    <img src="https://cdn3d.iconscout.com/3d/premium/thumb/call-to-action-8243309-6578770.png" style="width: 200px; height: 200px; object-fit: cover;" alt="img-blur-shadow"
-                                                        class="img-fluid shadow border-radius-xl">
-                                                </a>
-                                            </div>
-                                            <div class="card-body px-1 pb-0">
-                                                <a href="javascript:;">
-                                                    <h5>
-                                                        Jenis Pekerjaan
-                                                    </h5>
-                                                </a>
-                                                <p class="mb-4 text-sm">
-                                                    Menu Request Ticket untuk menambahakn jenis pekerajaan baru dari devisi perusahaan
-                                                </p>
-                                                <div class="d-flex align-items-center justify-content-between">
-                                                    <a type="button"
-                                                        href="{{route('create_type_of_work')}}" class="btn btn-outline-primary btn-sm mb-0">TAMPILKAN</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
-                                        <div class="card card-blog card-plain">
-                                            <div class="position-relative">
-                                                <a class="d-block shadow-xl border-radius-xl pb-3">
-                                                    <img src="https://cdn3d.iconscout.com/3d/premium/thumb/multiverse-4976000-4149678.png" alt="img-blur-shadow"
-                                                        class="img-fluid border-radius-lg" style="width: 200px; height: 200px;">
-                                                    <div class="form-group">
-                                                         <span class="small fw-bold" style="margin-left: 20px; font-size: 15px;">Devisi Perusahaan</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div class="card-body px-1 pb-0">
-                                                
-                                                <div class="d-flex align-items-center justify-content-between">
-                                                    <a href="{{route('create_division')}}" type="button"
-                                                        class="btn btn-outline-primary w-100 btn-sm mb-0">TAMPILKAN</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
-                                        <div class="card card-blog card-plain">
-                                            <div class="position-relative">
-                                                <a class="d-block shadow-xl border-radius-xl">
-                                                    <img src="https://cdn3d.iconscout.com/3d/premium/thumb/ui-development-5495848-4596619.png" alt="img-blur-shadow"
-                                                        class="img-fluid shadow border-radius-xl">
-                                                </a>
-                                            </div>
-                                            <div class="card-body px-1 pb-0">
-                                                <p class="text-gradient text-dark mb-2 text-sm">Project #3</p>
-                                                <a href="javascript:;">
-                                                    <h5>
-                                                        Minimalist
-                                                    </h5>
-                                                </a>
-                                                <p class="mb-4 text-sm">
-                                                    Different people have different taste, and various types of music.
-                                                </p>
-                                                <div class="d-flex align-items-center justify-content-between">
-                                                    <button type="button"
-                                                        class="btn btn-outline-primary btn-sm mb-0">View
-                                                        Project</button>
-                                                    <div class="avatar-group mt-2">
-                                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                            title="Peterson">
-                                                            <img alt="Image placeholder" src="../assets/img/team-4.jpg">
-                                                        </a>
-                                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                            title="Nick Daniel">
-                                                            <img alt="Image placeholder" src="../assets/img/team-3.jpg">
-                                                        </a>
-                                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                            title="Ryan Milly">
-                                                            <img alt="Image placeholder" src="../assets/img/team-2.jpg">
-                                                        </a>
-                                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                            title="Elena Morison">
-                                                            <img alt="Image placeholder" src="../assets/img/team-1.jpg">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
-                                        <div class="card card-blog card-plain">
-                                            <div class="position-relative">
-                                                <a class="d-block shadow-xl border-radius-xl">
-                                                    <img src="https://cdn3d.iconscout.com/3d/premium/thumb/online-payment-alert-6343278-5231318.png" alt="img-blur-shadow"
-                                                        class="img-fluid shadow border-radius-xl">
-                                                </a>
-                                            </div>
-                                            <div class="card-body px-1 pb-0">
-                                                <p class="text-gradient text-dark mb-2 text-sm">Project #3</p>
-                                                <a href="javascript:;">
-                                                    <h5>
-                                                        Minimalist
-                                                    </h5>
-                                                </a>
-                                                <p class="mb-4 text-sm">
-                                                    Different people have different taste, and various types of music.
-                                                </p>
-                                                <div class="d-flex align-items-center justify-content-between">
-                                                    <button type="button"
-                                                        class="btn btn-outline-primary btn-sm mb-0">View
-                                                        Project</button>
-                                                    <div class="avatar-group mt-2">
-                                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                            title="Peterson">
-                                                            <img alt="Image placeholder" src="../assets/img/team-4.jpg">
-                                                        </a>
-                                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                            title="Nick Daniel">
-                                                            <img alt="Image placeholder" src="../assets/img/team-3.jpg">
-                                                        </a>
-                                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                            title="Ryan Milly">
-                                                            <img alt="Image placeholder" src="../assets/img/team-2.jpg">
-                                                        </a>
-                                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                            title="Elena Morison">
-                                                            <img alt="Image placeholder" src="../assets/img/team-1.jpg">
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                </div>
-                            </div>
+                        <div class="card-header pb-0 p-3">
+                            <h6 class="mb-1">General Access</h6>
+                            <small class="text-sm">Pengelolaan menu bantuan dari setiap fitur pada helpdesk</small>
+                        </div>
+                        <div class="table table-responsive mt-5">
+                            <table class="table text-small table-striped">
+                                <tbody class="m-3" style="font-size: 12px;">
+                                    <tr>
+                                        <td class="w-95">Pengelolaan Divisi</td>
+                                        <td class="text-center"><a href="{{route('create_division')}}"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-95">Pengelolaan Jenis Pekerjaan</td>
+                                        <td class="text-center"><a href="{{route('index_type_general_access')}}"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-95">Hak Akses Pengguna</td>
+                                        <td class="text-center"><a data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-uppercase text-small text-center">
+        <h4>BELUM TERSEDIA</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
 </div>
 @endsection

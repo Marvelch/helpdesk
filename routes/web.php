@@ -12,9 +12,16 @@ use App\Http\Controllers\RequestHardwareSoftwareController;
 use App\Http\Controllers\RequestTicketController;
 use App\Http\Controllers\TypeOfWorkController;
 use App\Http\Controllers\UsersController;
+use App\Models\bankAccounts;
 use App\Models\company;
+use App\Models\inventory;
+use App\Models\RequestHardwareSoftware;
 use App\Models\requestTicket;
+use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
+use Telegram\Bot\Laravel\Facades\Telegram;
+use Illuminate\Support\Facades\Cache;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +33,11 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/telegram', function () { 
+    $response = Telegram::getMe();
+    return $response;
+});
 
 Route::get('/', function () { 
     return view('welcome');
@@ -39,7 +51,70 @@ Auth::routes([
 // Route::get('/usersas',[UsersController::class,'index'])->name('users.index');
 
 Route::get('/home', function() {
-    return view('pages.dashboard.index');
+    $users = User::all();
+        $online_users = 0;
+        foreach ($users as $user) {
+            if (Cache::has('user-online' . $user->id)){
+                $online_users++;
+            }
+        }
+    
+    $countUsers = User::all()->count();
+
+    $countPasswordManagers = bankAccounts::all()->count();
+
+    $countRequestTicket = requestTicket::all()->count();
+
+    $countInventory = inventory::all()->count();
+
+    $complate = RequestHardwareSoftware::select('id', 'created_at')
+        ->where('status',2)
+        ->whereYear('created_at', '=', date('Y',strtotime(Now())))
+        ->get()
+        ->groupBy(function ($date) {
+            return Carbon::parse($date->created_at)->format('m');
+    });
+
+    $complateCount = [];
+    $resultComplate = [];
+
+    foreach ($complate as $key => $value) {
+        $complateCount[(int)$key] = count($value);
+    }
+
+    for ($i = 0; $i <= 11; $i++) {
+        if (!empty($complateCount[$i])) {
+            $resultComplate[] = $complateCount[$i];
+        } else {
+            $resultComplate[] = 0;
+        }
+    }
+
+    // Pending 
+    $pending = RequestHardwareSoftware::select('id', 'created_at')
+        ->where('status',1)
+        ->whereYear('created_at', '=', date('Y',strtotime(Now())))
+        ->get()
+        ->groupBy(function ($date) {
+            return Carbon::parse($date->created_at)->format('m');
+    });
+
+    $pendingCount = [];
+    $resultPending = [];
+
+    foreach ($pending as $key => $value) {
+        $pendingCount[(int)$key] = count($value);
+    }
+
+    for ($i = 0; $i <= 11; $i++) {
+        if (!empty($pendingCount[$i])) {
+            $resultPending[] = $pendingCount[$i];
+        } else {
+            $resultPending[] = 0;
+        }
+    }
+
+    return view('pages.dashboard.index',compact('online_users','countUsers','countPasswordManagers','countRequestTicket','countInventory','resultComplate','resultPending'));
 })->name('home')->middleware('auth');
 
 Route::get('logout',[LoginController::class,'logout'])->middleware('auth');
@@ -67,6 +142,10 @@ Route::group(['prefix' => 'division','middleware' => ['auth']], function(){
 Route::group(['prefix' => 'general_access','middleware' => ['auth']], function(){
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
         Route::get('/',[GeneralAccessController::class, 'index'])->name('index_general_access');
+
+        // Page work type
+        Route::get('/type/index',[GeneralAccessController::class, 'index_type'])->name('index_type_general_access');
+        Route::post('/type/store',[GeneralAccessController::class, 'store_type'])->name('store_type_general_access');
     });
 });
 
@@ -77,6 +156,7 @@ Route::group(['prefix' => 'request-tickets','middleware' => ['auth']], function(
     Route::post('/store',[RequestTicketController::class,'store'])->name('store_request_ticket');
     Route::get('/show/{id}',[RequestTicketController::class,'show'])->name('show_request_ticket');
     Route::put('/update/{id}',[RequestTicketController::class,'update'])->name('update_request_ticket');
+    Route::put('/update-status/{id}',[RequestTicketController::class,'updateStatus'])->name('update_status_request_ticket');
     Route::get('/approve',[RequestTicketController::class,'approve'])->name('approve_request_ticket');
     Route::get('/search-company',[RequestTicketController::class,'searchCompany']);
     Route::get('/search-division/{id}',[RequestTicketController::class,'searchDivision']);
@@ -119,7 +199,8 @@ Route::group(['prefix' => 'type-of-work','auth'], function(){
 });
 
 Route::group(['prefix' => 'profile','auth'], function(){
-     Route::get('/',[HomeController::class, 'profile'])->name('profile_users');
+     Route::get('/',[UsersController::class, 'profile'])->name('profile_users');
+     Route::put('/update-photo/{id}',[UsersController::class, 'updatePhoto'])->name('update_photo_users');
 });
 
 Route::group(['prefix' => 'notification','auth'], function(){

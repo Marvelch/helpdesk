@@ -17,6 +17,7 @@ use Auth;
 use Alert;
 use App\Models\Notification;
 use App\Models\User;
+use App\Models\WorkType;
 
 class RequestTicketController extends Controller
 {
@@ -37,7 +38,7 @@ class RequestTicketController extends Controller
     {
         $companys = company::all();
         $divisions = division::all();
-        $typeOfWorks = typeOfWork::all();
+        $typeOfWorks = WorkType::all();
 
         return view('pages.request_ticket.create',compact('companys','divisions','typeOfWorks'));
     }
@@ -100,7 +101,7 @@ class RequestTicketController extends Controller
 
         $companys = company::all();
         $divisions = division::all();
-        $typeOfWorks = typeOfWork::all();
+        $typeOfWorks = WorkType::all();
 
         return view('pages.request_ticket.show',compact('companys','divisions','typeOfWorks','requestTickets'));
     }
@@ -171,6 +172,45 @@ class RequestTicketController extends Controller
 
             Alert::error('Gagal','Gagal memperbaharui infomasi, silahkan cek kembali !');
             
+            return back();
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $data = DB::table('request_tickets')
+                                ->select('request_hardware_software.status')
+                                ->join('request_hardware_software','request_tickets.id','=','request_hardware_software.request_ticket_id' )
+                                ->where('request_tickets.id',$id)
+                                ->get();
+
+            if($data[0]->status == env('INPROGRESS')) {
+                DB::rollback();
+
+                Alert::info('OPPSS...','Permintaan Hardware & Software Belum Selesai');
+
+                return back();
+            }else{
+                requestTicket::find($id)->update([
+                    'status'    => $request->status
+                ]);
+            }
+
+            DB::commit();
+
+            Alert::success('BERHASIL','Informasi tiket telah diperbaharui. Terima kasih.');
+
+            return back();
+        } catch (\Throwable $th) {
+            DB::rollback();
+
+            Alert::success('GAGAL','Kegagalan helpdesk pembaharuan informasi tiket');
+
             return back();
         }
     }

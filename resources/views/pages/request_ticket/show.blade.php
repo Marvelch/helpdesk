@@ -46,7 +46,9 @@
                                 </div>
                                 @endif
                                 <!-- Apabila bukan IT, user request dan user yang mengerjakan tidak bisa download file -->
-                                @if(Auth::user()->division_id == $requestTickets->division_id OR Auth::user()->id == $requestTickets->request_on_user_id OR Auth::user()->level_id == 1 OR Auth::user()->level_id == 2 )
+                                @if(Auth::user()->division_id == $requestTickets->division_id OR Auth::user()->id ==
+                                $requestTickets->request_on_user_id OR Auth::user()->level_id == 1 OR
+                                Auth::user()->level_id == 2 )
                                 <div class="form-group mt-3">
                                     <a href="{{route('download_bank_accounts',['id' => Crypt::encryptString($requestTickets->attachment)])}}"
                                         class="btn btn-sm btn-primary w-100 font-roboto {{$requestTickets->attachment ? '': 'disabled'}}">Download</a>
@@ -89,13 +91,13 @@
                                     @if(@$requestTickets->assignment_on_user_id)
                                     <tr>
                                         <td>Ditugaskan Kepada</td>
-                                        <td>: {{$requestTickets->usersReq->name}}</td>
+                                        <td>: {{Str::ucfirst($requestTickets->usersAss->name)}}</td>
                                     </tr>
                                     @endif
                                 </table>
                             </div>
-                            @if(@Auth::user()->level->special_character == env('LEVEL_ADMIN') OR
-                            @Auth::user()->level->special_character == env('LEVEL_EDITOR'))
+                            @if(@Auth::user()->level_id == env('LEVEL_ADMIN') OR
+                            @Auth::user()->level_id == env('LEVEL_EDITOR'))
                             <form action="{{route('update_request_ticket',['id' => $requestTickets->id])}}"
                                 method="post">
                                 @method('PUT')
@@ -114,35 +116,57 @@
                                     </select>
                                 </div>
                                 @endif
-                                @if(@$requestTickets->assignment_on_user_id)
-                                <p style="font-size: 11px; margin-top: 20px; margin-bottom: 5px;">Konfirmasi Status Permintaan</p>
-                                <select name="" id="" class="form-control form-control-sm w-50">
-                                    <option value="">SELESAI</option>
-                                    <option value="">BATAL</option>
-                                </select>
-                                @endif
-                                @if($requestTickets->status == 1)
-                                <div class="form-group mt-4 text-capitalize">
-                                    <small>Pemintaan untuk <a
-                                            href="{{route('create_ticket_request_hardware_software',['id' => Crypt::encryptString($requestTickets->id)])}}"><u>pengadaan
-                                                hadware/software</u></a></small>
-                                </div>
-                                @endif
                                 @error('assignTo')
                                 <p class="error__required">* {{ $message }}</p>
                                 @enderror
-                                <input type="hidden" name="notification" value="{{Crypt::encryptString($requestTickets->id)}}">
+                                <input type="hidden" name="notification"
+                                    value="{{Crypt::encryptString($requestTickets->id)}}">
                                 <div class="form-group" id="assignToToggle">
                                     <p style="margin-bottom: 12px; font-size: 11px;">Ditugaskan Kepada :</p>
                                     <select name="assignTo" id="assignTo"
                                         class="form-select assignTo form-select-sm w-60 mt-1 text-capitalize">
                                     </select>
                                 </div>
+                                @if($requestTickets->status == env('DEFAULT'))
                                 <div class="form-group mt-4 d-flex justify-content-end">
                                     <button type="submit"
                                         class="{{$requestTickets->assignment_on_user_id ? 'disabled' : ''}} btn bg-gradient-info w-40 mt-4 mb-0">simpan</button>
                                 </div>
+                                @endif
                             </form>
+                            @endif
+                            @if(@$requestTickets->assignment_on_user_id == Auth::user()->id AND @$requestTickets->status
+                            == env('INPROGRESS') OR Auth::user()->level_id == env('LEVEL_ADMIN') OR
+                            Auth::user()->level_id == env('LEVEL_EDITOR'))
+                            @if(@$requestTickets->status == env('COMPLETED'))
+                            <div class="form-group mt-2 text-capitalize">
+                                <div class="card">
+                                    <div class="card-body shadow">
+                                        <small>TIKET TELAH DITUTUP OLEH SISTEM/PENGGUNA</small>
+                                    </div>
+                                </div>
+                            </div>
+                            @else
+                            <form action="{{route('update_status_request_ticket',['id' => $requestTickets->id])}}"
+                                method="post">
+                                @method('PUT')
+                                @csrf
+                                <div class="form-group mt-4 text-capitalize">
+                                    <small>Pemintaan untuk <a
+                                            href="{{route('create_ticket_request_hardware_software',['id' => Crypt::encryptString($requestTickets->id)])}}"><u>pengadaan
+                                                hadware/software</u></a></small>
+                                </div>
+                                <p style="font-size: 11px; margin-top: 20px; margin-bottom: 5px;">Konfirmasi Status
+                                    Permintaan</p>
+                                <select name="status" id="" class="form-control form-control-sm w-50">
+                                    <option value="{{env('COMPLETED')}}">SELESAI</option>
+                                    <option value="{{env('UNCOMPLETED')}}">BATAL</option>
+                                </select>
+                                <div class="form-group mt-4 d-flex justify-content-end">
+                                    <button type="submit" class="btn bg-gradient-info w-40 mt-4 mb-0">simpan</button>
+                                </div>
+                            </form>
+                            @endif
                             @endif
                         </div>
                     </div>

@@ -8,12 +8,36 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-body shadow-sm p-4 mb-5 bg-white rounded">
-                        <div class="form-group mb-4">
-                            <h6 style="font-family: var(--bs-font-roboto);">Permintaan Hardware dan Software</h6>
-                            <p style="font-size: 12px;">Lengkapi informasi permintaan user pada permintaan header dan
-                                detail</p>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group mb-4">
+                                    <h6 style="font-family: var(--bs-font-roboto);">Permintaan Hardware dan Software
+                                    </h6>
+                                    <p style="font-size: 12px;">Data permintaan dari pengguna akan tercatat sesuai
+                                        username yang sedang login</p>
+                                </div>
+                                <div class="table table-responsive">
+                                    <table class="table table-borderless">
+                                        <thead style="font-size: 12px;">
+                                            <tr>
+                                                <td class="w-15 fw-bold">Nama Pengguna</td>
+                                                <td class="text-capitalize">: {{Str::ucfirst(Auth::user()->name)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold">Perusahaan</td>
+                                                <td>: {{@Str::ucfirst(Auth::user()->company->company)}} -
+                                                    {{@Str::ucfirst(Auth::user()->division->division)}}</td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-4 small">
+                                <label for="" class="mt-4">Keterangan Permintaan</label>
+                                <textarea name="requestDescription" id="" cols="10" rows="3" class="form-control w-90" style="font-size: 12px;"></textarea>
+                            </div>
                         </div>
-                        <div class="form-check">
+                        <!-- <div class="form-check">
                             <input class="form-check-input checkbox" type="checkbox" value="" id="flexCheckDefault">
                             <label class="form-check-label text-capitalize" for="flexCheckDefault"
                                 style="font-size: 12px; font-family: var(--bs-font-roboto);">
@@ -33,53 +57,46 @@
                                     <input name="descriptionFromUsers" type="text" class="form-control form-control-sm">
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <form action="{{route('store_request_hardware_software')}}" method="post">
                         @csrf
-                        <table class="table-responsive mt-5">
-                            <div class="table table-stiped" id="myTable">
+                        <div class="table-responsive mt-5">
+                            <table class="table table-stiped" id="myTable">
                                 <thead>
-                                    <tr class="text-sm">
-                                        <th style="padding-left: 0px;">Nama Barang</th>
-                                        <th style="padding-left: 10px;">Jumlah</th>
-                                        <th style="padding-left: 10px;">Keterangan</th>
+                                    <tr style="font-size: 12px;">
+                                        <th>Nama Barang</th>
+                                        <th>Jumlah</th>
+                                        <th>Keterangan</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td style="width: 33%; padding: 0px 10px 0px 0px; margin-top:-50px">
-                                            <div class="form-group">
-                                               <select name="itemName[]" id="" class="itemName form-control form-control-sm">
-                                                @foreach($inventorys as $inventory)
+                                        <td style="width: 33.3%; text-transform:uppercase;">
+                                            <select name="itemName[]" id=""
+                                                    class="itemName form-control form-control-sm">
+                                                    @foreach($inventorys as $inventory)
                                                     <option name="">{{$inventory->item_name}}</option>
-                                                @endforeach
-                                               </select>
-                                                <!-- <select name="itemsId[]" id="itemsId"
-                                                    class="itemsId form-select form-select-sm text-capitalize">
-                                                </select> -->
-                                            </div>
-                                        </td>
-                                        <td style="width: 33%; padding: 10px;">
-                                            <div class="form-group">
-                                                <input type="text" name="qty[]" class="form-control form-control-sm">
-                                            </div>
-                                        </td>
-                                        <td style="width: 33%; padding: 10px;">
-                                            <div class="form-group">
-                                                <input type="text" name="description[]"
-                                                    class="form-control form-control-sm">
-                                            </div>
+                                                    @endforeach
+                                                </select>
                                         </td>
                                         <td>
                                             <div class="form-group">
-                                                <i class="new-button fa-solid fa-circle-plus color-primary fa-lg"></i>
+                                                <input type="text" name="qty[]" class="form-control form-control-sm" required>
                                             </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="description[]"
+                                                class="form-control form-control-sm">
+                                        </td>
+                                        <td>
+                                            <i class="new-button fa-solid fa-circle-plus color-primary fa-lg"></i>
                                         </td>
                                     </tr>
                                 </tbody>
-                            </div>
-                        </table>
+                            </table>
+                        </div>
                         <div class="form-group mt-4">
                             <div class="text-center d-flex justify-content-end">
                                 <button type="submit" class="btn bg-gradient-info w-15 mt-4 mb-0">simpan</button>
@@ -96,7 +113,9 @@
     $('.new-button').on('click', function () {
         ++i;
         $('tbody').append(
-            "<tr> <td style='width: 33%; padding: 0px 10px 0px 0px; margin-top:-50px'> <div class='form-group'> <select name='itemName[]' id='' class='itemName"+i+" form-control form-control-sm'> @foreach($inventorys as $inventory) <option name=''>{{$inventory->item_name}}</option> @endforeach </select> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input name='qty[]' type='text' class='form-control form-control-sm'> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input type='text' name='description[]' class='form-control form-control-sm'> </div> </td> <td> <div class='form-group'> <i class='remove-button fa-solid fa-circle-minus fa-lg' style='color: #ec2727;'></i> </div> </td> </tr>"
+            "<tr> <td style='width: 33.3%; text-transform:uppercase;'> <div class='form-group'> <select name='itemName[]' id='' class='itemName" +
+            i +
+            " form-control form-control-sm'> @foreach($inventorys as $inventory) <option name=''>{{$inventory->item_name}}</option> @endforeach </select> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input required name='qty[]' type='text' class='form-control form-control-sm'> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input type='text' name='description[]' class='form-control form-control-sm'> </div> </td> <td> <div class='form-group'> <i class='remove-button fa-solid fa-circle-minus fa-lg' style='color: #ec2727;'></i> </div> </td> </tr>"
         ).delay(800).fadeIn(400);
         $('.itemName' + i + '').select2({
             tags: true

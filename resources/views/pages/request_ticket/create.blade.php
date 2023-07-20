@@ -68,7 +68,7 @@
                                     <select name="typeofwork" id="" class="form-control form-control-sm">
                                         <option value="" selected>Pilih Jenis Pekerjaan</option>
                                         @foreach($typeOfWorks as $item)
-                                        <option value="{{$item->id}}">{{$item->typeofwork}}</option>
+                                        <option value="{{$item->id}}">{{$item->type}}</option>
                                         @endforeach
                                     </select>
                                     @error('typeofwork')

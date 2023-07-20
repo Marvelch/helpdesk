@@ -124,3 +124,13 @@
 thead>tr>th {
     font-family: var(--bs-font-roboto);
 }
+
+
+select[readonly] {
+    background: #eee;
+    cursor: no-drop;
+}
+
+select[readonly] option {
+    display: none;
+}

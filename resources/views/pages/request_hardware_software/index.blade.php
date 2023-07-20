@@ -26,8 +26,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive table-responsive-sm">
-                        <table id="myTable" data-page-length='10'
-                            class="display table-striped table-hover">
+                        <table id="myTable" data-page-length='10' class="display table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th
@@ -41,20 +40,15 @@
                                         Keterangan</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Tanggal
-                                    </th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Status
                                     </th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Tanggal
                                     </th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    </th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Bantuan
                                     </th>
                                 </tr>
                             </thead>
@@ -65,168 +59,179 @@
                                         <span class="text-xs font-weight-bold">{{@$item->unique_request}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
-                                        <span class="text-xs font-weight-bold">{{@$item->requests_from_users ? $item->requests_from_users : $item->userRequest->name}}</span>
+                                        <span
+                                            class="text-xs font-weight-bold">{{Str::ucfirst($item->userRequest->name)}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span class="text-xs font-weight-bold">{{@$item->description}}</span>
+                                    </td>
+                                    <td class="align-middle text-sm text-center">
+                                        <span class="text-xs font-weight-bold">
+                                            @if($item->status == env('DEFAULT'))
+                                            <span class="badge badge-sm bg-gradient-danger">Pengecekan</span>
+                                            <!-- <i class="fa-solid fa-seal-exclamation fa-xl" style="color: #E74C3C;" title="MENUNGGU PENGECEKAN"></i> -->
+                                            @elseif($item->status == 1)
+                                            <span class="badge badge-sm bg-gradient-primary">Diproses</span>
+                                            <!-- <i class="fa-duotone fa-clock fa-lg" style="--fa-secondary-color: #2ECC71;"
+                                                title="DALAM PROSES"></i> -->
+                                            @elseif($item->status == 2)
+                                            <span class="badge badge-sm bg-gradient-success">Diterima</span>
+                                            @elseif($item->status == 3)
+                                            <span class="badge badge-sm bg-gradient-warning">Ditolak</span>
+                                            @else
+                                            <span class="badge badge-sm bg-gradient-info">Setengah</span>
+                                            @endif
+                                        </span>
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span
                                             class="text-xs font-weight-bold">{{@date('d-m-Y',strtotime($item->transaction_date))}}</span>
                                     </td>
-                                    <td class="align-middle text-sm text-center">
-                                        <span class="text-xs font-weight-bold">
-                                            @if($item->status == 1)
-                                            <i class="fa-duotone fa-clock fa-lg" style="--fa-secondary-color: #4b7dd2;" title="DALAM PROSES"></i>
-                                            @elseif($item->status == 2)
-                                            <i class="fa-solid fa-badge-check fa-lg" title="DITERIMA" style="color: #54b95b;"></i>
+                                    <td class="align-middle text-center text-sm d-flex justify-content-center">
+                                        <div class="row">
+                                            @if(Auth::user()->level_id != env('ADMIN_ACCESS') AND Auth::user()->level_id
+                                            !=
+                                            env('EDITOR_ACCESS'))
+                                            @if($item->created_by_user_id == Auth::user()->id)
+                                            <div class="col-md-4">
+                                                <a href="{{route('edit_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
+                                                    class="text-secondary font-weight-bold text-xs"
+                                                    data-toggle="tooltip" data-original-title="Edit user">
+                                                    <i class="fa-duotone fa-pen-to-square"></i>
+                                                </a>
+                                            </div>
                                             @else
-                                            <!-- <i class="fa-solid fa-file-slash fa-lg" title="Not Approved" style="color: red;"></i> -->
-                                            <i class="fa-duotone fa-ban fa-lg" title="TIDAK DITERIMA"></i>
+                                            <!-- Kosong -->
                                             @endif
-                                        </span>
-                                    </td>
-                                    @if(Auth::user()->level_id != env('ADMIN_ACCESS') AND Auth::user()->level_id !=
-                                    env('EDITOR_ACCESS'))
-                                    @if($item->created_by_user_id == Auth::user()->id)
-                                    <td class="align-middle text-center text-sm">
-                                        <a href="{{route('edit_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
-                                            class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
-                                            data-original-title="Edit user">
-                                            <i class="fa-duotone fa-pen-to-square"></i>
-                                        </a>
-                                    </td>
-                                    @else
-                                    <td>
-                                        <!-- Kosong  -->
-                                    </td>
-                                    @endif
-                                    @else
-                                    <td class="align-middle text-center text-sm">
-                                        <a href="{{route('edit_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
-                                            class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
-                                            data-original-title="Edit user">
-                                            <i class="fa-duotone fa-pen-to-square"></i>
-                                        </a>
-                                    </td>
-                                    @endif
-                                    <td class="align-middle text-center text-sm">
-                                        <a href="{{route('show_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
-                                            class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
-                                            data-original-title="Edit user">
-                                            <i class="fa-solid fa-eye"></i>
-                                        </a>
-                                    </td>
-                                    @if(Auth::user()->level_id != env('ADMIN_ACCESS') AND Auth::user()->level_id !=
-                                    env('EDITOR_ACCESS'))
-                                    <td class="align-middle text-center text-sm">
-                                        @if($item->created_by_user_id == Auth::user()->id)
-                                        <a class="text-secondary font-weight-bold text-xs" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal{{$item->id}}">
-                                            <i class="fa-duotone fa-trash"></i>
-                                        </a>
-                                        @endif
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="deleteModal{{$item->id}}" tabindex="-1"
-                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header bg-dark">
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body mb-2">
-                                                        <div class="row">
-                                                            <div class="col-4">
-                                                                <i class="fa-solid fa-triangle-exclamation mt-2"
-                                                                    style="color: #ff0000; font-size: 100px;"></i>
+                                            @else
+                                            <div class="col-md-4">
+                                                <a href="{{route('edit_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
+                                                    class="text-secondary font-weight-bold text-xs"
+                                                    data-toggle="tooltip" data-original-title="Edit user">
+                                                    <i class="fa-duotone fa-pen-to-square"></i>
+                                                </a>
+                                            </div>
+                                            @endif
+                                            <div class="col-md-4">
+                                                <a href="{{route('show_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
+                                                    class="text-secondary font-weight-bold text-xs ml-1 mr-1"
+                                                    data-toggle="tooltip" data-original-title="Edit user">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-4">
+                                                @if(Auth::user()->level_id != env('ADMIN_ACCESS') AND
+                                                Auth::user()->level_id !=
+                                                env('EDITOR_ACCESS'))
+                                                @if($item->created_by_user_id == Auth::user()->id)
+                                                <a class="text-secondary font-weight-bold text-xs"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal{{$item->id}}">
+                                                    <i class="fa-duotone fa-trash"></i>
+                                                </a>
+                                                @endif
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="deleteModal{{$item->id}}" tabindex="-1"
+                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-dark">
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
-                                                            <div class="col-md-8 text-center">
-                                                                <h3>WARNING!!!</h3>
-                                                                @if($item->approval_supervisor != 0)
-                                                                <small>Permintaan tidak bisa dihapus, karena telah
-                                                                    diterima oleh IT Staff</small>
-                                                                @else
-                                                                <small>Penghapusan permintaan pengguna secara
-                                                                    permanen</small>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                        <!-- <i class="fa-sharp fa-solid fa-brake-warning text-danger fa-lg"
+                                                            <div class="modal-body mb-2">
+                                                                <div class="row">
+                                                                    <div class="col-4">
+                                                                        <i class="fa-solid fa-triangle-exclamation mt-2"
+                                                                            style="color: #ff0000; font-size: 100px;"></i>
+                                                                    </div>
+                                                                    <div class="col-md-8 text-center">
+                                                                        <h3>WARNING!!!</h3>
+                                                                        @if($item->approval_supervisor != 0)
+                                                                        <small>Permintaan tidak bisa dihapus, karena
+                                                                            telah
+                                                                            diterima oleh IT Staff</small>
+                                                                        @else
+                                                                        <small>Penghapusan permintaan pengguna secara
+                                                                            permanen</small>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+                                                                <!-- <i class="fa-sharp fa-solid fa-brake-warning text-danger fa-lg"
                                                             style="margin-right: 10px;"></i> konfirmasi Penghapusan Data
                                                         <b>{{@$item->fullname}} - {{$item->username}}</b> -->
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary btn-sm"
-                                                            data-bs-dismiss="modal">Batal</button>
-                                                        <form
-                                                            action="{{route('destroy_bank_accounts',['id' => $item->id])}}"
-                                                            method="post">
-                                                            @csrf
-                                                            @if($item->approval_supervisor == 0)
-                                                            <button type="submit"
-                                                                class="btn btn-primary btn-sm">Hapus</button>
-                                                            @endif
-                                                        </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary btn-sm"
+                                                                    data-bs-dismiss="modal">Batal</button>
+                                                                <form
+                                                                    action="{{route('destroy_bank_accounts',['id' => $item->id])}}"
+                                                                    method="post">
+                                                                    @csrf
+                                                                    @if($item->approval_supervisor == 0)
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary btn-sm">Hapus</button>
+                                                                    @endif
+                                                                </form>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                @else
+                                                <a class="text-secondary font-weight-bold text-xs"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal{{$item->id}}">
+                                                    <i class="fa-duotone fa-trash"></i>
+                                                </a>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="deleteModal{{$item->id}}" tabindex="-1"
+                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-dark">
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body mb-2">
+                                                                <div class="row">
+                                                                    <div class="col-4">
+                                                                        <i class="fa-solid fa-triangle-exclamation mt-2"
+                                                                            style="color: #ff0000; font-size: 100px;"></i>
+                                                                    </div>
+                                                                    <div class="col-md-8 text-center">
+                                                                        <h3>WARNING!!!</h3>
+                                                                        @if($item->approval_supervisor != 0)
+                                                                        <small>Permintaan tidak bisa dihapus, karena
+                                                                            telah
+                                                                            diterima oleh IT Staff</small>
+                                                                        @else
+                                                                        <small>Penghapusan permintaan pengguna secara
+                                                                            permanen</small>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+                                                                <!-- <i class="fa-sharp fa-solid fa-brake-warning text-danger fa-lg"
+                                                            style="margin-right: 10px;"></i> konfirmasi Penghapusan Data
+                                                        <b>{{@$item->fullname}} - {{$item->username}}</b> -->
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary btn-sm"
+                                                                    data-bs-dismiss="modal">Batal</button>
+                                                                <form
+                                                                    action="{{route('destroy_bank_accounts',['id' => $item->id])}}"
+                                                                    method="post">
+                                                                    @csrf
+                                                                    @if($item->approval_supervisor == 0)
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary btn-sm">Hapus</button>
+                                                                    @endif
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </td>
-                                    @else
-                                    <td class="align-middle text-center text-sm">
-                                        <a class="text-secondary font-weight-bold text-xs" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal{{$item->id}}">
-                                            <i class="fa-duotone fa-trash"></i>
-                                        </a>
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="deleteModal{{$item->id}}" tabindex="-1"
-                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header bg-dark">
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body mb-2">
-                                                        <div class="row">
-                                                            <div class="col-4">
-                                                                <i class="fa-solid fa-triangle-exclamation mt-2"
-                                                                    style="color: #ff0000; font-size: 100px;"></i>
-                                                            </div>
-                                                            <div class="col-md-8 text-center">
-                                                                <h3>WARNING!!!</h3>
-                                                                @if($item->approval_supervisor != 0)
-                                                                <small>Permintaan tidak bisa dihapus, karena telah
-                                                                    diterima oleh IT Staff</small>
-                                                                @else
-                                                                <small>Penghapusan permintaan pengguna secara
-                                                                    permanen</small>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                        <!-- <i class="fa-sharp fa-solid fa-brake-warning text-danger fa-lg"
-                                                            style="margin-right: 10px;"></i> konfirmasi Penghapusan Data
-                                                        <b>{{@$item->fullname}} - {{$item->username}}</b> -->
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary btn-sm"
-                                                            data-bs-dismiss="modal">Batal</button>
-                                                        <form
-                                                            action="{{route('destroy_bank_accounts',['id' => $item->id])}}"
-                                                            method="post">
-                                                            @csrf
-                                                            @if($item->approval_supervisor == 0)
-                                                            <button type="submit"
-                                                                class="btn btn-primary btn-sm">Hapus</button>
-                                                            @endif
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    @endif
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -246,7 +251,9 @@
             "oLanguage": {
                 "sSearch": " "
             },
-            "order": [[3, 'desc']],
+            "order": [
+                [3, 'desc']
+            ],
         });
     });
 

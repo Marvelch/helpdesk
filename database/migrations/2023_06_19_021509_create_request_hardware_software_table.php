@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('request_hardware_software', function (Blueprint $table) {
             $table->id();
             $table->string('unique_request')->unique();
-            $table->string('requests_from_users')->nullable();
-            $table->string('status')->nullable()->comment('1 : waiting aprovement, 2 : approved, 3 : not approved');
+            $table->unsignedBigInteger('requests_from_users')->nullable();
+            $table->foreign('requests_from_users')->references('id')->on('users');
+            $table->string('status')->nullable();
             $table->string('description')->nullable();
             $table->date('transaction_date');
             $table->boolean('approval_supervisor')->default(0)->nullable();

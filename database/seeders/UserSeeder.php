@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'phone'             => NULL,
             'email_verified_at' => NULL,
             'company_id'        => NULL,
-            'position_id'       => NULL,
+            'position_id'       => 3,
             'password'          => Hash::make('%%Makeit99%%'),
             'password_text'     => NULL,
             'division_id'       => NULL

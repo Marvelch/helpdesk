@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class typeOfWork extends Model
+class WorkType extends Model
 {
     use HasFactory;
 
-    protected $table = 'type_of_works';
+    protected $table = 'work_types';
 
     protected $fillable = [
-        'typeofwork',
+        'type',
     ];
 }
