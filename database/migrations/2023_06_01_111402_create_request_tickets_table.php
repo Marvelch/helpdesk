@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreign('division_id')->references('id')->on('divisions');
             $table->date('deadline')->nullable();
             $table->unsignedBigInteger('type_of_work_id')->nullable();
-            $table->foreign('type_of_work_id')->references('id')->on('type_of_works');
+            $table->foreign('type_of_work_id')->references('id')->on('work_types');
             $table->integer('status')->nullable();
             $table->integer('priority')->nullable();
             $table->string('location')->nullable();
