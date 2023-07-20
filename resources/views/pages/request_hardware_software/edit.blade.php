@@ -138,13 +138,12 @@
                                                     @if($headers->approval_supervisor == '0' OR $headers->approval_manager == '0' OR $headers->approval_general_manager == '0') 
                                                         disabled
                                                     @endif
+                                                    {{$detail->transaction_status == env('COMPLETED') ? 'readonly' : ''}}
+                                                    {{$detail->transaction_status == env('UNCOMPLETED') ? 'readonly' : ''}}
                                                     >
-                                                    <option value="1" @selected($detail->transaction_status == '1')>In
-                                                        Progress</option>
-                                                    <option value="2" @selected($detail->transaction_status ==
-                                                        '2')>Completed</option>
-                                                    <option value="3" @selected($detail->transaction_status ==
-                                                        '3')>Not Completed</option>
+                                                    <option value="1" @selected($detail->transaction_status == env('INPROGRESS'))>Dalam Pengecekan</option>
+                                                    <option value="2" @selected($detail->transaction_status == env('COMPLETED'))>Tersedia</option>
+                                                    <option value="3" @selected($detail->transaction_status == env('UNCOMPLETED'))>Tidak Tersedia</option>
                                                 </select>
                                             </div>
                                         </td>
@@ -228,7 +227,6 @@
     $(document).on('click', '.remove-button', function () {
         $(this).closest('tr').remove();
     });
-
     // $('.itemsId').select2({
     //     ajax: {
     //         url: '{{url("/request-hardware-software/searching-inventory")}}',

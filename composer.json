@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
         "laravolt/avatar": "^5.0",
+        "nutgram/nutgram": "^4.3",
         "pusher/pusher-php-server": "^7.2",
         "realrashid/sweet-alert": "^7.0",
         "yajra/laravel-datatables": "^9.0"

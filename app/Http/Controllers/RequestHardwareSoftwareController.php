@@ -65,25 +65,34 @@ class RequestHardwareSoftwareController extends Controller
         try {
             $generateUniqueCode = generateUniqueCode();
 
-            RequestHardwareSoftware::create([
-                'unique_request'        => $generateUniqueCode,
-                'requests_from_users'   => $request->requestsFromUsers ? $request->requestsFromUsers : Auth::user()->name,
-                'description'           => $request->descriptionFromUsers,
-                'transaction_date'      => Now(),
-                'status'                => 1,
-                'created_by_user_id'    => Auth::user()->id
-            ]);
+            if(count(array_unique($request->itemName)) == count($request->itemName)){
 
-            foreach($request->itemName as $key => $item) {
-                detailRequestHardwareSoftware::create([
+                RequestHardwareSoftware::create([
                     'unique_request'        => $generateUniqueCode,
-                    'items_id'              => inventory::where('item_name',Str::lower($item))->exists() ? str_replace(array('[',']'),"",inventory::where('item_name',Str::lower($item))->pluck('id')) : NULL,
-                    'items_new_request'     => inventory::where('item_name',Str::lower($item))->exists() ? '' : Str::lower($item),
-                    'qty'                   => $request->qty[$key],
-                    'availability'          => inventory::where('item_name',Str::lower($item))->exists() ? 'EXISTS' : 'NOT_EXISTS',
-                    'description'           => $request->description[$key],
-                    'transaction_status'    => 1
+                    'requests_from_users'   => Auth::user()->id,
+                    'description'           => $request->requestDescription,
+                    'transaction_date'      => Now(),
+                    'status'                => 0,
+                    'created_by_user_id'    => Auth::user()->id
                 ]);
+
+                foreach($request->itemName as $key => $item) {
+                    detailRequestHardwareSoftware::create([
+                        'unique_request'        => $generateUniqueCode,
+                        'items_id'              => inventory::where('item_name',Str::lower($item))->exists() ? str_replace(array('[',']'),"",inventory::where('item_name',Str::lower($item))->pluck('id')) : NULL,
+                        'items_new_request'     => inventory::where('item_name',Str::lower($item))->exists() ? '' : Str::lower($item),
+                        'qty'                   => $request->qty[$key],
+                        'availability'          => inventory::where('item_name',Str::lower($item))->exists() ? 'EXISTS' : 'NOT_EXISTS',
+                        'description'           => $request->description[$key],
+                        'transaction_status'    => 0
+                    ]);
+                }
+            }else{
+                DB::rollback();
+
+                Alert::info('PERHATIAN','Perhatikan Penginputan Barang Tidak Boleh Sama');
+                
+                return back();
             }
 
             DB::commit();
@@ -295,6 +304,10 @@ class RequestHardwareSoftwareController extends Controller
                                 'transaction_status'    => $request->transaction_status[$key]
                             ]);
                         }elseif($request->transaction_status[$key] == env('INPROGRESS')) {
+                            detailRequestHardwareSoftware::find($id)->update([
+                                'transaction_status'    => $request->transaction_status[$key]
+                            ]);
+                        }elseif($request->transaction_status[$key] == env('UNCOMPLETED')) {
                             detailRequestHardwareSoftware::find($id)->update([
                                 'transaction_status'    => $request->transaction_status[$key]
                             ]);

@@ -44,6 +44,6 @@ class requestTicket extends Model
     }
 
     public function typeOfWork() {
-        return $this->belongsTo(typeOfWork::class,'type_of_work_id','id');
+        return $this->belongsTo(WorkType::class,'type_of_work_id','id');
     }
 }

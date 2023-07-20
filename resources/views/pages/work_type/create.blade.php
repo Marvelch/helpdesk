@@ -6,7 +6,7 @@
         <div class="card-body">
             <div class="row justify-content-center">
                 <div class="col-8">
-                    <form action="{{route('store_type_of_work')}}" method="post" autocomplete="off">
+                    <form action="{{route('store_type_general_access')}}" method="post" autocomplete="off">
                     @csrf
                     <div class="row">
                         @if ($message = Session::get('success'))
@@ -42,10 +42,10 @@
                         <div class="col-4">
                             <!-- kosong -->
                         </div>
-                        <div class="col-8">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="">Nama Jenis Pekerjaan</label>
-                                <input name="typeofwork" type="text" class="form-control form-control-sm"
+                                <input name="type" type="text" class="form-control form-control-sm"
                                     autocomplete="off">
                             </div>
                             <div class="form-group">

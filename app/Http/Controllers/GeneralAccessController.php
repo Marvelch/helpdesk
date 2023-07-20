@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\generalAccess;
 use App\Http\Controllers\Controller;
+use App\Models\typeOfWork;
+use App\Models\WorkType;
 use Illuminate\Http\Request;
+use DB;
 
 class GeneralAccessController extends Controller
 {
@@ -62,5 +65,37 @@ class GeneralAccessController extends Controller
     public function destroy(generalAccess $generalAccess)
     {
         //
+    }
+
+    /* --------------------------------------------------------------------------- Work Type Area ---------------------------------------------------------------------------*/
+
+    public function index_type(Request $request) 
+    {
+        return view('pages.work_type.create');
+    }
+
+    public function store_type(Request $request)
+    {
+        $request->validate([
+            'type' => 'required|unique:work_types'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            WorkType::create([
+                'type'  => $request->type,
+            ]);
+
+            DB::commit();
+
+            return back()->with('success','Penginputan Master Jenis Pekerjaan Berhasil');
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            DB::rollback();
+
+            return back()->with('failed','Penginputan Master Jenis Pekerjaan Gagal');
+        }
     }
 }

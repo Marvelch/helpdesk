@@ -73,16 +73,6 @@ class HomeController extends Controller
         return view('pages.user.edit',compact('items','companys','divisions'));
     }
 
-    /**
-     * Show the application profile.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function profile()
-    {
-        return view('pages.user.profile');
-    }
-
      /**
      * Save the form submit for new user.
      *
@@ -92,7 +82,6 @@ class HomeController extends Controller
     {
         $request->validate([
             'name'              => 'required|unique:users|min:2|max:255',
-            'email'             => 'required|unique:users',
             'username'          => 'required|unique:users|min:2|max:255',
             'password'          => 'required',
             'confirm_password'  => 'required',
@@ -141,6 +130,16 @@ class HomeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name'              => 'required|unique:users|min:2|max:255',
+            'username'          => 'required|unique:users|min:2|max:255',
+            'password'          => 'required',
+            'confirm_password'  => 'required',
+            'phone'             => 'required|unique:users',
+            'company_id'        => 'required',
+            'division_id'       => 'required',
+            'position_id'       => 'required'
+        ]);
 
         DB::beginTransaction();
 

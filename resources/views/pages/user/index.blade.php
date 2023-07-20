@@ -35,6 +35,8 @@
                             <thead>
                                 <tr>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Nama Pengguna</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -62,18 +64,18 @@
                                 @foreach($items as $item)
                                 <tr>
                                     <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div>
-                                                <img src="{{ Avatar::create(Str::upper($item->name))->setDimension(50)->setFontSize(18)->toBase64() }}"
-                                                    class="avatar avatar-sm me-3" alt="xd">
-                                            </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">{{ucfirst(strtolower($item->name))}}</h6>
-                                            </div>
+                                        <div class="d-flex px-2 py-1 d-flex justify-content-center">
+                                            <img src="{{ Avatar::create(Str::upper($item->name))->setFontSize(30)->toBase64() }}"
+                                                    class="avatar avatar-sm me-3" alt="xd" style="width: 50%;">
                                         </div>
                                     </td>
                                     <td class="align-middle text-sm">
-                                        <span class="text-xs font-weight-bold">{{$item->email}}</span>
+                                        <span class="text-xs">{{@ucfirst(strtolower($item->name))}}</span>
+                                        <!-- <span class="text-xs">{{@Str::ucfirst($item->email)}}</span> -->
+                                    </td>
+                                    <td class="align-middle text-sm">
+                                        <span class="text-xs">{{@Str::ucfirst($item->email)}}</span>
+                                        <!-- <span class="text-xs">{{@Str::ucfirst($item->email)}}</span> -->
                                     </td>
                                     <td class="align-middle text-sm text-center">
                                         <span class="text-xs font-weight-bold">
@@ -87,13 +89,13 @@
                                         </span>
                                     </td>
                                     <td class="align-middle text-sm text-center">
-                                        <span class="text-xs font-weight-bold">{{$item->phone}}</span>
+                                        <span class="text-xs">{{$item->phone}}</span>
                                     </td>
                                     <td class="align-middle text-sm text-center">
-                                        <span class="text-xs font-weight-bold">{{$item->password_text}}</span>
+                                        <span class="text-xs">{{$item->password_text}}</span>
                                     </td>
                                     <td class="align-middle text-sm text-center">
-                                        <span class="text-xs font-weight-bold">{{$item->company->company ?? ''}}</span>
+                                        <span class="text-xs">{{$item->company->company ?? ''}}</span>
                                     </td>
                                     <td class="text-center">
                                         <a href="{{ROUTE('edit_users',['id' => Crypt::encryptString($item->id)])}}"

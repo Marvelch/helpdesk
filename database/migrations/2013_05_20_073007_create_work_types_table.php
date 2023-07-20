@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('type_of_works', function (Blueprint $table) {
+        Schema::create('work_types', function (Blueprint $table) {
             $table->id();
-            $table->string('typeofwork');
+            $table->string('type');
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('type_of_works');
+        Schema::dropIfExists('work_types');
     }
 };

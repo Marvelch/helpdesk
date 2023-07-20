@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'company_id',
         'level_id',
+        'photo',
         'password_text',
         'phone',
         'position_id',
@@ -50,20 +51,23 @@ class User extends Authenticatable
     ];
 
     /**
-     * displays relationships by table level.
-     *
-     * @var array<string, string>
+     * Displays the level of each user
      */
     public function level() {
         return $this->belongsTo(level::class,'level_id','id');
     }
 
      /**
-     * Shows the table's relationship with the company.
-     *
-     * @var array<string, string>
+     * Display company data
      */
     public function company() {
         return $this->belongsTo(company::class,'company_id','id');
+    }
+
+    /**
+     * Displays a list of divisions in the company
+     */
+    public function division() {
+        return $this->belongsTo(division::class,'division_id','id');
     }
 }

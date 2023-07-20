@@ -231,6 +231,9 @@ class InventoryController extends Controller
         DB::beginTransaction();
 
         try {
+
+            return inventory::where('id',$id)->first();
+            
             inventory::find($id)->delete();
 
             DB::commit();
