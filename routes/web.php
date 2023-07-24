@@ -90,31 +90,31 @@ Route::get('/home', function() {
         }
     }
 
-    // Pending 
-    $pending = RequestHardwareSoftware::select('id', 'created_at')
-        ->where('status',1)
+    // Uncompleted 
+    $uncompleted = RequestHardwareSoftware::select('id', 'created_at')
+        ->where('status',3)
         ->whereYear('created_at', '=', date('Y',strtotime(Now())))
         ->get()
         ->groupBy(function ($date) {
             return Carbon::parse($date->created_at)->format('m');
     });
 
-    $pendingCount = [];
-    $resultPending = [];
+    $uncompletedCount = [];
+    $resultUncompleted = [];
 
-    foreach ($pending as $key => $value) {
-        $pendingCount[(int)$key] = count($value);
+    foreach ($uncompleted as $key => $value) {
+        $uncompletedCount[(int)$key] = count($value);
     }
 
     for ($i = 0; $i <= 11; $i++) {
-        if (!empty($pendingCount[$i])) {
-            $resultPending[] = $pendingCount[$i];
+        if (!empty($uncompletedCount[$i])) {
+            $resultUncompleted[] = $uncompletedCount[$i];
         } else {
-            $resultPending[] = 0;
+            $resultUncompleted[] = 0;
         }
     }
 
-    return view('pages.dashboard.index',compact('online_users','countUsers','countPasswordManagers','countRequestTicket','countInventory','resultComplate','resultPending'));
+    return view('pages.dashboard.index',compact('online_users','countUsers','countPasswordManagers','countRequestTicket','countInventory','resultComplate','resultUncompleted'));
 })->name('home')->middleware('auth');
 
 Route::get('logout',[LoginController::class,'logout'])->middleware('auth');
@@ -175,11 +175,11 @@ Route::group(['prefix' => 'request-hardware-software','middleware' => ['auth']],
     Route::post('/store/hardware-software',[RequestHardwareSoftwareController::class,'storeFromTicket'])->name('store_hardware_software_request_hardware_software');
     Route::get('/edit/{id}',[RequestHardwareSoftwareController::class,'edit'])->name('edit_request_hardware_software');
     Route::get('/show/{id}',[RequestHardwareSoftwareController::class,'show'])->name('show_request_hardware_software');
+    Route::put('/update',[RequestHardwareSoftwareController::class,'update'])->name('update_request_hardware_software');
+    Route::get('/create/{id}/request-ticket',[RequestHardwareSoftwareController::class,'createRequestTicket'])->name('create_ticket_request_hardware_software');
 
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
-        Route::get('/create/{id}/request-ticket',[RequestHardwareSoftwareController::class,'createRequestTicket'])->name('create_ticket_request_hardware_software');
         Route::post('/delete/{id}/detail',[RequestHardwareSoftwareController::class,'destroyDetail'])->name('delete_detail_request_hardware_software');
-        Route::put('/update',[RequestHardwareSoftwareController::class,'update'])->name('update_request_hardware_software');
     });
 });
 

@@ -27,7 +27,7 @@
                                     </tr>
                                     <tr>
                                         <th>Permintaan</th>
-                                        <td>: {{@$headers->requests_from_users}}</td>
+                                        <td>: {{@Str::ucfirst($headers->userRequest->name)}}</td>
                                     </tr>
                                     <tr>
                                         <th>Keterangan</th>
@@ -37,7 +37,7 @@
                             </table>
                         </div>
                         <div class="col-4">
-                            <img src="https://img.freepik.com/premium-vector/flat-isometric-3d-illustration-concept-create-personal-account-online-school_18660-4476.jpg" class="rounded" alt="" srcset="" style="width: 57%;">
+                            <img src="https://cdni.iconscout.com/illustration/premium/thumb/approval-contract-7413549-6062043.png" class="rounded" alt="" srcset="" style="width: 57%;">
                             <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px;">
                             @if($headers->approval_supervisor == '0')
                             @if(Auth::user()->position_id == env('STAFF') AND Auth::user()->division_id == env('DIVISION_IT')) <!-- Access for Staff IT or Supervisor -->
@@ -51,7 +51,7 @@
                             Menunggu Persetujuan Pihak Terkait
                             @endif
                             @elseif($headers->approval_manager == '0' AND $headers->approval_supervisor <> '0' AND $headers->approval_supervisor <> '2')
-                            @if(Auth::user()->position_id == env('MANAGER') AND Auth::user()->division_id == env('DIVISION_IT')) <!-- Access for Manager -->
+                            @if(Auth::user()->position_id == env('MANAGER') AND Auth::user()->division_id == $headers->userRequest->division->id) <!-- Access for Manager -->
                                 Persetujuan Manager
                                 </p>
                             <select name="approval_manager" id="" class="form-control form-control-sm w-60">
@@ -73,7 +73,10 @@
                             Menunggu Persetujuan Pihak Terkait
                             @endif
                             @elseif($headers->approval_general_manager == '2' OR $headers->approval_manager == '2' OR $headers->approval_supervisor == '2')
-                                Permintaan Telah Ditolak
+                            <div class="row">
+                                <!-- <img src="https://cdn3d.iconscout.com/3d/premium/thumb/payment-error-6871330-5654914.png" alt="" srcset="" style="width: 60%;"> -->
+                                <p style="font-size: 13px; color: red;" class="text-uppercase">Permintaan #{{@$headers->unique_request}} Ditolak</p>
+                            </div>
                             @else
                                 Telah Diterima Oleh IT, Manager, General Manager
                             @endif
@@ -166,19 +169,65 @@
                             </table>
                         </table>
                         <div class="form-group mt-4"> 
-                            @if(Auth::user()->position_id == env('STAFF') AND Auth::user()->division_id == env('DIVISION_IT') OR Auth::user()->position_id == env('GENERAL_MENAGER') OR Auth::user()->position_id == env('MANAGER')) 
-                                @if($headers->approval_general_manager == '0' AND Auth::user()->level_id == env('STAFF'))
-                                <div class="text-center d-flex justify-content-end">
-                                    <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
-                                        data-bs-target="#update" disabled>simpan</button>
-                                </div>
-                                @else
-                                 <div class="text-center d-flex justify-content-end">
-                                    <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
-                                        data-bs-target="#update">simpan</button>
-                                </div>
+                                @if($headers->status == 0)
+                                    @if(Auth::user()->position_id == env('STAFF') AND Auth::user()->division_id == env('DIVISION_IT'))
+                                        @if($headers->approval_supervisor == env('DEFAULT'))
+                                            <div class="text-center d-flex justify-content-end">
+                                                <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
+                                                    data-bs-target="#update">simpan</button>
+                                            </div>
+                                        @elseif($headers->approval_supervisor == env('ACCEPTED') AND $headers->approval_manager == env('ACCEPTED') AND $headers->approval_general_manager == env('ACCEPTED'))
+                                            <div class="text-center d-flex justify-content-end">
+                                                <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
+                                                    data-bs-target="#update">simpan</button>
+                                            </div>
+                                        @endif
+                                    @elseif($headers->approval_manager == env('DEFAULT') AND Auth::user()->position_id == env('MANAGER') AND Auth::user()->division_id == $headers->division_id AND $headers->approval_supervisor == env('ACCEPTED'))
+                                        <div class="text-center d-flex justify-content-end">
+                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
+                                                data-bs-target="#update">simpan</button>
+                                        </div>
+                                    @elseif($headers->approval_general_manager == env('DEFAULT') AND Auth::user()->position_id == env('GENERAL_MENAGER') AND $headers->approval_manager == env('ACCEPTED'))
+                                        <div class="text-center d-flex justify-content-end">
+                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
+                                                data-bs-target="#update">simpan</button>
+                                        </div>
+                                    @endif
                                 @endif
-                            @endif
+                            <!-- @if((Auth::user()->position_id == env('STAFF') AND Auth::user()->division_id == env('DIVISION_IT')) OR Auth::user()->position_id == env('GENERAL_MENAGER') OR Auth::user()->position_id == env('MANAGER')) 
+                                @if((Auth::user()->position_id == env('STAFF') AND $headers->approval_supervisor == 1) OR (Auth::user()->position_id == env('MANAGER') AND $headers->approval_manager == 1) OR (Auth::user()->position_id == env('GENERAL_MENAGER') AND $headers->approval_general_manager == 1))
+                                    @if(Auth::user()->division_id == env('DIVISION_IT') AND $headers->status == env('DEFAULT'))
+                                        <div class="text-center d-flex justify-content-end">
+                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
+                                                data-bs-target="#update">simpan</button>
+                                        </div>
+                                    @else 
+                                        <div class="text-center d-flex justify-content-end">
+                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
+                                                data-bs-target="#update" disabled>simpan</button>
+                                        </div>
+                                    @endif
+                                @elseif(Auth::user()->division_id == env('DIVISION_IT') OR (Auth::user()->division_id == $headers->division_id AND Auth::user()->position_id == env('MANAGER')) OR Auth::user()->position_id == env('GENERAL_MENAGER'))
+                                    @if(Auth::user()->position_id == env('STAFF') AND Auth::user()->division_id == env('DIVISION_IT'))
+                                        <div class="text-center d-flex justify-content-end">
+                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
+                                                data-bs-target="#update">simpan</button>
+                                        </div>
+                                    @endif
+                                    @if($headers->approval_manager == '0' AND $headers->approval_supervisor <> '0' AND $headers->approval_supervisor <> '2')
+                                        <div class="text-center d-flex justify-content-end">
+                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
+                                                data-bs-target="#update">simpan</button>
+                                        </div>
+                                    @endif 
+                                    @if($headers->approval_general_manager == '0' AND $headers->approval_manager <> '0' AND $headers->approval_manager <> '2' AND $headers->approval_supervisor <> '0' AND $headers->approval_supervisor <> '2')
+                                        <div class="text-center d-flex justify-content-end">
+                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
+                                                data-bs-target="#update">simpan</button>
+                                        </div>
+                                    @endif
+                                @endif
+                            @endif -->
                         </div>
                         <!-- Modal -->
                         <div class="modal fade" id="update" tabindex="-1" aria-labelledby="exampleModalLabel"

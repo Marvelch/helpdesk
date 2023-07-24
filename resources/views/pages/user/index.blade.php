@@ -30,7 +30,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="myTable" data-order='[[ 1, "asc" ]]' data-page-length='10'
+                        <table id="myTable" data-page-length='10'
                             class="display table-striped table-hover">
                             <thead>
                                 <tr>

@@ -24,6 +24,7 @@ class RequestHardwareSoftware extends Model
         'user_supervisor',
         'request_ticket_id',
         'user_manager_id',
+        'division_id',
         'user_general_manager_id',
         'created_by_user_id'
     ];

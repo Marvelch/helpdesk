@@ -32,6 +32,8 @@ return new class extends Migration
             $table->foreign('created_by_user_id')->references('id')->on('users');
             $table->unsignedBigInteger('request_ticket_id')->nullable();
             $table->foreign('request_ticket_id')->references('id')->on('request_tickets');
+            $table->unsignedBigInteger('division_id')->nullable();
+            $table->foreign('division_id')->references('id')->on('divisions');
             $table->timestamps();
         });
     }

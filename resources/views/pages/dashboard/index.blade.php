@@ -2,7 +2,7 @@
 
 @section('contents')
 <div class="container-fluid py-4">
-    @if(Auth::user()->level_id == env('ADMIN_ACCESS'))
+    @if(Auth::user()->level_id == env('LEVEL_ADMIN'))
     <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
@@ -308,7 +308,7 @@
         </div>
         @endif
     </div>
-    @if(Auth::user()->level_id == env('ADMIN_ACCESS'))
+    @if(Auth::user()->level_id == env('LEVEL_ADMIN'))
     @push('diagram')
     <script>
         var ctx = document.getElementById("chart-bars").getContext("2d");
@@ -397,7 +397,7 @@
             data: {
                 labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 datasets: [{
-                        label: "Pending Request",
+                        label: "Uncompleted Request",
                         tension: 0.4,
                         borderWidth: 0,
                         pointRadius: 0,
@@ -405,7 +405,7 @@
                         borderWidth: 3,
                         backgroundColor: gradientStroke1,
                         fill: true,
-                        data: < ? = json_encode($resultPending); ? > ,
+                        data: <?= json_encode($resultUncompleted); ?> ,
                         maxBarThickness : 6
 
                     },
@@ -418,7 +418,7 @@
                         borderWidth: 3,
                         backgroundColor: gradientStroke2,
                         fill: true,
-                        data: < ? = json_encode($resultComplate); ? > ,
+                        data: <?= json_encode($resultComplate); ?> ,
                         maxBarThickness : 6
                     },
                 ],
