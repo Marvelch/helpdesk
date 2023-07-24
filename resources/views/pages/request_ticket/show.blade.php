@@ -138,7 +138,7 @@
                             @if(@$requestTickets->assignment_on_user_id == Auth::user()->id AND @$requestTickets->status
                             == env('INPROGRESS') OR Auth::user()->level_id == env('LEVEL_ADMIN') OR
                             Auth::user()->level_id == env('LEVEL_EDITOR'))
-                            @if(@$requestTickets->status == env('COMPLETED'))
+                            @if($requestTickets->status == env('COMPLETED'))
                             <div class="form-group mt-2 text-capitalize">
                                 <div class="card">
                                     <div class="card-body shadow">
@@ -146,7 +146,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @else
+                            @elseif($requestTickets->status == env('INPROGRESS'))
                             <form action="{{route('update_status_request_ticket',['id' => $requestTickets->id])}}"
                                 method="post">
                                 @method('PUT')
@@ -166,6 +166,7 @@
                                     <button type="submit" class="btn bg-gradient-info w-40 mt-4 mb-0">simpan</button>
                                 </div>
                             </form>
+                            @else
                             @endif
                             @endif
                         </div>

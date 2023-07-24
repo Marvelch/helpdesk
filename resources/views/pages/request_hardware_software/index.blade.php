@@ -31,6 +31,9 @@
                                 <tr>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        ID</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         No Transaksi</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -55,6 +58,9 @@
                             <tbody>
                                 @foreach($requestHardwareSoftware as $item)
                                 <tr>
+                                    <td class="align-middle small">
+                                        <span class="text-xs font-weight-bold">{{@$item->id}}</span>
+                                    </td>
                                     <td class="align-middle small">
                                         <span class="text-xs font-weight-bold">{{@$item->unique_request}}</span>
                                     </td>
@@ -89,20 +95,18 @@
                                     </td>
                                     <td class="align-middle text-center text-sm d-flex justify-content-center">
                                         <div class="row">
-                                            @if(Auth::user()->level_id != env('ADMIN_ACCESS') AND Auth::user()->level_id
-                                            !=
-                                            env('EDITOR_ACCESS'))
-                                            @if($item->created_by_user_id == Auth::user()->id)
-                                            <div class="col-md-4">
-                                                <a href="{{route('edit_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
-                                                    class="text-secondary font-weight-bold text-xs"
-                                                    data-toggle="tooltip" data-original-title="Edit user">
-                                                    <i class="fa-duotone fa-pen-to-square"></i>
-                                                </a>
-                                            </div>
-                                            @else
-                                            <!-- Kosong -->
-                                            @endif
+                                            @if(Auth::user()->level_id != env('LEVEL_ADMIN') AND Auth::user()->level_id != env('LEVEL_EDITOR'))
+                                                @if($item->created_by_user_id == Auth::user()->id OR (Auth::user()->position_id == env('MANAGER') AND Auth::user()->division_id == $item->division_id) OR Auth::user()->position_id == env('GENERAL_MENAGER'))
+                                                <div class="col-md-4">
+                                                    <a href="{{route('edit_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
+                                                        class="text-secondary font-weight-bold text-xs"
+                                                        data-toggle="tooltip" data-original-title="Edit user">
+                                                        <i class="fa-duotone fa-pen-to-square"></i>
+                                                    </a>
+                                                </div>
+                                                @else
+                                                <!-- Kosong -->
+                                                @endif
                                             @else
                                             <div class="col-md-4">
                                                 <a href="{{route('edit_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
@@ -120,15 +124,13 @@
                                                 </a>
                                             </div>
                                             <div class="col-md-4">
-                                                @if(Auth::user()->level_id != env('ADMIN_ACCESS') AND
-                                                Auth::user()->level_id !=
-                                                env('EDITOR_ACCESS'))
-                                                @if($item->created_by_user_id == Auth::user()->id)
-                                                <a class="text-secondary font-weight-bold text-xs"
-                                                    data-bs-toggle="modal" data-bs-target="#deleteModal{{$item->id}}">
-                                                    <i class="fa-duotone fa-trash"></i>
-                                                </a>
-                                                @endif
+                                                @if(Auth::user()->level_id != env('ADMIN_ACCESS') AND Auth::user()->level_id != env('EDITOR_ACCESS'))
+                                                    @if($item->created_by_user_id == Auth::user()->id)
+                                                    <a class="text-secondary font-weight-bold text-xs"
+                                                        data-bs-toggle="modal" data-bs-target="#deleteModal{{$item->id}}">
+                                                        <i class="fa-duotone fa-trash"></i>
+                                                    </a>
+                                                    @endif
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="deleteModal{{$item->id}}" tabindex="-1"
                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -252,7 +254,7 @@
                 "sSearch": " "
             },
             "order": [
-                [3, 'desc']
+                [0, 'desc']
             ],
         });
     });

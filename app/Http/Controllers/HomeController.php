@@ -69,8 +69,9 @@ class HomeController extends Controller
         $items = User::find(Crypt::decryptString($id));
         $companys = company::all();
         $divisions = division::all();
+        $position = Position::all();
         
-        return view('pages.user.edit',compact('items','companys','divisions'));
+        return view('pages.user.edit',compact('items','companys','divisions','position'));
     }
 
      /**
@@ -131,11 +132,11 @@ class HomeController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name'              => 'required|unique:users|min:2|max:255',
-            'username'          => 'required|unique:users|min:2|max:255',
+            'name'              => 'required|min:2|max:255',
+            'username'          => 'required|min:2|max:255',
             'password'          => 'required',
             'confirm_password'  => 'required',
-            'phone'             => 'required|unique:users',
+            'phone'             => 'required',
             'company_id'        => 'required',
             'division_id'       => 'required',
             'position_id'       => 'required'
@@ -152,33 +153,44 @@ class HomeController extends Controller
                         'password'      =>  Hash::make($request->password),
                         'password_text' =>  $request->password,
                         'phone'         =>  $request->phone, 
-                        'company_id'    =>  $request->company_id
+                        'company_id'    =>  $request->company_id,
+                        'position_id'   =>  $request->position_id,
+                        'position_id'   =>  $request->position_id
                     ]);
 
                     DB::commit();
-                    return redirect('users')->with('success','Pembaharuan Informasi Pengguna Berhasil !');
+                    return redirect('users')->with('BERHASIL','Pembaharuan Informasi Pengguna Berhasil !');
                 }else{
                     DB::rollback();
-                    return back()->with('failed','Make sure the password is correct');
+                    return back()->with('GAGAL','Password Tidak Sesuai, Tolong Periksa Lagi');
                 }
             }else{
                  User::find($id)->update([
-                    'name'      =>  $request->name,
-                    'email'     =>  $request->email,
-                    'phone'     =>  $request->phone, 
-                    'company_id'=>  $request->company_id
+                    'name'          =>  $request->name,
+                    'email'         =>  $request->email,
+                    'password'      =>  Hash::make($request->password),
+                    'password_text' =>  $request->password,
+                    'phone'         =>  $request->phone, 
+                    'company_id'    =>  $request->company_id,
+                    'position_id'   =>  $request->position_id,
+                    'position_id'   =>  $request->position_id
                 ]);
 
                 DB::commit();
-                return redirect('users')->with('success','Pembaharuan Informasi Pengguna Berhasil !');
+                return redirect('users')->with('BERHASIL','Pembaharuan Informasi Pengguna Berhasil !');
             }
             
+            DB::commit();
+
+            Alert::success('BERHASIL','Pembaharuan Data Pengguna Telah Berhasil');
+
+            return redirect()->route('index_users');
         } catch (\Throwable $th) {
             //throw $th;
 
             DB::rollback();
 
-            return back()->with('failed','Pembaharuan Data Tidak Berhasil!');
+            return back()->with('GAGAL','Pembaharuan Data Tidak Berhasil!');
         }
     }
 }

@@ -189,7 +189,7 @@ class RequestTicketController extends Controller
                                 ->where('request_tickets.id',$id)
                                 ->get();
 
-            if($data[0]->status == env('INPROGRESS')) {
+            if(@$data[0]->status == env('INPROGRESS') OR @$data[0]->status == env('DEFAULT')) {
                 DB::rollback();
 
                 Alert::info('OPPSS...','Permintaan Hardware & Software Belum Selesai');
@@ -207,11 +207,12 @@ class RequestTicketController extends Controller
 
             return back();
         } catch (\Throwable $th) {
-            DB::rollback();
+            // DB::rollback();
 
-            Alert::success('GAGAL','Kegagalan helpdesk pembaharuan informasi tiket');
+            // Alert::success('GAGAL','Kegagalan helpdesk pembaharuan informasi tiket');
 
-            return back();
+            // return back();
+            return $th;
         }
     }
 

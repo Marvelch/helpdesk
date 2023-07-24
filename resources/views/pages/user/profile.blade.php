@@ -41,10 +41,10 @@
                             </a>
                         </li> -->
                         <li class="nav-item">
-                            <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
                                 href="javascript:;" role="tab" aria-selected="false"><a href="{{route('logout')}}">
                                     <i class="fa-duotone fa-right-from-bracket small"></i>
-                                    <span class="ms-1 small">Log out</span></a>
+                                    <span class="ms-1 small">Sign Out</span></a>
                             </a>
                         </li>
                     </ul>
@@ -105,16 +105,12 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="w-40">Perusahaan</td>
-                                                    <td class="text-capitalize">: 
-                                                        <?php $company_id = Auth::user()->company_id;
-                                                        
-                                                        echo $company_id
-                                                        ?></td>
+                                                    <td class="text-capitalize">: {{Auth::user()->company->company}}</td>
 
                                                 </tr>
                                                 <tr>
                                                     <td class="w-40">Divisi</td>
-                                                    <td class="text-capitalize">:</td>
+                                                    <td class="text-capitalize">: {{Auth::user()->division->division}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
