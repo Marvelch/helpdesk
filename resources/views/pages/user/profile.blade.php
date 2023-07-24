@@ -89,28 +89,28 @@
                                             <tbody>
                                                 <tr>
                                                     <td class="w-40">Nama Lengkap</td>
-                                                    <td class="text-capitalize">: {{Auth::user()->name}}</td>
+                                                    <td class="text-capitalize">: {{@Auth::user()->name}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="w-40">Email</td>
-                                                    <td class="text-capitalize">: {{Auth::user()->email}}</td>
+                                                    <td class="text-capitalize">: {{@Auth::user()->email}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="w-40">Username</td>
-                                                    <td class="text-capitalize">: {{Auth::user()->username}}</td>
+                                                    <td class="text-capitalize">: {{@Auth::user()->username}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="w-40">Telepon</td>
-                                                    <td class="text-capitalize">: {{Auth::user()->phone}}</td>
+                                                    <td class="text-capitalize">: {{@Auth::user()->phone}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="w-40">Perusahaan</td>
-                                                    <td class="text-capitalize">: {{Auth::user()->company->company}}</td>
+                                                    <td class="text-capitalize">: {{@Auth::user()->company->company}}</td>
 
                                                 </tr>
                                                 <tr>
                                                     <td class="w-40">Divisi</td>
-                                                    <td class="text-capitalize">: {{Auth::user()->division->division}}</td>
+                                                    <td class="text-capitalize">: {{@Auth::user()->division->division}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
