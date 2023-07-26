@@ -36,11 +36,126 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-4">
-                            <img src="https://cdni.iconscout.com/illustration/premium/thumb/approval-contract-7413549-6062043.png" class="rounded" alt="" srcset="" style="width: 57%;">
-                            <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px;">
+                        <div class="col-4 text-center">
+                            @if($headers->status == env('DEFAULT') OR $headers->status == env('INPROGRESS'))
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <img src="https://cdn3d.iconscout.com/3d/premium/thumb/businessman-working-on-laptop-2996954-2493508.png" class="rounded" alt="" srcset="" style="width: 80%;">
+                                </div>
+                                <div class="col-md-12 d-flex justify-content-center">
+                                    @if(Auth::user()->position_id == env('MANAGER') AND Auth::user()->division_id == $headers->division_id)
+                                    @if($headers->approval_manager == env('NOT_ACCEPTED') AND $headers->approval_general_manager == env('NOT_ACCEPTED') AND $headers->approval_supervisor == env('NOT_ACCEPTED'))
+                                        <select name="approval_manager" id="" class="form-control form-control-sm w-60">
+                                            <option value="1">Terima</option>
+                                            <option value="2">Tolak</option>
+                                        </select>
+                                    @elseif($headers->approval_manager == env('ACCEPTED'))
+                                        <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
+                                            Terima Kasih, Telah Menyetujui Permintaan {{@$headers->unique_request}}
+                                        </p>
+                                    @elseif($headers->approval_manager == env('NOT_ACCEPTED'))
+                                        <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
+                                            Hi {{Auth::user()->name}}, Telah Membatalkan Permintaan
+                                        </p>
+                                    @endif
+                                @endif
+                                
+                                @if(Auth::user()->position_id == env('GENERAL_MENAGER'))
+                                    @if($headers->approval_manager == env('ACCEPTED') AND $headers->approval_general_manager == env('NOT_ACCEPTED') AND $headers->approval_supervisor == env('NOT_ACCEPTED'))
+                                        <select name="approval_general_manager" id="" class="form-control form-control-sm w-60">
+                                            <option value="1">Terima</option>
+                                            <option value="2">Tolak</option>
+                                        </select>
+                                    @elseif($headers->approval_general_manager == env('ACCEPTED'))
+                                        <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
+                                            Terima Kasih, Telah Menyetujui Permintaan {{@$headers->unique_request}}
+                                        </p>
+                                    @elseif($headers->approval_general_manager == env('CANCEL') AND $headers->status = env('UNCOMPLETED'))
+                                        <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
+                                            Hi {{Auth::user()->name}}, Telah Membatalkan Permintaan
+                                        </p>
+                                    @else 
+                                         <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
+                                            Menunggu Persetujuan Dari Manager & General Manager
+                                        </p>
+                                    @endif
+                                @endif
+
+                                @if(Auth::user()->division->division == env('DIVISION_IT'))
+                                    @if($headers->approval_general_manager == env('ACCEPTED') AND $headers->approval_manager == env('ACCEPTED') AND $headers->approval_supervisor == env('NOT_ACCEPTED'))
+                                        <select name="approval_supervisor" id="" class="form-control form-control-sm w-60">
+                                            <option value="1">Terima</option>
+                                            <option value="2">Tolak</option>
+                                        </select>
+                                    @elseif($headers->approval_supervisor == env('ACCEPTED'))
+                                        <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
+                                            Terima Kasih, Telah Menyetujui Permintaan {{@$headers->unique_request}}
+                                        </p>
+                                    @elseif($headers->approval_supervisor == env('CANCEL') AND $headers->status = env('UNCOMPLETED'))
+                                        <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
+                                            Hi {{Auth::user()->name}}, Telah Membatalkan Permintaan
+                                        </p>
+                                    @else 
+                                         <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
+                                            Menunggu Persetujuan Dari Manager & General Manager
+                                        </p>
+                                    @endif
+                                @endif
+
+                                @if(Auth::user()->position_id == env('STAFF') AND Auth::user()->division_id == $headers->division_id)
+                                    @if(Auth::user()->division->division != env('DIVISION_IT'))
+                                        @if($headers->status == env('DEFAULT'))
+                                            <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px;">
+                                                Dalam Pengecekan Oleh Bagian Terkait
+                                            </p>
+                                        @elseif($headers->status == env('INPROGRESS'))
+                                            <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px;">
+                                                Dalam Pengecekan Oleh Bagian Terkait
+                                            </p>
+                                        @elseif($headers->status == env('COMPLETED'))
+                                            <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
+                                                Permintaan Telah Diterima
+                                            </p>
+                                        @else
+                                            <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
+                                                Telah Dibatalkan
+                                            </p>
+                                        @endif
+                                    @else
+                                        <!-- Kosong karena IT -->
+                                    @endif
+                                @endif
+                                </div>
+                            </div>
+                            @elseif($headers->status == env('UNCOMPLETED'))
+                                <img src="https://cdni.iconscout.com/illustration/premium/thumb/website-warning-7328003-5988071.png" class="rounded" alt="" srcset="" style="width: 150px;">
+                                <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
+                                    @if($headers->approval_manager == env('CANCEL'))
+                                        <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 15px;">
+                                            Manager Telah Membatalkan Permintaan
+                                        </p>
+                                    @elseif($headers->approval_general_manager == env('CANCEL'))
+                                        <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 15px;">
+                                            General Manager Telah Membatalkan Permintaan
+                                        </p>
+                                    @elseif($headers->approval_supervisor == env('CANCEL'))
+                                        <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 15px;">
+                                            Staff IT/Supervisor Telah Membatalkan Permintaan
+                                        </p>
+                                    @else
+
+                                    @endif
+                                </p>
+                            @elseif($headers->status == env('COMPLETED'))
+                                <img src="https://cdn3d.iconscout.com/3d/premium/thumb/accept-5064235-4223213.png" class="rounded" alt="" srcset="" style="width: 150px;">
+                                <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 15px;" class="text-capitalize">
+                                    Permintaan {{@$headers->unique_request}} telah diterima & dev IT akan menghubungi {{$headers->userRequest->name}}
+                                </p>
+                            @endif
+                            <!-- <img src="https://cdni.iconscout.com/illustration/premium/thumb/approval-contract-7413549-6062043.png" class="rounded" alt="" srcset="" style="width: 57%;">
+                            <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
                             @if($headers->approval_supervisor == '0')
-                            @if(Auth::user()->position_id == env('STAFF') AND Auth::user()->division_id == env('DIVISION_IT')) <!-- Access for Staff IT or Supervisor -->
+                            @if(Auth::user()->position_id == env('STAFF') AND Auth::user()->division_id == env('DIVISION_IT'))
                                 Persetujuan Staff IT / Supervisor
                                 </p>
                             <select name="approval_supervisor" id="" class="form-control form-control-sm w-60">
@@ -51,7 +166,7 @@
                             Menunggu Persetujuan Pihak Terkait
                             @endif
                             @elseif($headers->approval_manager == '0' AND $headers->approval_supervisor <> '0' AND $headers->approval_supervisor <> '2')
-                            @if(Auth::user()->position_id == env('MANAGER') AND Auth::user()->division_id == $headers->userRequest->division->id) <!-- Access for Manager -->
+                            @if(Auth::user()->position_id == env('MANAGER') AND Auth::user()->division_id == $headers->userRequest->division->id)
                                 Persetujuan Manager
                                 </p>
                             <select name="approval_manager" id="" class="form-control form-control-sm w-60">
@@ -62,7 +177,7 @@
                             Menunggu Persetujuan Pihak Terkait
                             @endif
                             @elseif($headers->approval_general_manager == '0' AND $headers->approval_manager <> '0' AND $headers->approval_manager <> '2' AND $headers->approval_supervisor <> '0' AND $headers->approval_supervisor <> '2')
-                            @if(Auth::user()->position_id == env('GENERAL_MENAGER')) <!-- Access for General Manager -->
+                            @if(Auth::user()->position_id == env('GENERAL_MENAGER'))
                             Persetujuan General Manager
                                 </p>
                             <select name="approval_general_manager" id="" class="form-control form-control-sm w-60">
@@ -74,12 +189,11 @@
                             @endif
                             @elseif($headers->approval_general_manager == '2' OR $headers->approval_manager == '2' OR $headers->approval_supervisor == '2')
                             <div class="row">
-                                <!-- <img src="https://cdn3d.iconscout.com/3d/premium/thumb/payment-error-6871330-5654914.png" alt="" srcset="" style="width: 60%;"> -->
                                 <p style="font-size: 13px; color: red;" class="text-uppercase">Permintaan #{{@$headers->unique_request}} Ditolak</p>
                             </div>
                             @else
                                 Telah Diterima Oleh IT, Manager, General Manager
-                            @endif
+                            @endif -->
                         </div>
                         </div>
                     </div>
@@ -169,8 +283,24 @@
                             </table>
                         </table>
                         <div class="form-group mt-4"> 
-                                @if($headers->status == 0)
-                                    @if(Auth::user()->position_id == env('STAFF') AND Auth::user()->division_id == env('DIVISION_IT'))
+                                @if($headers->status == env('DEFAULT') OR $headers->status == env('INPROGRESS'))
+                                    @if(Auth::user()->position_id == env('MANAGER') AND $headers->approval_manager == env('NOT_ACCEPTED') AND Auth::user()->division_id == $headers->division_id)
+                                        <div class="text-center d-flex justify-content-end">
+                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
+                                                data-bs-target="#update">simpan</button>
+                                        </div>
+                                    @elseif(Auth::user()->position_id == env('GENERAL_MENAGER') AND $headers->approval_general_manager == env('NOT_ACCEPTED') AND $headers->approval_manager == env('ACCEPTED'))
+                                        <div class="text-center d-flex justify-content-end">
+                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
+                                                data-bs-target="#update">simpan</button>
+                                        </div>
+                                    @elseif(Auth::user()->division->division == env('DIVISION_IT') AND $headers->approval_general_manager == env('ACCEPTED') AND $headers->approval_manager == env('ACCEPTED'))
+                                        <div class="text-center d-flex justify-content-end">
+                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
+                                                data-bs-target="#update">simpan</button>
+                                        </div>
+                                    @endif
+                                    <!-- @if(Auth::user()->position_id == env('STAFF') AND Auth::user()->division_id == env('DIVISION_IT'))
                                         @if($headers->approval_supervisor == env('DEFAULT'))
                                             <div class="text-center d-flex justify-content-end">
                                                 <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
@@ -192,42 +322,8 @@
                                             <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
                                                 data-bs-target="#update">simpan</button>
                                         </div>
-                                    @endif
+                                    @endif -->
                                 @endif
-                            <!-- @if((Auth::user()->position_id == env('STAFF') AND Auth::user()->division_id == env('DIVISION_IT')) OR Auth::user()->position_id == env('GENERAL_MENAGER') OR Auth::user()->position_id == env('MANAGER')) 
-                                @if((Auth::user()->position_id == env('STAFF') AND $headers->approval_supervisor == 1) OR (Auth::user()->position_id == env('MANAGER') AND $headers->approval_manager == 1) OR (Auth::user()->position_id == env('GENERAL_MENAGER') AND $headers->approval_general_manager == 1))
-                                    @if(Auth::user()->division_id == env('DIVISION_IT') AND $headers->status == env('DEFAULT'))
-                                        <div class="text-center d-flex justify-content-end">
-                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
-                                                data-bs-target="#update">simpan</button>
-                                        </div>
-                                    @else 
-                                        <div class="text-center d-flex justify-content-end">
-                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
-                                                data-bs-target="#update" disabled>simpan</button>
-                                        </div>
-                                    @endif
-                                @elseif(Auth::user()->division_id == env('DIVISION_IT') OR (Auth::user()->division_id == $headers->division_id AND Auth::user()->position_id == env('MANAGER')) OR Auth::user()->position_id == env('GENERAL_MENAGER'))
-                                    @if(Auth::user()->position_id == env('STAFF') AND Auth::user()->division_id == env('DIVISION_IT'))
-                                        <div class="text-center d-flex justify-content-end">
-                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
-                                                data-bs-target="#update">simpan</button>
-                                        </div>
-                                    @endif
-                                    @if($headers->approval_manager == '0' AND $headers->approval_supervisor <> '0' AND $headers->approval_supervisor <> '2')
-                                        <div class="text-center d-flex justify-content-end">
-                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
-                                                data-bs-target="#update">simpan</button>
-                                        </div>
-                                    @endif 
-                                    @if($headers->approval_general_manager == '0' AND $headers->approval_manager <> '0' AND $headers->approval_manager <> '2' AND $headers->approval_supervisor <> '0' AND $headers->approval_supervisor <> '2')
-                                        <div class="text-center d-flex justify-content-end">
-                                            <button type="button" class="btn bg-gradient-info w-15 mt-4 mb-0" data-bs-toggle="modal"
-                                                data-bs-target="#update">simpan</button>
-                                        </div>
-                                    @endif
-                                @endif
-                            @endif -->
                         </div>
                         <!-- Modal -->
                         <div class="modal fade" id="update" tabindex="-1" aria-labelledby="exampleModalLabel"

@@ -37,7 +37,10 @@
                                         No Transaksi</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Permintaan Dari</th>
+                                        Permintaan</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Dibuat</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Keterangan</th>
@@ -66,7 +69,11 @@
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span
-                                            class="text-xs font-weight-bold">{{Str::ucfirst($item->userRequest->name)}}</span>
+                                            class="text-xs font-weight-bold">{{@Str::ucfirst($item->userRequest->name)}}</span>
+                                    </td>
+                                    <td class="align-middle text-sm">
+                                        <span
+                                            class="text-xs font-weight-bold">{{@Str::ucfirst($item->users->name)}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span class="text-xs font-weight-bold">{{@$item->description}}</span>

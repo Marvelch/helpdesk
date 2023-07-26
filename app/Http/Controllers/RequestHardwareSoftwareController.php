@@ -124,9 +124,11 @@ class RequestHardwareSoftwareController extends Controller
         try {
             $uniqueTransaction = generateUniqueCode();
 
+            $data = RequestHardwareSoftware::find($request->ticketId);
+            
             RequestHardwareSoftware::create([
                 'unique_request'        => $uniqueTransaction,
-                'requests_from_users'   => Auth::user()->id,
+                'requests_from_users'   => $data->requests_from_users,
                 'status'                => 0,
                 'description'           => 'Request From Ticket #'.$request->ticketId,
                 'request_ticket_id'     => $request->ticketId,
@@ -210,9 +212,38 @@ class RequestHardwareSoftwareController extends Controller
 
         try {
             // Approvement Staff IT, Manager, General Manager 
-            if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_supervisor',0)->exists()) {
+            if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_manager',0)->exists()) {
+                    RequestHardwareSoftware::find($request->id_transaction)->update([
+                        'approval_manager' => $request->approval_manager,
+                        'status' => 1
+                    ]);
+
+                    if($request->approval_manager == 2) {
+                        RequestHardwareSoftware::where('id',$request->id_transaction)->update([
+                            'status' => 3
+                        ]);
+                    }
+
+                    DB::commit();
+                    Alert::success('BERHASIL','Pembaharuan Status Permintaan Telah Berhasil');
+                    return redirect()->back();
+            }else if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_general_manager',0)->exists()) {
+                    RequestHardwareSoftware::find($request->id_transaction)->update([
+                        'approval_general_manager' => $request->approval_general_manager
+                    ]);
+
+                    if($request->approval_general_manager == 2) {
+                        RequestHardwareSoftware::where('id',$request->id_transaction)->update([
+                            'status' => 3
+                        ]);
+                    }
+
+                    DB::commit();
+                    Alert::success('BERHASIL','Pembaharuan Status Permintaan Telah Berhasil');
+                    return redirect()->back();
+            }else if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_supervisor',0)->exists()) {
                     RequestHardwareSoftware::where('id',$request->id_transaction)->update([
-                        'approval_supervisor' => $request->approval_supervisor
+                        'approval_supervisor' => $request->approval_supervisor,
                     ]);
 
                     if($request->approval_supervisor == 2) {
@@ -225,35 +256,6 @@ class RequestHardwareSoftwareController extends Controller
                     Alert::success('BERHASIL','Pembaharuan Status Permintaan Telah Berhasil');
                     return redirect()->back();
                     
-            }else if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_manager',0)->exists()) {
-                    RequestHardwareSoftware::find($request->id_transaction)->update([
-                        'approval_manager' => $request->approval_manager
-                    ]);
-
-                    if($request->approval_supervisor == 2) {
-                        RequestHardwareSoftware::where('id',$request->id_transaction)->update([
-                            'status' => 3
-                        ]);
-                    }
-
-                    DB::commit();
-                    Alert::success('BERHASIL','Pembaharuan Status Permintaan Telah Berhasil');
-                    return redirect()->back();
-
-            }else if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_general_manager',0)->exists()) {
-                    RequestHardwareSoftware::find($request->id_transaction)->update([
-                        'approval_general_manager' => $request->approval_general_manager
-                    ]);
-
-                    if($request->approval_supervisor == 2) {
-                        RequestHardwareSoftware::where('id',$request->id_transaction)->update([
-                            'status' => 3
-                        ]);
-                    }
-
-                    DB::commit();
-                    Alert::success('BERHASIL','Pembaharuan Status Permintaan Telah Berhasil');
-                    return redirect()->back();
             }
 
             // Validasi pesetujuan dari supervisor, manager dan general menager 

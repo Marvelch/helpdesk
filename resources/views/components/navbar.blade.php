@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="d-flex flex-column justify-content-center">
                                         <h6 class="text-sm font-weight-normal mb-1">
-                                            <span class="font-weight-bold">Laporan tiket #{{$item->id}}</span> from Laur
+                                            <span class="font-weight-bold" href="{{url($item->path)}}">Laporan tiket #{{$item->id}}</span> Helpdesk
                                         </h6>
                                         <p class="text-xs text-secondary mb-0 ">
                                             <i class="fa fa-clock me-1"></i>
