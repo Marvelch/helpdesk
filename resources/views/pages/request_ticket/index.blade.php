@@ -56,9 +56,6 @@
                                         Permintaan Dari</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Ditugaskan</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Masalah</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -87,9 +84,6 @@
                                 </td>
                                 <td class="align-middle text-sm">
                                     <span class="text-xs font-weight-bold">{{@Str::ucfirst($item->usersReq->name)}}</span>
-                                </td>
-                                <td class="align-middle text-sm">
-                                    <span class="text-xs font-weight-bold">{{@Str::ucfirst($item->usersAss->name)}}</span>
                                 </td>
                                 <td class="align-middle text-sm">
                                     <span class="text-xs font-weight-bold">{{@$item->title}}</span>
