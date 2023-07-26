@@ -37,7 +37,7 @@
                                         No Transaksi</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Permintaan Dari</th>
+                                        Permintaan</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Dibuat</th>
