@@ -53,7 +53,7 @@ class RequestTicketController extends Controller
             'company'       => 'required',
             'division'      => 'required',
             'location'      => 'required',
-            'typeofwork'    => 'required'
+            'work_type'     => 'required'
         ]);
 
         DB::beginTransaction();
@@ -69,7 +69,7 @@ class RequestTicketController extends Controller
                 'company_id'            => $request->company,
                 'division_id'           => $request->division,
                 'deadline'              => $request->deadline,
-                'type_of_work_id'       => $request->typeOfWork,
+                'type_of_work_id'       => $request->work_type,
                 'location'              => $request->location,
                 'description'           => $request->description,
                 'status'                => 0,
@@ -136,7 +136,7 @@ class RequestTicketController extends Controller
                     ]);
 
                     $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER')));
-                    // $data = User::find($request->assignTo);
+             
                     $data = requestTicket::find(Crypt::decryptString($request->notification));
 
                     $count = Notification::where('users_id',$request->assignTo)
@@ -207,12 +207,11 @@ class RequestTicketController extends Controller
 
             return back();
         } catch (\Throwable $th) {
-            // DB::rollback();
+            DB::rollback();
 
-            // Alert::success('GAGAL','Kegagalan helpdesk pembaharuan informasi tiket');
+            Alert::error('GAGAL','Kegagalan helpdesk pembaharuan informasi tiket');
 
-            // return back();
-            return $th;
+            return back();
         }
     }
 
@@ -261,6 +260,19 @@ class RequestTicketController extends Controller
     public function searchUsers(Request $request)
     {
         $data = User::where('name','LIKE','%'.request('q').'%')->paginate(5);
+
+        return response()->json($data);
+    }
+
+    /**
+     * look up the user in the users table
+     */
+    public function search_users_assign(Request $request)
+    {
+        $data = DB::table('divisions')
+                    ->join('users','divisions.id','=','users.division_id')
+                    ->where('divisions.division',env('DIVISION_IT'))
+                    ->where('users.name','LIKE','%'.request('q').'%')->paginate(5);
 
         return response()->json($data);
     }

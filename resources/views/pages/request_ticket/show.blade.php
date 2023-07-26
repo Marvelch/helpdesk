@@ -66,11 +66,11 @@
                                     </tr>
                                     <tr>
                                         <td>Perusahaan</td>
-                                        <td>: {{@$requestTickets->company->company}}</td>
+                                        <td>: {{$requestTickets->company->company}}</td>
                                     </tr>
                                     <tr>
                                         <td>Devisi</td>
-                                        <td>: {{@$requestTickets->division->division}}</td>
+                                        <td>: {{$requestTickets->division->division}}</td>
                                     </tr>
                                     <tr>
                                         <td>Hingga Tanggal</td>
@@ -78,7 +78,7 @@
                                     </tr>
                                     <tr>
                                         <td>Jenis Pekerjaan</td>
-                                        <td>: {{@$requestTickets->typeOfWork->typeofwork}}</td>
+                                        <td>: {{@$requestTickets->work_type->type}}</td>
                                     </tr>
                                     <tr>
                                         <td>Lokasi</td>
@@ -135,9 +135,7 @@
                                 @endif
                             </form>
                             @endif
-                            @if(@$requestTickets->assignment_on_user_id == Auth::user()->id AND @$requestTickets->status
-                            == env('INPROGRESS') OR Auth::user()->level_id == env('LEVEL_ADMIN') OR
-                            Auth::user()->level_id == env('LEVEL_EDITOR'))
+                            @if(@$requestTickets->assignment_on_user_id == Auth::user()->id AND @$requestTickets->status == env('INPROGRESS') OR Auth::user()->level_id == env('LEVEL_ADMIN') OR Auth::user()->level_id == env('LEVEL_EDITOR'))
                             @if($requestTickets->status == env('COMPLETED'))
                             <div class="form-group mt-2 text-capitalize">
                                 <div class="card">
@@ -185,11 +183,12 @@
 
             $('.assignTo').select2({
                 ajax: {
-                    url: '{{url("/request-tickets/searching-users")}}',
+                    url: '{{url("/request-tickets/searching/users/assign/to")}}',
                     dataType: 'json',
                     processResults: function ({
                         data
                     }) {
+                        console.log(data);
                         return {
                             results: $.map(data, function (item) {
                                 return {

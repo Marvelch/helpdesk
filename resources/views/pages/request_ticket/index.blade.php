@@ -56,9 +56,6 @@
                                         Permintaan Dari</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Ditugaskan</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Masalah</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -89,9 +86,6 @@
                                     <span class="text-xs font-weight-bold">{{@Str::ucfirst($item->usersReq->name)}}</span>
                                 </td>
                                 <td class="align-middle text-sm">
-                                    <span class="text-xs font-weight-bold">{{@Str::ucfirst($item->usersAss->name)}}</span>
-                                </td>
-                                <td class="align-middle text-sm">
                                     <span class="text-xs font-weight-bold">{{@$item->title}}</span>
                                 </td>
                                 <td class="align-middle text-sm">
@@ -102,11 +96,11 @@
                                 </td>
                                 <td class="align-middle text-sm text-center">
                                     @if($item->status == 0) 
-                                        <i class="fa-solid fa-circle-exclamation" style="color: #f73640;" title="MENUNGGU"></i>
+                                        <i class="fa-solid fa-seal-question fa-lg" style="color: #f73640;" title="Menunggu"></i>
                                     @elseif($item->status == 1) 
                                         <i class="fa-duotone fa-pen-circle fa-lg" title="DALAM PROSES" style="--fa-primary-color: #5ba8fb; --fa-secondary-color: #5ba8fb;"></i>
                                     @else
-                                         <i class="fa-solid fa-badge-check fa-lg" title="DITERIMA" style="color: #54b95b;"></i>
+                                         <i class="fa-solid fa-badge-check fa-lg" title="Selesai" style="color: #54b95b;"></i>
                                     @endif
                                 </td>
                                 <td class="align-middle text-sm">

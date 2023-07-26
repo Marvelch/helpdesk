@@ -65,7 +65,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Jenis Pekerjaan</label>
-                                    <select name="typeofwork" id="" class="form-control form-control-sm">
+                                    <select name="work_type" id="" class="form-control form-control-sm">
                                         <option value="" selected>Pilih Jenis Pekerjaan</option>
                                         @foreach($typeOfWorks as $item)
                                         <option value="{{$item->id}}">{{$item->type}}</option>

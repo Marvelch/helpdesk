@@ -40,10 +40,10 @@ class requestTicket extends Model
     }
 
     public function division() {
-        return $this->belongsTo(division::class,'assignment_on_user_id','id');
+        return $this->belongsTo(division::class,'division_id','id');
     }
 
-    public function typeOfWork() {
+    public function work_type() {
         return $this->belongsTo(WorkType::class,'type_of_work_id','id');
     }
 }

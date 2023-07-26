@@ -161,6 +161,7 @@ Route::group(['prefix' => 'request-tickets','middleware' => ['auth']], function(
     Route::get('/search-company',[RequestTicketController::class,'searchCompany']);
     Route::get('/search-division/{id}',[RequestTicketController::class,'searchDivision']);
     Route::get('/searching-users',[RequestTicketController::class,'searchUsers']);
+    Route::get('/searching/users/assign/to',[RequestTicketController::class,'search_users_assign']);
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
         
     });
