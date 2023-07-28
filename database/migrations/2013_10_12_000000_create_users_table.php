@@ -30,6 +30,7 @@ return new class extends Migration
             $table->foreign('division_id')->references('id')->on('divisions');
             $table->timestamp('last_seen')->nullable();
             $table->string('photo')->nullable();
+            $table->boolean('multi_company')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

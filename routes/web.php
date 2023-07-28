@@ -178,6 +178,7 @@ Route::group(['prefix' => 'request-hardware-software','middleware' => ['auth']],
     Route::get('/show/{id}',[RequestHardwareSoftwareController::class,'show'])->name('show_request_hardware_software');
     Route::put('/update',[RequestHardwareSoftwareController::class,'update'])->name('update_request_hardware_software');
     Route::get('/create/{id}/request-ticket',[RequestHardwareSoftwareController::class,'createRequestTicket'])->name('create_ticket_request_hardware_software');
+    Route::post('/destroy/{id}',[RequestHardwareSoftwareController::class,'destroy'])->name('destroy_request_hardware_software');
 
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
         Route::post('/delete/{id}/detail',[RequestHardwareSoftwareController::class,'destroyDetail'])->name('delete_detail_request_hardware_software');

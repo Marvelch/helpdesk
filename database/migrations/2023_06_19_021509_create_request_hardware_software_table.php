@@ -34,6 +34,7 @@ return new class extends Migration
             $table->foreign('request_ticket_id')->references('id')->on('request_tickets');
             $table->unsignedBigInteger('division_id')->nullable();
             $table->foreign('division_id')->references('id')->on('divisions');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

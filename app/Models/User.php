@@ -28,6 +28,7 @@ class User extends Authenticatable
         'phone',
         'position_id',
         'division_id',
+        'multi_company',
         'password',
     ];
 

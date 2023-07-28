@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RequestHardwareSoftware extends Model
 {
     use HasFactory;
+
+    use SoftDeletes;
 
     protected $table = 'request_hardware_software';
 
@@ -35,5 +38,9 @@ class RequestHardwareSoftware extends Model
 
     public function userRequest() {
         return $this->belongsTo(User::class,'requests_from_users','id');
+    }
+
+    public function division() {
+        return $this->belongsTo(division::class,'division_id','id');
     }
 }

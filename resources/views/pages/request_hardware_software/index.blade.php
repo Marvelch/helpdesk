@@ -69,11 +69,11 @@
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span
-                                            class="text-xs font-weight-bold">{{@Str::ucfirst($item->userRequest->name)}}</span>
+                                            class="text-xs font-weight-bold">{{@Str::ucfirst($item->userRequest->name ? $item->userRequest->name : $item->requests_by_user)}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span
-                                            class="text-xs font-weight-bold">{{@Str::ucfirst($item->users->name)}}</span>
+                                            class="text-xs font-weight-bold">{{@Str::ucfirst($item->users->name ? $item->users->name : $item->created_by_user)}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span class="text-xs font-weight-bold">{{@$item->description}}</span>
@@ -102,42 +102,42 @@
                                     </td>
                                     <td class="align-middle text-center text-sm d-flex justify-content-center">
                                         <div class="row">
+                                            <div class="col-md-4">
                                             @if(Auth::user()->level_id != env('LEVEL_ADMIN') AND Auth::user()->level_id != env('LEVEL_EDITOR'))
-                                                @if($item->created_by_user_id == Auth::user()->id OR (Auth::user()->position_id == env('MANAGER') AND Auth::user()->division_id == $item->division_id) OR Auth::user()->position_id == env('GENERAL_MENAGER'))
-                                                <div class="col-md-4">
-                                                    <a href="{{route('edit_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
-                                                        class="text-secondary font-weight-bold text-xs"
-                                                        data-toggle="tooltip" data-original-title="Edit user">
-                                                        <i class="fa-duotone fa-pen-to-square"></i>
-                                                    </a>
-                                                </div>
-                                                @else
-                                                <!-- Kosong -->
-                                                @endif
+                                            @if(Auth::user()->position_id == env('MANAGER') AND Auth::user()->division->division == $item->division) OR Auth::user()->position_id == env('GENERAL_MENAGER')
+                                           
+                                            <a href="{{route('edit_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
+                                                class="text-secondary font-weight-bold text-xs"
+                                                data-toggle="tooltip" data-original-title="Edit user">
+                                                <i class="fa-duotone fa-pen-to-square"></i>
+                                            </a>
                                             @else
-                                            <div class="col-md-4">
-                                                <a href="{{route('edit_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
-                                                    class="text-secondary font-weight-bold text-xs"
-                                                    data-toggle="tooltip" data-original-title="Edit user">
-                                                    <i class="fa-duotone fa-pen-to-square"></i>
-                                                </a>
-                                            </div>
+                                            <!-- Kosong -->
                                             @endif
-                                            <div class="col-md-4">
-                                                <a href="{{route('show_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
-                                                    class="text-secondary font-weight-bold text-xs ml-1 mr-1"
-                                                    data-toggle="tooltip" data-original-title="Edit user">
-                                                    <i class="fa-solid fa-eye"></i>
-                                                </a>
+                                            @else
+                                            <a href="{{route('edit_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
+                                                class="text-secondary font-weight-bold text-xs"
+                                                data-toggle="tooltip" data-original-title="Edit user">
+                                                <i class="fa-duotone fa-pen-to-square"></i>
+                                            </a>
+                                            @endif
                                             </div>
+                                             <div class="col-md-4">
+                                                <a href="{{route('show_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
+                                                class="text-secondary font-weight-bold text-xs ml-1 mr-1"
+                                                data-toggle="tooltip" data-original-title="Edit user">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                             </div>
                                             <div class="col-md-4">
-                                                @if(Auth::user()->level_id != env('ADMIN_ACCESS') AND Auth::user()->level_id != env('EDITOR_ACCESS'))
-                                                    @if($item->created_by_user_id == Auth::user()->id)
-                                                    <a class="text-secondary font-weight-bold text-xs"
-                                                        data-bs-toggle="modal" data-bs-target="#deleteModal{{$item->id}}">
-                                                        <i class="fa-duotone fa-trash"></i>
-                                                    </a>
-                                                    @endif
+                                                @if(Auth::user()->level_id != env('LEVEL_ADMIN') AND
+                                                Auth::user()->level_id != env('LEVEL_EDITOR'))
+                                                @if($item->requests_from_users == Auth::user()->id)
+                                                <a class="text-secondary font-weight-bold text-xs"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal{{$item->id}}">
+                                                    <i class="fa-duotone fa-trash"></i>
+                                                </a>
+                                                @endif
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="deleteModal{{$item->id}}" tabindex="-1"
                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -165,15 +165,12 @@
                                                                         @endif
                                                                     </div>
                                                                 </div>
-                                                                <!-- <i class="fa-sharp fa-solid fa-brake-warning text-danger fa-lg"
-                                                            style="margin-right: 10px;"></i> konfirmasi Penghapusan Data
-                                                        <b>{{@$item->fullname}} - {{$item->username}}</b> -->
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary btn-sm"
                                                                     data-bs-dismiss="modal">Batal</button>
                                                                 <form
-                                                                    action="{{route('destroy_bank_accounts',['id' => $item->id])}}"
+                                                                    action="{{route('destroy_request_hardware_software',['id' => $item->id])}}"
                                                                     method="post">
                                                                     @csrf
                                                                     @if($item->approval_supervisor == 0)

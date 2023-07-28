@@ -15,6 +15,7 @@ use Auth;
 use DB;
 use Alert;
 use App\Models\DetailInventory;
+use App\Models\division;
 use Illuminate\Support\Str;
 
 class RequestHardwareSoftwareController extends Controller
@@ -24,12 +25,22 @@ class RequestHardwareSoftwareController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->level_id == env('LEVEL_ADMIN') OR Auth::user()->level_id == env('LEVEL_EDITOR') OR Auth::user()->position_id == env('GENERAL_MENAGER')) {
+        if(Auth::user()->level_id == env('LEVEL_ADMIN') OR Auth::user()->division->division == env('DIVISION_IT') OR Auth::user()->level_id == env('LEVEL_EDITOR') OR Auth::user()->position_id == env('GENERAL_MENAGER')) {
             $requestHardwareSoftware = RequestHardwareSoftware::all();
         }elseif(Auth::user()->position_id == env('MANAGER')){
-            $requestHardwareSoftware = RequestHardwareSoftware::where('division_id',Auth::user()->division_id)->get();
+            $getDivision = division::find(Auth::user()->division_id);
+
+            $requestHardwareSoftware = DB::table('divisions')
+                                            ->select('divisions.division','x.name as requests_by_user','y.name as created_by_user','request_hardware_software.requests_from_users','request_hardware_software.status','request_hardware_software.created_by_user_id','request_hardware_software.division_id','request_hardware_software.unique_request','request_hardware_software.id','request_hardware_software.approval_supervisor','request_hardware_software.approval_manager','request_hardware_software.approval_general_manager')
+                                            ->join('request_hardware_software','divisions.id','=','request_hardware_software.division_id')
+                                            ->join('users as x','request_hardware_software.requests_from_users','=','x.id')
+                                            ->join('users as y','request_hardware_software.created_by_user_id','=','y.id')
+                                            ->where('divisions.division',$getDivision->division)
+                                            ->get();
         }else{
-            $requestHardwareSoftware = RequestHardwareSoftware::where('created_by_user_id',Auth::User()->id)->get();
+            $requestHardwareSoftware = RequestHardwareSoftware::where('created_by_user_id',Auth::User()->id)
+                                                                ->orWhere('requests_from_users',Auth::User()->id)
+                                                                ->get();
         }
 
         return view('pages.request_hardware_software.index',compact('requestHardwareSoftware'));
@@ -100,7 +111,7 @@ class RequestHardwareSoftwareController extends Controller
 
             DB::commit();
 
-            Alert::success('Success','New request has been successfully created');
+            Alert::success('BERHASIL','Penambahan Transaksi Telah Berhasil');
             
             return redirect()->route('index_request_hardware_software');
 
@@ -109,7 +120,9 @@ class RequestHardwareSoftwareController extends Controller
 
             DB::rollback();
 
-            return $th;
+            Alert::error('GAGAL','Penambahan Transaksi Baru Gagal, Ulangi Lagi');
+            
+            return back();
         }
     }
 
@@ -124,11 +137,11 @@ class RequestHardwareSoftwareController extends Controller
         try {
             $uniqueTransaction = generateUniqueCode();
 
-            $data = RequestHardwareSoftware::find($request->ticketId);
+            $data = requestTicket::find($request->ticketId);
             
             RequestHardwareSoftware::create([
                 'unique_request'        => $uniqueTransaction,
-                'requests_from_users'   => $data->requests_from_users,
+                'requests_from_users'   => $data->request_on_user_id,
                 'status'                => 0,
                 'description'           => 'Request From Ticket #'.$request->ticketId,
                 'request_ticket_id'     => $request->ticketId,
@@ -212,10 +225,25 @@ class RequestHardwareSoftwareController extends Controller
 
         try {
             // Approvement Staff IT, Manager, General Manager 
-            if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_manager',0)->exists()) {
-                    RequestHardwareSoftware::find($request->id_transaction)->update([
-                        'approval_manager' => $request->approval_manager,
+            if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_supervisor',0)->exists()) {
+                    RequestHardwareSoftware::where('id',$request->id_transaction)->update([
+                        'approval_supervisor' => $request->approval_supervisor,
                         'status' => 1
+                    ]);
+
+                    if($request->approval_supervisor == 2) {
+                        RequestHardwareSoftware::where('id',$request->id_transaction)->update([
+                            'status' => 3
+                        ]);
+                    }
+
+                    DB::commit();
+                    Alert::success('BERHASIL','Pembaharuan Status Permintaan Telah Berhasil');
+                    return redirect()->back();
+                    
+            }else if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_manager',0)->exists()) {
+                    RequestHardwareSoftware::find($request->id_transaction)->update([
+                        'approval_manager' => $request->approval_manager
                     ]);
 
                     if($request->approval_manager == 2) {
@@ -241,21 +269,6 @@ class RequestHardwareSoftwareController extends Controller
                     DB::commit();
                     Alert::success('BERHASIL','Pembaharuan Status Permintaan Telah Berhasil');
                     return redirect()->back();
-            }else if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_supervisor',0)->exists()) {
-                    RequestHardwareSoftware::where('id',$request->id_transaction)->update([
-                        'approval_supervisor' => $request->approval_supervisor,
-                    ]);
-
-                    if($request->approval_supervisor == 2) {
-                        RequestHardwareSoftware::where('id',$request->id_transaction)->update([
-                            'status' => 3
-                        ]);
-                    }
-
-                    DB::commit();
-                    Alert::success('BERHASIL','Pembaharuan Status Permintaan Telah Berhasil');
-                    return redirect()->back();
-                    
             }
 
             // Validasi pesetujuan dari supervisor, manager dan general menager 
@@ -372,18 +385,45 @@ class RequestHardwareSoftwareController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
 
-            // DB::rollback();
-            
-            return $th;
+            DB::rollback();
+
+            Alert::error('GAGAL','Kesalahan Perhatikan Pengelolaan Data Transaksi');
+
+            return redirect()->back();
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(RequestHardwareSoftware $requestHardwareSoftware)
+    public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            $data = RequestHardwareSoftware::find($id);
+
+            if($data->status == 0) {
+                RequestHardwareSoftware::find($id)->delete();
+
+                detailRequestHardwareSoftware::where('unique_request',$data->unique_request)->delete();
+            }else{
+                DB::commit();
+
+                Alert::info('OPPSS','Penghapusan Tidak Bisa Karena Telah Diproses');
+                return back();
+            }
+
+            DB::commit();
+
+            Alert::success('BERHASIL','Penghapusan Data Hardware Software Berhasil');
+            return back();
+        } catch (\Throwable $th) {
+            DB::rollback();
+
+            Alert::error('GAGAL','Penghapusan Transaksi Gagal, Ulangi Lagi');
+            return back();
+        }
     }
 
     /**
