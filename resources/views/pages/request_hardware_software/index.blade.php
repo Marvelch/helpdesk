@@ -104,16 +104,13 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                             @if(Auth::user()->level_id != env('LEVEL_ADMIN') AND Auth::user()->level_id != env('LEVEL_EDITOR'))
-                                            @if(Auth::user()->position_id == env('MANAGER') AND Auth::user()->division->division == $item->division) OR Auth::user()->position_id == env('GENERAL_MENAGER')
-                                           
-                                            <a href="{{route('edit_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
-                                                class="text-secondary font-weight-bold text-xs"
-                                                data-toggle="tooltip" data-original-title="Edit user">
-                                                <i class="fa-duotone fa-pen-to-square"></i>
-                                            </a>
-                                            @else
-                                            <!-- Kosong -->
-                                            @endif
+                                                @if(Auth::user()->position_id == env('MANAGER') AND Auth::user()->division->division == $item->division OR Auth::user()->position_id == env('GENERAL_MENAGER'))
+                                                <a href="{{route('edit_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
+                                                    class="text-secondary font-weight-bold text-xs"
+                                                    data-toggle="tooltip" data-original-title="Edit user">
+                                                    <i class="fa-duotone fa-pen-to-square"></i>
+                                                </a>
+                                                @endif
                                             @else
                                             <a href="{{route('edit_request_hardware_software',['id' => Crypt::encryptString($item->unique_request)])}}"
                                                 class="text-secondary font-weight-bold text-xs"

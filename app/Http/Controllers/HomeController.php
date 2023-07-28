@@ -156,8 +156,8 @@ class HomeController extends Controller
                         'password_text' =>  $request->password,
                         'phone'         =>  $request->phone, 
                         'company_id'    =>  $request->company_id,
-                        'position_id'   =>  $request->position_id,
-                        'multi_company' => $request->multi_company == 'on' ? 1 : 0, 
+                        'division_id'   =>  $request->division_id,
+                        'multi_company' =>  $request->multi_company == 'on' ? 1 : 0, 
                         'position_id'   =>  $request->position_id
                     ]);
 
@@ -175,7 +175,7 @@ class HomeController extends Controller
                     'password_text' =>  $request->password,
                     'phone'         =>  $request->phone, 
                     'company_id'    =>  $request->company_id,
-                    'position_id'   =>  $request->position_id,
+                    'division_id'   =>  $request->division_id,
                     'position_id'   =>  $request->position_id
                 ]);
 
