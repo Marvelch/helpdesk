@@ -102,6 +102,10 @@
                                         <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
                                             Hi {{Auth::user()->name}}, Telah Membatalkan Permintaan
                                         </p>
+                                    @elseif($headers->approval_supervisor == env('NOT_ACCEPTED') AND $headers->approval_general_manager == env('NOT_ACCEPTED'))
+                                        <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
+                                            Hi {{Auth::user()->name}}, pemintaan masih proses pengecekan oleh IT
+                                        </p>
                                     @endif
                                 @endif
                                 
@@ -165,8 +169,6 @@
                                         <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 15px;">
                                             Staff IT/Supervisor Telah Membatalkan Permintaan
                                         </p>
-                                    @else
-
                                     @endif
                                 </p>
                             @elseif(@$headers->status == env('COMPLETED'))

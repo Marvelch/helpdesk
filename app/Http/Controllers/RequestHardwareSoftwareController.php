@@ -30,13 +30,17 @@ class RequestHardwareSoftwareController extends Controller
         }elseif(Auth::user()->position_id == env('MANAGER')){
             $getDivision = division::find(Auth::user()->division_id);
 
-            $requestHardwareSoftware = DB::table('divisions')
-                                            ->select('divisions.division','x.name as requests_by_user','y.name as created_by_user','request_hardware_software.requests_from_users','request_hardware_software.status','request_hardware_software.created_by_user_id','request_hardware_software.division_id','request_hardware_software.unique_request','request_hardware_software.id','request_hardware_software.approval_supervisor','request_hardware_software.approval_manager','request_hardware_software.approval_general_manager')
-                                            ->join('request_hardware_software','divisions.id','=','request_hardware_software.division_id')
-                                            ->join('users as x','request_hardware_software.requests_from_users','=','x.id')
-                                            ->join('users as y','request_hardware_software.created_by_user_id','=','y.id')
-                                            ->where('divisions.division',$getDivision->division)
-                                            ->get();
+            if(Auth::user()->multi_company == 1){
+                $requestHardwareSoftware = DB::table('divisions')
+                                                ->select('divisions.division','x.name as requests_by_user','y.name as created_by_user','request_hardware_software.requests_from_users','request_hardware_software.status','request_hardware_software.created_by_user_id','request_hardware_software.division_id','request_hardware_software.unique_request','request_hardware_software.id','request_hardware_software.approval_supervisor','request_hardware_software.approval_manager','request_hardware_software.approval_general_manager')
+                                                ->join('request_hardware_software','divisions.id','=','request_hardware_software.division_id')
+                                                ->join('users as x','request_hardware_software.requests_from_users','=','x.id')
+                                                ->join('users as y','request_hardware_software.created_by_user_id','=','y.id')
+                                                ->where('divisions.division',$getDivision->division)
+                                                ->get();
+            }else{
+                $requestHardwareSoftware = RequestHardwareSoftware::where('division_id',Auth::user()->division_id)->get();
+            }
         }else{
             $requestHardwareSoftware = RequestHardwareSoftware::where('created_by_user_id',Auth::User()->id)
                                                                 ->orWhere('requests_from_users',Auth::User()->id)
