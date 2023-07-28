@@ -25,8 +25,10 @@ class RequestHardwareSoftwareController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->level_id == env('LEVEL_ADMIN') OR Auth::user()->division->division == env('DIVISION_IT') OR Auth::user()->level_id == env('LEVEL_EDITOR') OR Auth::user()->position_id == env('GENERAL_MENAGER')) {
+        if(Auth::user()->level_id == env('LEVEL_ADMIN') OR Auth::user()->division->division == env('DIVISION_IT') OR Auth::user()->level_id == env('LEVEL_EDITOR')) {
             $requestHardwareSoftware = RequestHardwareSoftware::all();
+        }elseif(Auth::user()->position_id == env('GENERAL_MENAGER')){
+            $requestHardwareSoftware = RequestHardwareSoftware::where('check_approval_general_manager',0)->get();
         }elseif(Auth::user()->position_id == env('MANAGER')){
             $getDivision = division::find(Auth::user()->division_id);
 
@@ -85,13 +87,13 @@ class RequestHardwareSoftwareController extends Controller
             if(count(array_unique($request->itemName)) == count($request->itemName)){
 
                 RequestHardwareSoftware::create([
-                    'unique_request'        => $generateUniqueCode,
-                    'requests_from_users'   => Auth::user()->id,
-                    'description'           => $request->requestDescription,
-                    'transaction_date'      => Now(),
-                    'status'                => 0,
-                    'division_id'           => Auth::user()->division_id,
-                    'created_by_user_id'    => Auth::user()->id
+                    'unique_request'                => $generateUniqueCode,
+                    'requests_from_users'           => Auth::user()->id,
+                    'description'                   => $request->requestDescription,
+                    'transaction_date'              => Now(),
+                    'status'                        => 0,
+                    'division_id'                   => Auth::user()->division_id,
+                    'created_by_user_id'            => Auth::user()->id
                 ]);
 
                 foreach($request->itemName as $key => $item) {
@@ -232,6 +234,7 @@ class RequestHardwareSoftwareController extends Controller
             if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_supervisor',0)->exists()) {
                     RequestHardwareSoftware::where('id',$request->id_transaction)->update([
                         'approval_supervisor' => $request->approval_supervisor,
+                        'check_approval_general_manager' => $request->check_approval_general_manager == "on" ? 1 : 0,
                         'status' => 1
                     ]);
 
@@ -246,9 +249,18 @@ class RequestHardwareSoftwareController extends Controller
                     return redirect()->back();
                     
             }else if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_manager',0)->exists()) {
-                    RequestHardwareSoftware::find($request->id_transaction)->update([
-                        'approval_manager' => $request->approval_manager
-                    ]);
+                    
+                    if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_manager',0)->where('check_approval_general_manager',1)->exists()){
+                        RequestHardwareSoftware::find($request->id_transaction)->update([
+                            'approval_manager' => $request->approval_manager,
+                            'approval_general_manager' => 1,
+                        ]);
+                    }else{
+                        RequestHardwareSoftware::find($request->id_transaction)->update([
+                            'approval_manager' => $request->approval_manager
+                        ]);
+                    }
+                        
 
                     if($request->approval_manager == 2) {
                         RequestHardwareSoftware::where('id',$request->id_transaction)->update([

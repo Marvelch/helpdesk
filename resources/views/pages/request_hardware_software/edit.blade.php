@@ -43,13 +43,24 @@
                                     <img src="https://cdn3d.iconscout.com/3d/premium/thumb/businessman-working-on-laptop-2996954-2493508.png" class="rounded" alt="" srcset="" style="width: 80%;">
                                 </div>
                                 <div class="col-md-12 d-flex justify-content-center">
-
                                 @if(Auth::user()->division->division == env('DIVISION_IT'))
                                     @if($headers->approval_general_manager == env('NOT_ACCEPTED') AND $headers->approval_manager == env('NOT_ACCEPTED') AND $headers->approval_supervisor == env('NOT_ACCEPTED'))
-                                        <select name="approval_supervisor" id="" class="form-control form-control-sm w-60 mt-3">
-                                            <option value="1">Terima</option>
-                                            <option value="2">Tolak</option>
-                                        </select>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group  d-flex justify-content-center">
+                                                    <div class="form-check form-switch pt-3">
+                                                        <input name="check_approval_general_manager" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                                                        <label class="form-check-label" for="flexSwitchCheckChecked" style="font-size: 11px;">Persetujuan General Manager</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12" style="margin-top: -10px;">
+                                                <select name="approval_supervisor" id="" class="form-control form-control-sm">
+                                                    <option value="1">Terima</option>
+                                                    <option value="2">Tolak</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     @elseif($headers->approval_supervisor == env('ACCEPTED'))
                                         <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 10px;">
                                             Terima Kasih, Telah Menyetujui Permintaan {{@$headers->unique_request}}
