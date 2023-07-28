@@ -19,7 +19,7 @@
                                     <i class="fa fa-ellipsis-v text-secondary"></i>
                                 </a>
                                 <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable" style="font-family: var(--bs-font-roboto);">
-                                    <li><a class="dropdown-item border-radius-md"
+                                    <li><a class="dropdown-item border-radius-md small"
                                             href="{{route('create_users')}}"><i
                                                 class="fa-thin fa-users"
                                                 style="margin-right: 10px;"></i>Buat Pengguna</a></li>
@@ -53,6 +53,10 @@
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Perusahaan
+                                    </th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Divisi
                                     </th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -95,7 +99,10 @@
                                         <span class="text-xs">{{$item->password_text}}</span>
                                     </td>
                                     <td class="align-middle text-sm text-center">
-                                        <span class="text-xs">{{$item->company->company ?? ''}}</span>
+                                        <span class="text-xs">{{@$item->company->company}}</span>
+                                    </td>
+                                     <td class="align-middle text-sm text-center">
+                                        <span class="text-xs">{{@$item->division->division}}</span>
                                     </td>
                                     <td class="text-center">
                                         <a href="{{ROUTE('edit_users',['id' => Crypt::encryptString($item->id)])}}"

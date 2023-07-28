@@ -9,7 +9,7 @@
                 <div class="card-body">
                     <div class="row mb-5 mt-5 d-flex justify-content-center">
                         <div class="col-md-10">
-                            <div class="card">
+                            <div class="card shadow">
                                 <div class="card-body">
                                     <form action="{{route('store_users')}}" method="post" autocomplete="off"
                                         enctype="multipart/form-data">
@@ -17,8 +17,9 @@
                                         <div class="row justify-content-center mt-5 mb-5">
                                             <div class="col-5" style="z-index: 3;">
                                                 <div class="form-group">
-                                                    <label for="">Nama Lengkap</label>
-                                                    <input name="name" type="text" class="form-control form-control-sm"
+                                                    <label for="">Nama </label>
+                                                    <input name="name" type="text"
+                                                        class="form-control form-control-sm "
                                                         value="{{old('name')}}">
                                                     @error('name')
                                                     <p class="error__required">* {{ $message }}</p>
@@ -27,49 +28,58 @@
                                                 <div class="form-group">
                                                     <label for="">Email</label>
                                                     <input type="email" name="email" id="email"
-                                                        class="form-control form-control-sm" value="{{old('email')}}">
+                                                        class="form-control form-control-sm "
+                                                        value="{{old('email')}}">
                                                     @error('email')
                                                     <p class="error__required">* {{ $message }}</p>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="">Password</label>
-                                                    <div class="input-group mb-3">
+                                                    <label for="">Kata Sandi</label>
+                                                    <input type="text" name="password"
+                                                        class="form-control form-control-sm "
+                                                        value="{{old('password')}}">
+                                                    <!-- <div class="input-group mb-3">
                                                         <input type="password" name="password" id="pwd"
-                                                            class="form-control form-control-sm"
+                                                            class="form-control form-control-sm "
                                                             aria-label="Recipient's username"
                                                             aria-describedby="basic-addon2"
                                                             style="border-top-right-radius: 0px; border-bottom-right-radius: 0px"
                                                             value="{{old('password')}}">
                                                         <span class="input-group-text" id="basic-addon2"><i
-                                                                class="password fa-solid fa-eye-slash"></i></span>
-                                                        @error('password')
-                                                        <p class="error__required">* {{ $message }}</p>
-                                                        @enderror
-                                                    </div>
+                                                                class="password fa-solid fa-eye-slash fa-sm"
+                                                                style="padding-top: 2px;"></i></span>
+                                                    </div> -->
+                                                    @error('password')
+                                                    <p class="error__required">* {{ $message }}</p>
+                                                    @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="">Konfirmasi Password</label>
-                                                    <div class="input-group mb-3">
+                                                    <label for="">Konfirmasi Kata Sandi</label>
+                                                    <input type="text" name="confirm_password"
+                                                        class="form-control form-control-sm "
+                                                        value="{{old('confirm_password')}}">
+                                                    <!-- <div class="input-group mb-3">
                                                         <input type="password" name="confirm_password" id="confirm_pwd"
-                                                            class="form-control form-control-sm"
+                                                            class="form-control form-control-sm "
                                                             aria-label="Recipient's username"
                                                             aria-describedby="basic-addon2"
                                                             style="border-top-right-radius: 0px; border-bottom-right-radius: 0px"
                                                             value="{{old('confirm_password')}}">
                                                         <span class="input-group-text" id="basic-addon2"><i
-                                                                class="confirm_password fa-solid fa-eye-slash"></i></span>
-                                                        @error('confirm_password')
-                                                        <p class="error__required">* {{ $message }}</p>
-                                                        @enderror
-                                                    </div>
+                                                                class="confirm_password fa-solid fa-eye-slash fa-sm"
+                                                                style="padding-top: 2px;"></i></span>
+                                                    </div> -->
+                                                    @error('confirm_password')
+                                                    <p class="error__required">* {{ $message }}</p>
+                                                    @enderror
                                                 </div>
                                             </div>
                                             <div class="col-5">
                                                 <div class="form-group">
                                                     <label for="">Username</label>
                                                     <input type="text" name="username" id="username"
-                                                        class="form-control form-control-sm"
+                                                        class="form-control form-control-sm "
                                                         value="{{old('username')}}">
                                                     @error('username')
                                                     <p class="error__required">* {{ $message }}</p>
@@ -78,7 +88,8 @@
                                                 <div class="form-group">
                                                     <label for="">Telepon</label>
                                                     <input type="text" name="phone" id="phone"
-                                                        class="form-control form-control-sm" value="{{old('phone')}}">
+                                                        class="form-control form-control-sm "
+                                                        value="{{old('phone')}}">
                                                     @error('phone')
                                                     <p class="error__required">* {{ $message }}</p>
                                                     @enderror
@@ -86,25 +97,34 @@
                                                 <div class="form-group">
                                                     <label for="">Perusahaan</label>
                                                     <select name="company_id" id="selectCompany"
-                                                        class="selectCompany form-select form-select-sm text-capitalize">
+                                                        class="selectCompany form-select form-select-sm text-capitalize ">
                                                     </select>
                                                     @error('company_id')
                                                     <p class="error__required">* {{ $message }}</p>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="">Devisi</label>
+                                                    <label for="">Devisi Perusahaan</label>
                                                     <select name="division_id" id="selectDivision"
-                                                        class="selectDivision form-select form-select-sm text-capitalize">
+                                                        class="selectDivision form-select form-select-sm text-capitalize " style="background-image: none;">
                                                     </select>
                                                     @error('division_id')
                                                     <p class="error__required">* {{ $message }}</p>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
+                                                    <div class="form-check form-switch pt-3">
+                                                        <input name="multi_company" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                                                        <label class="form-check-label" for="flexSwitchCheckChecked" style="font-size: 11px;">Karyawan BPU & SKB</label>
+                                                    </div>
+                                                     @error('multi_company')
+                                                    <p class="error__required">* {{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="">Jabatan</label>
                                                     <select name="position_id" id="position_id"
-                                                        class="form-control form-control-sm">
+                                                        class="form-control form-control-sm ">
                                                         @foreach($position as $item)
                                                         <option value="{{$item->id}}">{{$item->position}}</option>
                                                         @endforeach

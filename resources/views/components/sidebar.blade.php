@@ -87,7 +87,7 @@
                     <span class="nav-link-text ms-1">Hardware / Software</span>
                 </a>
             </li>
-            @if(@Auth::user()->level_id == env('LEVEL_ADMIN') OR @Auth::user()->level_id == env('LEVEL_EDITOR') AND @Auth::user()->division_id == env('DIVISION_IT'))
+            @if(@Auth::user()->level_id == env('LEVEL_ADMIN') OR @Auth::user()->level_id == env('LEVEL_EDITOR') OR @Auth::user()->division_id == env('DIVISION_IT'))
             <li class="nav-item">
                 <a class="nav-link {{ (request()->is('inventory*')) ? 'active' : '' }}" href="{{route('index_inventory')}}">
                     <div

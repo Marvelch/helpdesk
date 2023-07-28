@@ -18,7 +18,7 @@
                                         <div class="row center justify-content-md-center mt-5 mb-5">
                                             <div class="col-5">
                                                 <div class="form-group">
-                                                    <label for="">Nama Lengkap</label>
+                                                    <label for="">Nama</label>
                                                     <input name="name" type="text" class="form-control form-control-sm"
                                                         value="{{$items->name}}" required>
                                                     @error('name')
@@ -105,6 +105,15 @@
                                                         value="{{@$items->division_id}}">
                                                     <input type="hidden" id="division_text"
                                                         value="{{@$items->division->division}}">
+                                                </div>
+                                                 <div class="form-group">
+                                                    <div class="form-check form-switch pt-3">
+                                                        <input name="multi_company" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" {{$items->multi_company == 1 ? 'checked' : ''}}>
+                                                        <label class="form-check-label" for="flexSwitchCheckChecked" style="font-size: 11px;">Karyawan BPU & SKB</label>
+                                                    </div>
+                                                     @error('multi_company')
+                                                    <p class="error__required">* {{ $message }}</p>
+                                                    @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">Jabatan</label>

@@ -103,9 +103,10 @@ class HomeController extends Controller
                 'phone'         => $request->phone,
                 'password'      => Hash::make($request->password),
                 'company_id'    => $request->company_id,
-                'password_text' => $request->password, 
+                'password_text' => $request->password,
+                'multi_company' => $request->multi_company == 'on' ? 1 : 0, 
                 'division_id'   => $request->division_id,
-                'position_id'   =>  $request->position_id
+                'position_id'   => $request->position_id
             ]);
 
             DB::commit();
@@ -116,11 +117,12 @@ class HomeController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
 
-            DB::rollback();
+            // DB::rollback();
 
-            Alert::error('Gagal','Kesalahan penginputan silahkan coba lagi !');
+            // Alert::error('Gagal','Kesalahan penginputan silahkan coba lagi !');
 
-            return back();
+            // return back();
+            return $th;
         }
     }
 
@@ -155,6 +157,7 @@ class HomeController extends Controller
                         'phone'         =>  $request->phone, 
                         'company_id'    =>  $request->company_id,
                         'position_id'   =>  $request->position_id,
+                        'multi_company' => $request->multi_company == 'on' ? 1 : 0, 
                         'position_id'   =>  $request->position_id
                     ]);
 

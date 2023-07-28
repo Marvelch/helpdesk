@@ -172,13 +172,13 @@ class BankAccountsController extends Controller
 
             DB::commit();
 
-            Alert::success('Deleted','The deletion has been performed successfully');
+            Alert::success('BERHASIL','Penghapusan Data Bank Account Berhasil');
             return back();
         } catch (\Throwable $th) {
 
-             DB::rollback();
+            DB::rollback();
 
-            Alert::error('Failed','Deletion encountered a problem, try again');
+            Alert::error('GAGAL','Penghapusan Data Bank Account Gagal');
             return back();
         }
     }
