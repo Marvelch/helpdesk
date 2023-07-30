@@ -30,7 +30,8 @@ class AppServiceProvider extends ServiceProvider
             
             $notifList = Notification::where('users_id',$id)
                                 ->where('read',NULL)
-                                ->limit(5)
+                                ->latest()
+                                ->take(5)
                                 ->get();
 
             $view->with('countNotif', $count)

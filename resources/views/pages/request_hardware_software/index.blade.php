@@ -61,25 +61,25 @@
                             <tbody>
                                 @foreach($requestHardwareSoftware as $item)
                                 <tr>
-                                    <td class="align-middle small">
-                                        <span class="text-xs font-weight-bold">{{@$item->id}}</span>
+                                    <td class="align-middle text-sm text-center">
+                                        <span class="text-xs">{{@$item->id}}</span>
                                     </td>
-                                    <td class="align-middle small">
-                                        <span class="text-xs font-weight-bold">{{@$item->unique_request}}</span>
+                                    <td class="align-middle text-sm">
+                                        <span class="text-xs">{{@$item->unique_request}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span
-                                            class="text-xs font-weight-bold">{{@Str::ucfirst($item->userRequest->name ? $item->userRequest->name : $item->requests_by_user)}}</span>
+                                            class="text-xs">{{@Str::ucfirst($item->userRequest->name ? $item->userRequest->name : $item->requests_by_user)}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span
-                                            class="text-xs font-weight-bold">{{@Str::ucfirst($item->users->name ? $item->users->name : $item->created_by_user)}}</span>
+                                            class="text-xs">{{@Str::ucfirst($item->users->name ? $item->users->name : $item->created_by_user)}}</span>
                                     </td>
                                     <td class="align-middle text-sm">
-                                        <span class="text-xs font-weight-bold">{{@$item->description}}</span>
+                                        <span class="text-xs">{{@$item->description}}</span>
                                     </td>
                                     <td class="align-middle text-sm text-center">
-                                        <span class="text-xs font-weight-bold">
+                                        <span class="text-xs">
                                             @if($item->status == env('DEFAULT'))
                                             <span class="badge badge-sm bg-gradient-danger">Pengecekan</span>
                                             <!-- <i class="fa-solid fa-seal-exclamation fa-xl" style="color: #E74C3C;" title="MENUNGGU PENGECEKAN"></i> -->
@@ -98,7 +98,7 @@
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span
-                                            class="text-xs font-weight-bold">{{@date('d-m-Y',strtotime($item->transaction_date))}}</span>
+                                            class="text-xs">{{@date('d-m-Y',strtotime($item->transaction_date))}}</span>
                                     </td>
                                     <td class="align-middle text-center text-sm d-flex justify-content-center">
                                         <div class="row">

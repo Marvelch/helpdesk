@@ -54,25 +54,38 @@
                     <ul class="dropdown-menu pusher-append  dropdown-menu-end  px-2 py-3 me-sm-n4"
                         aria-labelledby="dropdownMenuButton">
                         @foreach($notifList as $item)
-                        <li class="mb-2">
-                            <a class="dropdown-item border-radius-md" href="#">
+                        <li class="mb-2" onclick="">
+                            <a class="dropdown-item border-radius-md" href="{{url($item->path)}}">
                                 <div class="d-flex py-1">
                                     <div class="my-auto">
-                                        <img src="https://static.vecteezy.com/system/resources/previews/016/716/169/original/notification-alert-3d-icon-png.png" class="avatar avatar-sm  me-3 ">
+                                        <img src="{{asset('./assets/img/icon/alert.webp')}}"
+                                            class="avatar avatar-sm  me-3 ">
                                     </div>
                                     <div class="d-flex flex-column justify-content-center">
                                         <h6 class="text-sm font-weight-normal mb-1">
-                                            <span class="font-weight-bold" href="{{url($item->path)}}">Laporan tiket #{{$item->id}}</span> Helpdesk
+                                            <span class="font-weight-bold" href="{{url($item->path)}}">Request Ticket
+                                                #{{$item->id}}</span> Helpdesk
                                         </h6>
-                                        <p class="text-xs text-secondary mb-0 ">
+                                        <p class="text-xs text-secondary mb-0 text-sm">
                                             <i class="fa fa-clock me-1"></i>
-                                            13 minutes ago
+                                            <?php
+                                                $toDate = $item->created_at->diffForHumans(null, true, true, 2);
+
+                                                echo str_replace(['h', 'm', 'd'], [' hours', ' minutes', ' days'], $toDate)." ago ";
+                                            ?>
+                                            <!-- 13 minutes ago -->
                                         </p>
                                     </div>
                                 </div>
                             </a>
                         </li>
                         @endforeach
+                        <li>
+                             <!-- <hr style="border: 2px solid black; border-radius: 5px;"> -->
+                            <div style="background-color: #54b95b; width : 100%; position: fixed; margin-left: -8px; border-radius: 0px 0px 5px 5px;" class="text-center">
+                                <a href="{{route('index_notification')}}"><span style="font-size: 12px; color: white;">View All</span></a>
+                            </div>
+                        </li>
                     </ul>
                 </li>
             </ul>

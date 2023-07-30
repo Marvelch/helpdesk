@@ -31,7 +31,11 @@
                                             <label for="">Perusahaan</label>
                                             <select name="company" id="selectCompany"
                                                 class="selectCompany form-select form-select-sm text-capitalize">
-                                                <option value="" selected>Pilih Perusahaan</option>
+                                                @if(old('company'))
+                                                    <option value="{{ old('company') }}"> 
+                                                        {{DB::table('companies')->where('id', old('company'))->pluck('company')->first()}}
+                                                    </option>
+                                                @endif
                                             </select>
                                         </div>
                                         @error('company')
@@ -42,8 +46,12 @@
                                         <div class="form-group">
                                             <label for="">Devisi</label>
                                             <select name="division" id="selectDivision"
-                                                class="selectDivision form-select form-select-sm text-capitalize">
-                                                <option value="" selected>Pilih Devisi</option>
+                                                class="selectDivision form-select form-select-sm text-capitalize" style="background-image: none;">
+                                                 @if(old('division'))
+                                                    <option value="{{ old('division') }}"> 
+                                                        {{DB::table('divisions')->where('id', old('division'))->pluck('division')->first()}}
+                                                    </option>
+                                                @endif
                                             </select>
                                             @error('division')
                                             <p class="error__required">* {{ $message }}</p>
@@ -57,7 +65,7 @@
                                         <span class="input-group-text" id="basic-addon1"><i
                                                 class="fa-duotone fa-location-pin-lock"></i></span>
                                         <input type="text" name="location" class="form-control form-control-sm"
-                                            aria-label="Username" aria-describedby="basic-addon1" placeholder="Lokasi" value="{{old('location')}}">
+                                            aria-label="Username" aria-describedby="basic-addon1"  value="{{old('location')}}">
                                     </div>
                                     @error('location')
                                         <p class="error__required">* {{ $message }}</p>
@@ -66,7 +74,6 @@
                                 <div class="form-group">
                                     <label for="">Jenis Pekerjaan</label>
                                     <select name="work_type" id="" class="form-control form-control-sm">
-                                        <option value="" selected>Pilih Jenis Pekerjaan</option>
                                         @foreach($typeOfWorks as $item)
                                         <option value="{{$item->id}}">{{$item->type}}</option>
                                         @endforeach
@@ -83,7 +90,7 @@
                                 <div class="form-group">
                                     <label for="">Keterangan</label>
                                     <textarea name="description" id="" class="form-control form-control-sm" cols="30"
-                                        rows="5" placeholder="Masalah Jaringan Internet Tidak Bisa Konek" value="{{old('description')}}"></textarea>
+                                        rows="5" placeholder="Masalah Jaringan Internet Tidak Bisa Terhubung" value="{{old('description')}}"></textarea>
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <div class="text-center col-md-3">
@@ -103,6 +110,8 @@
     $('#preview_delete').hide();
 
     $(document).ready(function () {
+        $('#selectCompany').select2();
+
         $(".select__image").on("change", function () {
 
             /* Current this object refer to input element */
@@ -126,10 +135,6 @@
             $('.preview_image').removeAttr('src');
         });
 
-        // Autocomplate
-        // $('.js-example-basic-single').select2();
-
-        // Company select autocomplate
         $('.selectCompany').select2({
             ajax: {
                 url: '{{url("/request-tickets/search-company")}}',

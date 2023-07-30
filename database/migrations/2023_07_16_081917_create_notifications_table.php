@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreign('users_id')->references('id')->on('users');
             $table->string('path')->nullable();
             $table->boolean('read')->default(null)->nullable();
+            $table->unsignedBigInteger('ticket_id')->nullable();
+            $table->foreign('ticket_id')->references('id')->on('request_tickets');
             $table->timestamps();
         });
     }

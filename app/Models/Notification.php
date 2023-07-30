@@ -14,6 +14,11 @@ class Notification extends Model
     protected $fillable = [
         'users_id',
         'path',
+        'ticket_id',
         'read'
     ];
+
+    public function tickets() {
+        return $this->belongsTo(requestTicket::class,'ticket_id','id');
+    }
 }
