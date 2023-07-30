@@ -46,7 +46,8 @@
         channel.bind('my-event', function (data) {
             // console.log(JSON.stringify(data));
             $('#counter__notif').text(data.countNotif);
-            $('.pusher-append').append("<li class='mb-2'><a class='dropdown-item border-radius-md' href='"+data.url+"'><div class='d-flex py-1'><div class='my-auto'><img src='https://static.vecteezy.com/system/resources/previews/016/716/169/original/notification-alert-3d-icon-png.png' class='avatar avatar-sm  me-3 '></div><div class='d-flex flex-column justify-content-center'><h6 class='text-sm font-weight-normal mb-1'><span class='font-weight-bold'>"+data.message+"</span> from Laur</h6><p class='text-xs text-secondary mb-0 '><i class='fa fa-clock me-1'></i>13 menit lalu</p></div></div></a></li>");
+            var newListItem = $("<li class='mb-2'><a class='dropdown-item border-radius-md' href='"+data.url+"'><div class='d-flex py-1'><div class='my-auto'><img src='{{asset('./assets/img/icon/alert.webp')}}' class='avatar avatar-sm  me-3 '></div><div class='d-flex flex-column justify-content-center'><h6 class='text-sm font-weight-normal mb-1'><span class='font-weight-bold'>"+data.message+"</span> Helpdesk</h6><p class='text-xs text-secondary mb-0 '><i class='fa fa-clock me-1'></i>13 menit lalu</p></div></div></a></li>");
+            $('.pusher-append li:first-child').before(newListItem)
         });
     </script>
     @endif

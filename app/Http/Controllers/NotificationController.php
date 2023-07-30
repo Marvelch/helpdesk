@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Notification;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -13,7 +14,9 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        return view('pages.notification.index');
+        $items = Notification::where('users_id',Auth::user()->id)->get();
+
+        return view('pages.notification.index',compact('items'));
     }
 
     /**

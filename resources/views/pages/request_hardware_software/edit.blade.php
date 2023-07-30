@@ -185,7 +185,7 @@
                             @elseif(@$headers->status == env('COMPLETED'))
                                 <img src="https://cdn3d.iconscout.com/3d/premium/thumb/accept-5064235-4223213.png" class="rounded" alt="" srcset="" style="width: 150px;">
                                 <p style="font-family: var(--bs-font-roboto); font-size: 12px; margin-bottom: 2px; margin-top: 15px;" class="text-capitalize">
-                                    Permintaan {{@$headers->unique_request}} telah diterima & dev IT akan menghubungi {{$headers->userRequest->name}}
+                                    Permintaan {{@$headers->unique_request}} telah diterima. Bagian Information Technology akan menghubungi {{$headers->userRequest->name}}
                                 </p>
                             @endif
                         </div>

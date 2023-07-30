@@ -4,21 +4,9 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="progress m-2 mb-4">
-                        <div class="progress-bar" role="progressbar" style="
-                        <?php if($requestTickets->status == 0) { 
-                            echo "width: 30%;";
-                        }elseif($requestTickets->status == 1){
-                            echo "width: 60%;";
-                        }else{
-                            echo "width: 100%;";
-                        }
-                        ?>
-                        " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="row justify-content-md-center">
+            <div class="card">
+                <div class="card-body mb-5">
+                    <div class="row justify-content-md-center mt-5">
                         @if ($alert = Session::get('failed'))
                         <div class="alert alert-primary w-80 mb-3" role="alert" style="font-size: 12px; color: white;">
                             <i class="fa-solid fa-bell" style="padding-right: 15px;"></i>{{$alert}}
@@ -29,72 +17,97 @@
                             <i class="fa-solid fa-bell" style="padding-right: 15px;"></i>{{$alert}}
                         </div>
                         @endif
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group mt-2">
                                 @if(!$requestTickets->attachment)
-                                <div class="card-body shadow" style="height: 250px;">
-                                    <img src="{{asset('./assets/img/404.png')}}" alt="" srcset="" style="width: 100%;">
+                                <div class="card card-blog card-plain">
+                                    <div class="position-relative">
+                                        <a class="d-block shadow-xl border-radius-xl p-2">
+                                            <img src="{{asset('./assets/img/gif/404.gif')}}" alt="img-blur-shadow"
+                                                class="img-fluid shadow border-radius-xl"
+                                                style="height: 35vh; width: 100%;">
+                                        </a>
+                                    </div>
                                 </div>
                                 @elseif(Str::contains($requestTickets->attachment,['.jpg','.png']))
-                                <div class="card-body shadow" style="height: 250px;">
-                                    <img src="{{asset('storage/'.$requestTickets->attachment)}}" alt="" srcset=""
-                                        style="width: 100%;">
+                                <div class="card shadow card-blog card-plain">
+                                    <div class="card-body">
+                                        <h6>Document</h6>
+                                        <p style="font-size: 11px; font-family: var(--bs-font-quicksand); text-align: justify;">Terlampir untuk file pendukung laporan. Bila file mengalami gangguan dapat menghubungi kami ke <a href="http://">whatsapp</a> - Information Technology</p>
+                                        <div class="row mt-3 d-flex justify-content-center">
+                                            <hr style="border: 1px solid green;">
+                                            <div class="col">
+                                                <p class="fw-bold text-sm mt-2">Docs Request #{{@$requestTickets->id}}</p>
+                                            </div>
+                                            <div class="col">
+                                                <a class="btn btn-sm" href="{{route('download_bank_accounts',['id' => Crypt::encryptString($requestTickets->attachment)])}}" {{$requestTickets->attachment ? '': 'disabled'}}>download</a>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="position-relative">
+                                        <a class="d-block">
+                                            <img src="https://cdn.dribbble.com/users/2882033/screenshots/14282247/media/70e1a373c18a438ddbae86d25e5b6df7.png" alt="img-blur-shadow"
+                                                class="img-fluid shadow border-radius-xl" style="height: 35vh; width: 100%;">
+                                        </a>
+                                    </div> -->
+                                        <!-- <div class="card-body px-1 pb-0">
+                                        <p class="text-gradient text-dark mb-2" style="font-size: 12px;"><a href="{{route('download_bank_accounts',['id' => Crypt::encryptString($requestTickets->attachment)])}}" {{$requestTickets->attachment ? '': 'muted'}}>Download Docs Request #{{@$requestTickets->id}}</a></p>
+                                    </div> -->
+                                    </div>
                                 </div>
                                 @else
-                                <div class="card-body shadow" style="height: 250px;">
-                                    <img src="{{asset('./assets/img/docs.png')}}" alt="" srcset="" style="width: 100%;">
-                                </div>
-                                @endif
-                                <!-- Apabila bukan IT, user request dan user yang mengerjakan tidak bisa download file -->
-                                @if(Auth::user()->division_id == $requestTickets->division_id OR Auth::user()->id ==
-                                $requestTickets->request_on_user_id OR Auth::user()->level_id == 1 OR
-                                Auth::user()->level_id == 2 )
-                                <div class="form-group mt-3">
-                                    <a href="{{route('download_bank_accounts',['id' => Crypt::encryptString($requestTickets->attachment)])}}"
-                                        class="btn btn-sm btn-primary w-100 font-roboto {{$requestTickets->attachment ? '': 'disabled'}}">Download</a>
+                                <div class="card card-blog card-plain">
+                                    <div class="position-relative">
+                                        <a class="d-block shadow-xl border-radius-xl p-2">
+                                            <img src="{{asset('./assets/img/gif/404.gif')}}" alt="img-blur-shadow"
+                                                class="img-fluid shadow border-radius-xl"
+                                                style="height: 35vh; width: 100%;">
+                                        </a>
+                                    </div>
                                 </div>
                                 @endif
                             </div>
                             <!-- <img src="{{asset('./assets/img/3.png')}}" alt="" srcset="" style="max-width: 100%;"> -->
                         </div>
-                        <div class="col-md-5 m-2" style="font-size: 12px;">
-                            <div class="card-body shadow">
-                                <table class="table table-borderless text-small">
-                                    <tr>
-                                        <td class="w-40">Permintaan Pengguna</td>
-                                        <td>: {{@$requestTickets->title}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Perusahaan</td>
-                                        <td>: {{$requestTickets->company->company}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Devisi</td>
-                                        <td>: {{$requestTickets->division->division}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Hingga Tanggal</td>
-                                        <td>: {{@date('d-m-Y',strtotime($requestTickets->deadline))}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jenis Pekerjaan</td>
-                                        <td>: {{@$requestTickets->work_type->type}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Lokasi</td>
-                                        <td>: {{@$requestTickets->location}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Keterangan</td>
-                                        <td>: {!! strip_tags($requestTickets->description) !!}</td>
-                                    </tr>
-                                    @if(@$requestTickets->assignment_on_user_id)
-                                    <tr>
-                                        <td>Ditugaskan Kepada</td>
-                                        <td>: {{Str::ucfirst($requestTickets->usersAss->name)}}</td>
-                                    </tr>
-                                    @endif
-                                </table>
+                        <div class="col-md-6 m-2" style="font-size: 12px;">
+                            <div class="card shadow-sm">
+                                <div class="card-body m-2">
+                                    <table class="table table-borderless text-small">
+                                        <tr>
+                                            <td class="w-40">Permintaan Pengguna</td>
+                                            <td>: {{@$requestTickets->title}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Perusahaan</td>
+                                            <td>: {{$requestTickets->company->company}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Devisi</td>
+                                            <td>: {{$requestTickets->division->division}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hingga Tanggal</td>
+                                            <td>: {{@date('d-m-Y',strtotime($requestTickets->deadline))}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jenis Pekerjaan</td>
+                                            <td>: {{@$requestTickets->work_type->type}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lokasi</td>
+                                            <td>: {{@$requestTickets->location}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Keterangan</td>
+                                            <td>: {!! strip_tags($requestTickets->description) !!}</td>
+                                        </tr>
+                                        @if(@$requestTickets->assignment_on_user_id)
+                                        <tr>
+                                            <td>Ditugaskan Kepada</td>
+                                            <td>: {{Str::ucfirst($requestTickets->usersAss->name)}}</td>
+                                        </tr>
+                                        @endif
+                                    </table>
+                                </div>
                             </div>
                             @if(@Auth::user()->level_id == env('LEVEL_ADMIN') OR
                             @Auth::user()->level_id == env('LEVEL_EDITOR'))
@@ -135,7 +148,10 @@
                                 @endif
                             </form>
                             @endif
-                            @if(@$requestTickets->assignment_on_user_id == Auth::user()->id AND @$requestTickets->status == env('INPROGRESS') OR Auth::user()->level_id == env('LEVEL_ADMIN') OR Auth::user()->level_id == env('LEVEL_EDITOR'))
+                            @if(@$requestTickets->assignment_on_user_id == Auth::user()->id AND
+                            @$requestTickets->status
+                            == env('INPROGRESS') OR Auth::user()->level_id == env('LEVEL_ADMIN') OR
+                            Auth::user()->level_id == env('LEVEL_EDITOR'))
                             @if($requestTickets->status == env('COMPLETED'))
                             <div class="form-group mt-2 text-capitalize">
                                 <div class="card">

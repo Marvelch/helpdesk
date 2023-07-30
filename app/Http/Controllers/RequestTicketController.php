@@ -59,6 +59,15 @@ class RequestTicketController extends Controller
         DB::beginTransaction();
 
         try {
+
+            if(division::where('id',$request->division)->where('company_id',$request->company)->doesntExist()) {
+                DB::rollback();
+
+                Alert::info('INFO','Helpdesk Mengalami Masalah, Ulangi Penginputan');
+
+                return back();
+            }
+
             if($request->file('attachment')) {
                 $attachment = $request->file('attachment')->store('ticket');
             }
@@ -78,7 +87,7 @@ class RequestTicketController extends Controller
 
             DB::commit();
 
-            Alert::success('Berhasil','Pembuatan tiket laporan telah berhasil');
+            Alert::success('BERHASIL','Pembuatan Tiket Laporan Telah Berhasil');
 
             return redirect()->route('index_request_ticket');
         } catch (\Throwable $th) {
@@ -86,7 +95,7 @@ class RequestTicketController extends Controller
 
             DB::rollback();
 
-            Alert::success('Gagal','Oppsss... Gagal membuat tiket laporan');
+            Alert::error('GAGAL','Pembuatan Laporan Tiket Bermasalah, Ulangi Lagi');
 
             return redirect()->back();
         }
@@ -145,24 +154,25 @@ class RequestTicketController extends Controller
 
                     $resultCount = $count + 1;
 
-                    $pusher->trigger("private.$request->assignTo",'my-event',['message' => 'Laporan Tiket #'.$data->id,'url' => '/request-tickets/show/'.$request->notification,'countNotif' => $resultCount]);
+                    $pusher->trigger("private.$request->assignTo",'my-event',['message' => 'Request Ticket #'.$data->id,'url' => '/request-tickets/show/'.$request->notification,'countNotif' => $resultCount]);
 
                     Notification::create([
                         'users_id'      => $request->assignTo,
                         'path'          => '/request-tickets/show/'.$request->notification,
-                        'read'          => NULL
+                        'read'          => NULL,
+                        'ticket_id'     => $id
                     ]);
                 }
             }else{
                 DB::rollback();
 
-                Alert::info('Info','Perhatikan penginputan pada sistem Helpdesk !');
+                Alert::info('Info','Perhatikan Penginputan Pada Form Helpdesk');
                 return redirect()->back();
             }
 
             DB::commit();
 
-            Alert::success('Berhasil','Pembaharuan informasi pekerjaan telah berhasil !');
+            Alert::success('Berhasil','Pembaharuan Laporan Pada Tiket Telah Berhasil');
 
             return back();
         } catch (\Throwable $th) {
@@ -170,7 +180,7 @@ class RequestTicketController extends Controller
 
             DB::rollback();
 
-            Alert::error('Gagal','Gagal memperbaharui infomasi, silahkan cek kembali !');
+            Alert::error('Gagal','Gagal Memperbaharui Informasi Pada Tiket, Ulangi Lagi');
             
             return back();
         }
@@ -182,6 +192,7 @@ class RequestTicketController extends Controller
     public function updateStatus(Request $request, $id)
     {
         DB::beginTransaction();
+
         try {
             $data = DB::table('request_tickets')
                                 ->select('request_hardware_software.status')
@@ -192,7 +203,7 @@ class RequestTicketController extends Controller
             if(@$data[0]->status == env('INPROGRESS') OR @$data[0]->status == env('DEFAULT')) {
                 DB::rollback();
 
-                Alert::info('OPPSS...','Permintaan Hardware & Software Belum Selesai');
+                Alert::info('INFO.','Permintaan Hardware & Software Belum Selesai');
 
                 return back();
             }else{
@@ -203,13 +214,13 @@ class RequestTicketController extends Controller
 
             DB::commit();
 
-            Alert::success('BERHASIL','Informasi tiket telah diperbaharui. Terima kasih.');
+            Alert::success('BERHASIL','Pembaharuan Informasi Laporan Tiket Telah Barhasil');
 
             return back();
         } catch (\Throwable $th) {
             DB::rollback();
 
-            Alert::error('GAGAL','Kegagalan helpdesk pembaharuan informasi tiket');
+            Alert::error('GAGAL','Pembaharuan Informasi Laporan Tiket Gagal, Ulangi Lagi');
 
             return back();
         }

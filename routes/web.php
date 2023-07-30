@@ -120,6 +120,8 @@ Route::get('/home', function() {
 Route::get('logout',[LoginController::class,'logout'])->middleware('auth');
 
 Route::group(['prefix' => 'bank-accounts','middleware' => ['auth']], function(){
+    Route::get('/download/{id}',[BankAccountsController::class,'download'])->name('download_bank_accounts');
+    
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
         Route::get('/',[BankAccountsController::class,'index'])->name('index_bank_accounts');
         Route::get('/create',[BankAccountsController::class,'create'])->name('create_bank_accounts');
@@ -127,7 +129,6 @@ Route::group(['prefix' => 'bank-accounts','middleware' => ['auth']], function(){
         Route::get('/{id}/show',[BankAccountsController::class,'show'])->name('show_bank_accounts');
         Route::put('/{id}/update',[BankAccountsController::class,'update'])->name('update_bank_accounts');
         Route::post('/store',[BankAccountsController::class,'store'])->name('store_bank_accounts');
-        Route::get('/download/{id}',[BankAccountsController::class,'download'])->name('download_bank_accounts');
         Route::post('/destroy/{id}',[BankAccountsController::class,'destroy'])->name('destroy_bank_accounts');
     });
 });

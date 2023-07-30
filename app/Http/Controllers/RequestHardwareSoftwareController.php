@@ -16,6 +16,7 @@ use DB;
 use Alert;
 use App\Models\DetailInventory;
 use App\Models\division;
+use App\Models\User;
 use Illuminate\Support\Str;
 
 class RequestHardwareSoftwareController extends Controller
@@ -49,6 +50,7 @@ class RequestHardwareSoftwareController extends Controller
                                                                 ->get();
         }
 
+        // dd($requestHardwareSoftware);
         return view('pages.request_hardware_software.index',compact('requestHardwareSoftware'));
     }
 
@@ -144,14 +146,14 @@ class RequestHardwareSoftwareController extends Controller
             $uniqueTransaction = generateUniqueCode();
 
             $data = requestTicket::find($request->ticketId);
-            
+
             RequestHardwareSoftware::create([
                 'unique_request'        => $uniqueTransaction,
                 'requests_from_users'   => $data->request_on_user_id,
                 'status'                => 0,
                 'description'           => 'Request From Ticket #'.$request->ticketId,
                 'request_ticket_id'     => $request->ticketId,
-                'division_id'           => Auth::user()->division_id,
+                'division_id'           => $data->usersReq->division_id,
                 'transaction_date'      => Now(),
                 'created_by_user_id'    => Auth::user()->id
             ]);
