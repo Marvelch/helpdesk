@@ -114,7 +114,7 @@
                                             <div class="mb-3">
                                                 <input id="username" type="username"
                                                     class="form-control form-control-sm @error('username') is-invalid @enderror"
-                                                    placeholder="username" aria-label="username"
+                                                    placeholder="Username" aria-label="username"
                                                     aria-describedby="username-addon" name="username"
                                                     value="{{ old('username') }}" required autocomplete="username" autofocus>
                                             </div>

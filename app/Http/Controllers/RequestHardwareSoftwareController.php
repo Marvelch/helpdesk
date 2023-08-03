@@ -29,13 +29,13 @@ class RequestHardwareSoftwareController extends Controller
         if(Auth::user()->level_id == env('LEVEL_ADMIN') OR Auth::user()->division->division == env('DIVISION_IT') OR Auth::user()->level_id == env('LEVEL_EDITOR')) {
             $requestHardwareSoftware = RequestHardwareSoftware::all();
         }elseif(Auth::user()->position_id == env('GENERAL_MENAGER')){
-            $requestHardwareSoftware = RequestHardwareSoftware::where('check_approval_general_manager',0)->get();
+            $requestHardwareSoftware = RequestHardwareSoftware::where('check_approval_general_manager',1)->get();
         }elseif(Auth::user()->position_id == env('MANAGER')){
             $getDivision = division::find(Auth::user()->division_id);
 
             if(Auth::user()->multi_company == 1){
                 $requestHardwareSoftware = DB::table('divisions')
-                                                ->select('divisions.division','x.name as requests_by_user','y.name as created_by_user','request_hardware_software.requests_from_users','request_hardware_software.status','request_hardware_software.created_by_user_id','request_hardware_software.division_id','request_hardware_software.unique_request','request_hardware_software.id','request_hardware_software.approval_supervisor','request_hardware_software.approval_manager','request_hardware_software.approval_general_manager')
+                                                ->select('request_hardware_software.description','divisions.division','x.name as requests_by_user','y.name as created_by_user','request_hardware_software.requests_from_users','request_hardware_software.status','request_hardware_software.created_by_user_id','request_hardware_software.division_id','request_hardware_software.unique_request','request_hardware_software.id','request_hardware_software.approval_supervisor','request_hardware_software.approval_manager','request_hardware_software.approval_general_manager')
                                                 ->join('request_hardware_software','divisions.id','=','request_hardware_software.division_id')
                                                 ->join('users as x','request_hardware_software.requests_from_users','=','x.id')
                                                 ->join('users as y','request_hardware_software.created_by_user_id','=','y.id')
@@ -101,8 +101,9 @@ class RequestHardwareSoftwareController extends Controller
                 foreach($request->itemName as $key => $item) {
                     detailRequestHardwareSoftware::create([
                         'unique_request'        => $generateUniqueCode,
-                        'items_id'              => inventory::where('item_name',Str::lower($item))->exists() ? str_replace(array('[',']'),"",inventory::where('item_name',Str::lower($item))->pluck('id')) : NULL,
-                        'items_new_request'     => inventory::where('item_name',Str::lower($item))->exists() ? '' : Str::lower($item),
+                        // 'items_id'              => inventory::where('item_name',Str::lower($item))->exists() ? str_replace(array('[',']'),"",inventory::where('item_name',Str::lower($item))->pluck('id')) : NULL,
+                        // 'items_new_request'     => inventory::where('item_name',Str::lower($item))->exists() ? '' : Str::lower($item),
+                        'items_id'              => $item,
                         'qty'                   => $request->qty[$key],
                         'availability'          => inventory::where('item_name',Str::lower($item))->exists() ? 'EXISTS' : 'NOT_EXISTS',
                         'description'           => $request->description[$key],
@@ -151,7 +152,7 @@ class RequestHardwareSoftwareController extends Controller
                 'unique_request'        => $uniqueTransaction,
                 'requests_from_users'   => $data->request_on_user_id,
                 'status'                => 0,
-                'description'           => 'Request From Ticket #'.$request->ticketId,
+                'description'           => 'Request From Tiket #'.$request->ticketId,
                 'request_ticket_id'     => $request->ticketId,
                 'division_id'           => $data->usersReq->division_id,
                 'transaction_date'      => Now(),
@@ -159,29 +160,40 @@ class RequestHardwareSoftwareController extends Controller
             ]);
             
             foreach($request->itemName as $key => $item) {
-                $inventory = inventory::select('stock','id')->where('item_name',Str::lower($item))->first();
 
-                if($request->qty[$key] >= 0) {
-                    if($inventory) {
-                        detailRequestHardwareSoftware::create([
-                            'unique_request'    => $uniqueTransaction,
-                            'items_id'          => $inventory->id,
-                            'qty'               => $request->qty[$key],
-                            'availability'      => 'EXISTS',
-                            'transaction_status'=> 0,
-                            'description'       => 'Permintaan dari ',$request->ticketId,
-                        ]);
-                    }else{
-                        detailRequestHardwareSoftware::create([
-                            'unique_request'    => $uniqueTransaction,
-                            'items_new_request' => $item,
-                            'qty'               => $request->qty[$key],
-                            'availability'      => 'NOT_EXISTS',
-                            'transaction_status'=> 0,
-                            'description'       => 'Permintaan dari ',$request->ticketId,
-                        ]);
-                    }
-                }
+                 detailRequestHardwareSoftware::create([
+                        'unique_request'    => $uniqueTransaction,
+                        'items_id'          => $item,
+                        'qty'               => $request->qty[$key],
+                        'availability'      => 'EXISTS',
+                        'transaction_status'=> 0,
+                        'description'       => 'Permintaan dari tiket #'.$request->ticketId,
+                    ]);
+
+                // $inventory = inventory::select('stock','id')->where('item_name',Str::lower($item))->first();
+
+                // if($request->qty[$key] >= 0) {
+                //     if($inventory) {
+                //         detailRequestHardwareSoftware::create([
+                //             'unique_request'    => $uniqueTransaction,
+                //             'items_id'          => $inventory->id,
+                //             'qty'               => $request->qty[$key],
+                //             'availability'      => 'EXISTS',
+                //             'transaction_status'=> 0,
+                //             'description'       => 'Permintaan dari ',$request->ticketId,
+                //         ]);
+                //     }
+                //     else{
+                //         detailRequestHardwareSoftware::create([
+                //             'unique_request'    => $uniqueTransaction,
+                //             'items_new_request' => $item,
+                //             'qty'               => $request->qty[$key],
+                //             'availability'      => 'NOT_EXISTS',
+                //             'transaction_status'=> 0,
+                //             'description'       => 'Permintaan dari ',$request->ticketId,
+                //         ]);
+                //     }
+                // }
             }
 
             DB::commit();
@@ -254,12 +266,12 @@ class RequestHardwareSoftwareController extends Controller
                     
                     if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_manager',0)->where('check_approval_general_manager',1)->exists()){
                         RequestHardwareSoftware::find($request->id_transaction)->update([
-                            'approval_manager' => $request->approval_manager,
-                            'approval_general_manager' => 1,
+                            'approval_manager' => $request->approval_manager
                         ]);
                     }else{
-                        RequestHardwareSoftware::find($request->id_transaction)->update([
-                            'approval_manager' => $request->approval_manager
+                         RequestHardwareSoftware::find($request->id_transaction)->update([
+                            'approval_manager' => $request->approval_manager,
+                            'approval_general_manager' => 1,
                         ]);
                     }
                         
@@ -325,16 +337,16 @@ class RequestHardwareSoftwareController extends Controller
 
                                     return redirect()->back();
                                 }else{
-                                    inventory::where('item_name',Str::lower($request->itemName[$key]))->update([
-                                        'stock' => $items->stock - $request->qty[$key],
-                                    ]);
+                                    // inventory::where('item_name',Str::lower($request->itemName[$key]))->update([
+                                    //     'stock' => $items->stock - $request->qty[$key],
+                                    // ]);
 
-                                    DetailInventory::create([
-                                        'inventory_unique'      => $items->inventory_unique,
-                                        'stock_out'             => $request->qty[$key],
-                                        'description'           => 'Permintaan hardware dan software '.$request->unique_request,
-                                        'created_by_user_id'    => Auth::user()->id
-                                    ]);
+                                    // DetailInventory::create([
+                                    //     'inventory_unique'      => $items->inventory_unique,
+                                    //     'stock_out'             => $request->qty[$key],
+                                    //     'description'           => 'Permintaan hardware dan software '.$request->unique_request,
+                                    //     'created_by_user_id'    => Auth::user()->id
+                                    // ]);
 
                                     detailRequestHardwareSoftware::find($id)->update([
                                         'transaction_status'    => $request->transaction_status[$key]
@@ -357,12 +369,12 @@ class RequestHardwareSoftwareController extends Controller
                                     'created_by_user_id'    => Auth::user()->id
                                 ]);
 
-                                DetailInventory::create([
-                                    'inventory_unique'      => $inventory_unique,
-                                    'stock_out'             => $request->qty[$key],
-                                    'description'           => 'Permintaan hardware dan software '.$request->unique_request,
-                                    'created_by_user_id'    => Auth::user()->id
-                                ]);
+                                // DetailInventory::create([
+                                //     'inventory_unique'      => $inventory_unique,
+                                //     'stock_out'             => $request->qty[$key],
+                                //     'description'           => 'Permintaan hardware dan software '.$request->unique_request,
+                                //     'created_by_user_id'    => Auth::user()->id
+                                // ]);
 
                                 detailRequestHardwareSoftware::find($id)->update([
                                     'transaction_status'    => $request->transaction_status[$key]

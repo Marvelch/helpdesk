@@ -76,9 +76,9 @@
                                         <td style="width: 33.3%; text-transform:uppercase;">
                                             <select name="itemName[]" id=""
                                                     class="itemName form-control form-control-sm">
-                                                    @foreach($inventorys as $inventory)
+                                                    <!-- @foreach($inventorys as $inventory)
                                                     <option name="">{{$inventory->item_name}}</option>
-                                                    @endforeach
+                                                    @endforeach -->
                                                 </select>
                                         </td>
                                         <td>
@@ -115,35 +115,53 @@
         $('tbody').append(
             "<tr> <td style='width: 33.3%; text-transform:uppercase;'> <div class='form-group'> <select name='itemName[]' id='' class='itemName" +
             i +
-            " form-control form-control-sm'> @foreach($inventorys as $inventory) <option name=''>{{$inventory->item_name}}</option> @endforeach </select> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input required name='qty[]' type='text' class='form-control form-control-sm'> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input type='text' name='description[]' class='form-control form-control-sm'> </div> </td> <td> <div class='form-group'> <i class='remove-button fa-solid fa-circle-minus fa-lg' style='color: #ec2727;'></i> </div> </td> </tr>"
+            " form-control form-control-sm'> </select> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input required name='qty[]' type='text' class='form-control form-control-sm'> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input type='text' name='description[]' class='form-control form-control-sm'> </div> </td> <td> <div class='form-group'> <i class='remove-button fa-solid fa-circle-minus fa-lg' style='color: #ec2727;'></i> </div> </td> </tr>"
         ).delay(800).fadeIn(400);
+        // $('.itemName' + i + '').select2({
+        //     tags: true
+        // });
         $('.itemName' + i + '').select2({
-            tags: true
+            ajax: {
+                url: '{{url("/request-hardware-software/searching-inventory")}}',
+                dataType: 'json',
+                processResults: function ({
+                    data
+                }) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                id: item.id,
+                                text: item.item_name
+                            }
+                        })
+                    }
+                }
+            }
         });
     });
 
-    $(".itemName").select2({
-        tags: true
-    });
-
-    // $('.itemsId').select2({
-    //     ajax: {
-    //         url: '{{url("/request-hardware-software/searching-inventory")}}',
-    //         dataType: 'json',
-    //         processResults: function ({
-    //             data
-    //         }) {
-    //             return {
-    //                 results: $.map(data, function (item) {
-    //                     return {
-    //                         id: item.id,
-    //                         text: item.item_name
-    //                     }
-    //                 })
-    //             }
-    //         }
-    //     }
+    // $(".itemName").select2({
+    //     tags: true
     // });
+
+    $('.itemName').select2({
+        ajax: {
+            url: '{{url("/request-hardware-software/searching-inventory")}}',
+            dataType: 'json',
+            processResults: function ({
+                data
+            }) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            id: item.id,
+                            text: item.item_name
+                        }
+                    })
+                }
+            }
+        }
+    });
 
     $(document).on('click', '.remove-button', function () {
         $(this).closest('tr').remove();

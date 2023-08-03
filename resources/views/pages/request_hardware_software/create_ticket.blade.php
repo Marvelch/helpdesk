@@ -11,7 +11,7 @@
                 <ul class="list-group">
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                         <div class="d-flex flex-column">
-                            <h6 class="mb-3 text-sm">{{$requestTickets->usersReq->name}}</h6>
+                            <h6 class="mb-3 text-sm text-capitalize">{{$requestTickets->usersReq->name}}</h6>
                             <span class="mb-2 text-xs">Permintaan : <span
                                     class="text-dark font-weight-bold ms-sm-2">{{$requestTickets->title}}</span></span>
                             <span class="mb-2 text-xs">Lokasi : <span
@@ -70,7 +70,7 @@
                     <table class="table-responsive">
                         <div class="table table-stiped" id="myTable">
                             <thead>
-                                <tr class="text-sm">
+                                <tr style="font-size: 12px;">
                                     <th style="padding-left: 0px;">Nama Barang</th>
                                     <th style="padding-left: 10px;">Jumlah</th>
                                     <th style="padding-left: 10px;">Keterangan</th>
@@ -82,9 +82,6 @@
                                         <div class="form-group">
                                             <select name="itemName[]" id="itemName"
                                                 class="itemName form-select form-select-sm text-capitalize" required>
-                                                @foreach($inventorys as $inventory)
-                                                    <option name="">{{$inventory->item_name}}</option>
-                                                @endforeach
                                             </select>
                                         </div>
                                     </td>
@@ -125,15 +122,52 @@
     $('.new-button').on('click', function () {
         ++i;
         $('tbody').append(
-            "<tr> <td style='width: 33%; padding: 0px 10px 0px 0px; margin-top:-50px'> <div class='form-group'> <select name='itemName[]' id='' class='itemName"+i+" form-control form-control-sm' required> @foreach($inventorys as $inventory) <option name=''>{{$inventory->item_name}}</option> @endforeach </select> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input name='qty[]' type='text' class='form-control form-control-sm' required> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input type='text' name='description[]' class='form-control form-control-sm'> </div> </td> <td> <div class='form-group'> <i class='remove-button fa-solid fa-circle-minus fa-lg' style='color: #ec2727;'></i> </div> </td> </tr>"
+            "<tr> <td style='width: 33%; padding: 0px 10px 0px 0px; margin-top:-50px'> <div class='form-group'> <select name='itemName[]' id='' class='itemName"+i+" form-control form-control-sm' required> </select> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input name='qty[]' type='text' class='form-control form-control-sm' required> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input type='text' name='description[]' class='form-control form-control-sm'> </div> </td> <td> <div class='form-group'> <i class='remove-button fa-solid fa-circle-minus fa-lg' style='color: #ec2727;'></i> </div> </td> </tr>"
         ).delay(800).fadeIn(400);
+        // $('.itemName' + i + '').select2({
+        //     tags: true
+        // });
         $('.itemName' + i + '').select2({
-            tags: true
+            ajax: {
+                url: '{{url("/request-hardware-software/searching-inventory")}}',
+                dataType: 'json',
+                processResults: function ({
+                    data
+                }) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                id: item.id,
+                                text: item.item_name
+                            }
+                        })
+                    }
+                }
+            }
         });
     });
 
-    $(".itemName").select2({
-        tags: true
+    // $(".itemName").select2({
+    //     tags: true
+    // });
+
+    $('.itemName').select2({
+        ajax: {
+            url: '{{url("/request-hardware-software/searching-inventory")}}',
+            dataType: 'json',
+            processResults: function ({
+                data
+            }) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            id: item.id,
+                            text: item.item_name
+                        }
+                    })
+                }
+            }
+        }
     });
 
     $(document).on('click', '.remove-button', function () {

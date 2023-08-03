@@ -34,9 +34,11 @@ use Illuminate\Support\Facades\Cache;
 |
 */
 
-Route::get('/telegram', function () { 
-    $response = Telegram::getMe();
-    return $response;
+Route::post('/telegram/webhook', 'TelegramController@handleWebhook');
+
+Route::get('/telegram',function() {
+    $telegram = new \Telegram\Bot\Api(env('TELEGRAM_TOKEN'));
+    $response = $telegram->setWebhook(['url' => 'https://localhost:8000/telegram/webhook']);
 });
 
 Route::get('/', function () { 
@@ -114,7 +116,31 @@ Route::get('/home', function() {
         }
     }
 
-    return view('pages.dashboard.index',compact('online_users','countUsers','countPasswordManagers','countRequestTicket','countInventory','resultComplate','resultUncompleted'));
+    // InProgress 
+    $inProgress = RequestHardwareSoftware::select('id', 'created_at')
+        ->where('status',0)
+        ->whereYear('created_at', '=', date('Y',strtotime(Now())))
+        ->get()
+        ->groupBy(function ($date) {
+            return Carbon::parse($date->created_at)->format('m');
+    });
+
+    $inProgressCount = [];
+    $resultinProgress = [];
+
+    foreach ($inProgress as $key => $value) {
+        $inProgressCount[(int)$key] = count($value);
+    }
+
+    for ($i = 0; $i <= 11; $i++) {
+        if (!empty($inProgressCount[$i])) {
+            $resultinProgress[] = $inProgressCount[$i];
+        } else {
+            $resultinProgress[] = 0;
+        }
+    }
+
+    return view('pages.dashboard.index',compact('online_users','countUsers','countPasswordManagers','countRequestTicket','countInventory','resultComplate','resultUncompleted','resultinProgress'));
 })->name('home')->middleware('auth');
 
 Route::get('logout',[LoginController::class,'logout'])->middleware('auth');

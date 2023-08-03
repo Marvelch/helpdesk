@@ -100,10 +100,10 @@
                                         <span class="badge badge-sm bg-gradient-danger">Menunggu</span>
                                     @elseif($item->status == 1) 
                                         <span class="badge badge-sm bg-gradient-primary">Diproses</span>
-                                    @elseif($item->status == 3) 
+                                    @elseif($item->status == 2) 
                                          <span class="badge badge-sm bg-gradient-success">Diterima</span>
-                                    @else
-                                        <span class="badge badge-sm bg-gradient-info">Pengecekan</span>
+                                     @elseif($item->status == 3) 
+                                        <span class="badge badge-sm bg-gradient-info">Ditolak</span>
                                     @endif
                                     </span>
                                 </td>

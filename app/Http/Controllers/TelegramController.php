@@ -72,4 +72,21 @@ class TelegramController extends Controller
     {
         //
     }
+
+    public function handleWebhook(Request $request)
+    {
+        // Get the incoming message from Telegram
+        $message = $request->input('message');
+
+        // Process the incoming message (you can implement your bot's logic here)
+        // For example, you can send a reply back to the user.
+        Telegram::sendMessage([
+            'chat_id' => $message['chat']['id'],
+            'text' => 'Hello, this is your Telegram bot replying!',
+        ]);
+
+        // Return a response (Telegram requires a 200 OK response)
+        return response()->json(['status' => 'ok']);
+    }
+
 }

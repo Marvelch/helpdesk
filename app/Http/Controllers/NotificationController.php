@@ -14,7 +14,7 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $items = Notification::where('users_id',Auth::user()->id)->get();
+        $items = Notification::where('users_id',Auth::user()->id)->paginate(7);
 
         return view('pages.notification.index',compact('items'));
     }

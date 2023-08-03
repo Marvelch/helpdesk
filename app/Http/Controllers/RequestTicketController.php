@@ -15,7 +15,11 @@ use Illuminate\Support\Facades\Storage;
 use DB;
 use Auth;
 use Alert;
+use App\Models\DetailInventory;
+use App\Models\detailRequestHardwareSoftware;
+use App\Models\inventory;
 use App\Models\Notification;
+use App\Models\RequestHardwareSoftware;
 use App\Models\User;
 use App\Models\WorkType;
 
@@ -112,7 +116,14 @@ class RequestTicketController extends Controller
         $divisions = division::all();
         $typeOfWorks = WorkType::all();
 
-        return view('pages.request_ticket.show',compact('companys','divisions','typeOfWorks','requestTickets'));
+        $itemsRequests = DB::table('request_hardware_software')
+                                ->join('detail_request_hardware_software','request_hardware_software.unique_request','=','detail_request_hardware_software.unique_request')
+                                ->join('inventories','detail_request_hardware_software.items_id','=','inventories.id')
+                                ->where('detail_request_hardware_software.transaction_status',2)
+                                ->where('request_hardware_software.request_ticket_id',Crypt::decryptString($id))
+                                ->get();
+
+        return view('pages.request_ticket.show',compact('companys','divisions','typeOfWorks','requestTickets','itemsRequests'));
     }
 
     /**
@@ -207,9 +218,33 @@ class RequestTicketController extends Controller
 
                 return back();
             }else{
-                requestTicket::find($id)->update([
-                    'status'    => $request->status
-                ]);
+                if($request->status == env('COMPLETED')) {
+                    requestTicket::find($id)->update([
+                        'status'    => $request->status
+                    ]);
+
+                    foreach($request->item_use as $key => $item) {
+
+                        $getData = inventory::where('inventory_unique',$request->inventory_unique[$key])->first();
+
+                        inventory::where('inventory_unique',$request->inventory_unique[$key])->update([
+                            'stock' => $getData->stock - $request->qty[$key]
+                        ]);
+
+                        if($item == 'on') {
+                            DetailInventory::create([
+                                'inventory_unique'      => $request->inventory_unique[$key],
+                                'stock_out'             => $request->qty[$key],
+                                'description'           => 'Penerimaan Dari Tiket #'.$id,
+                                'created_by_user_id'    => Auth::user()->id
+                            ]);
+                        }    
+                    }
+                }else{
+                    requestTicket::find($id)->update([
+                        'status'    => $request->status
+                    ]);
+                }
             }
 
             DB::commit();
@@ -218,11 +253,12 @@ class RequestTicketController extends Controller
 
             return back();
         } catch (\Throwable $th) {
-            DB::rollback();
+            // DB::rollback();
 
-            Alert::error('GAGAL','Pembaharuan Informasi Laporan Tiket Gagal, Ulangi Lagi');
+            // Alert::error('GAGAL','Pembaharuan Informasi Laporan Tiket Gagal, Ulangi Lagi');
 
-            return back();
+            // return back();
+            return $th;
         }
     }
 
