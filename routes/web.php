@@ -117,7 +117,31 @@ Route::get('/home', function() {
     }
 
     // InProgress 
-    $inProgress = RequestHardwareSoftware::select('id', 'created_at')
+    $inprogress = RequestHardwareSoftware::select('id', 'created_at')
+        ->where('status',1)
+        ->whereYear('created_at', '=', date('Y',strtotime(Now())))
+        ->get()
+        ->groupBy(function ($date) {
+            return Carbon::parse($date->created_at)->format('m');
+    });
+
+    $inprogressCount = [];
+    $resultinprogress = [];
+
+    foreach ($inprogress as $key => $value) {
+        $inprogressCount[(int)$key] = count($value);
+    }
+
+    for ($i = 0; $i <= 11; $i++) {
+        if (!empty($inprogressCount[$i])) {
+            $resultinprogress[] = $inprogressCount[$i];
+        } else {
+            $resultinprogress[] = 0;
+        }
+    }
+
+    //Checking
+    $checking = RequestHardwareSoftware::select('id', 'created_at')
         ->where('status',0)
         ->whereYear('created_at', '=', date('Y',strtotime(Now())))
         ->get()
@@ -125,22 +149,46 @@ Route::get('/home', function() {
             return Carbon::parse($date->created_at)->format('m');
     });
 
-    $inProgressCount = [];
-    $resultinProgress = [];
+    $checkingCount = [];
+    $resultchecking = [];
 
-    foreach ($inProgress as $key => $value) {
-        $inProgressCount[(int)$key] = count($value);
+    foreach ($checking as $key => $value) {
+        $checkingCount[(int)$key] = count($value);
     }
 
     for ($i = 0; $i <= 11; $i++) {
-        if (!empty($inProgressCount[$i])) {
-            $resultinProgress[] = $inProgressCount[$i];
+        if (!empty($checkingCount[$i])) {
+            $resultchecking[] = $checkingCount[$i];
         } else {
-            $resultinProgress[] = 0;
+            $resultchecking[] = 0;
         }
     }
 
-    return view('pages.dashboard.index',compact('online_users','countUsers','countPasswordManagers','countRequestTicket','countInventory','resultComplate','resultUncompleted','resultinProgress'));
+    //Inventory Reports
+
+    $inventoryData = RequestHardwareSoftware::select('id', 'created_at')
+        ->whereYear('created_at', '=', date('Y',strtotime(Now())))
+        ->get()
+        ->groupBy(function ($date) {
+            return Carbon::parse($date->created_at)->format('m');
+    });
+
+    $inventoryCount = [];
+    $resultInventory = [];
+
+    foreach ($checking as $key => $value) {
+        $inventoryCount[(int)$key] = count($value);
+    }
+
+    for ($i = 0; $i <= 11; $i++) {
+        if (!empty($inventoryCount[$i])) {
+            $resultInventory[] = $inventoryCount[$i];
+        } else {
+            $resultInventory[] = 0;
+        }
+    }
+
+    return view('pages.dashboard.index',compact('online_users','countUsers','countPasswordManagers','countRequestTicket','countInventory','resultComplate','resultUncompleted','resultinprogress','resultchecking','resultInventory'));
 })->name('home')->middleware('auth');
 
 Route::get('logout',[LoginController::class,'logout'])->middleware('auth');

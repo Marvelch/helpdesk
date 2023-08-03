@@ -20,11 +20,11 @@
                                     class="text-dark ms-sm-2 font-weight-bold">{{date('d-m-Y',strtotime($requestTickets->deadline))}}</span></span>
                         </div>
                         <div class="ms-auto text-end">
-                            <a class="btn btn-link text-danger text-gradient px-3 mb-0" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                            <!-- <a class="btn btn-link text-danger text-gradient px-3 mb-0" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal"><i class="far fa-trash-alt me-2"></i>Delete</a> -->
                             <!-- <a class="btn btn-link text-dark px-3 mb-0" href="javascript:;"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a> -->
                             <!-- Modal -->
-                            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            <!-- <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                                 aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -54,19 +54,19 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </li>
                 </ul>
             </div>
             <div class="card-body">
                 @error('qty')
-                    <p class="error__required">* {{ $message }}</p>
+                <p class="error__required">* {{ $message }}</p>
                 @enderror
+                @if(!$requestHardwareSoftwares)
                 <form action="{{route('store_hardware_software_request_hardware_software')}}" method="post">
                     @csrf
                     <input type="hidden" name="ticketId" value="{{$requestTickets->id}}">
-                    @if(!$requestHardwareSoftwares)
                     <table class="table-responsive">
                         <div class="table table-stiped" id="myTable">
                             <thead>
@@ -87,12 +87,14 @@
                                     </td>
                                     <td style="width: 33%; padding: 10px;">
                                         <div class="form-group">
-                                            <input type="text" name="qty[]" class="form-control form-control-sm" required>
+                                            <input type="text" name="qty[]" class="form-control form-control-sm"
+                                                required>
                                         </div>
                                     </td>
                                     <td style="width: 33%; padding: 10px;">
                                         <div class="form-group">
-                                            <input type="text" name="description[]" class="form-control form-control-sm">
+                                            <input type="text" name="description[]"
+                                                class="form-control form-control-sm">
                                         </div>
                                     </td>
                                     <td>
@@ -104,14 +106,15 @@
                             </tbody>
                         </div>
                     </table>
-                    @else
-                    <small>Pengajuan barang telah dilakukan pada nomor transakai <b>#{{$requestHardwareSoftwares->unique_request}}</b></small>
-                    @endif
                     <div class="form-group mt-4">
                         <div class="text-center d-flex justify-content-end">
                             <button type="submit" class="btn bg-gradient-info w-15 mt-4 mb-0">simpan</button>
                         </div>
                     </div>
+                    @else
+                    <small>Pengajuan barang telah dilakukan pada nomor transakai
+                        <b>#{{$requestHardwareSoftwares->unique_request}}</b></small>
+                    @endif
                 </form>
             </div>
         </div>
@@ -122,7 +125,9 @@
     $('.new-button').on('click', function () {
         ++i;
         $('tbody').append(
-            "<tr> <td style='width: 33%; padding: 0px 10px 0px 0px; margin-top:-50px'> <div class='form-group'> <select name='itemName[]' id='' class='itemName"+i+" form-control form-control-sm' required> </select> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input name='qty[]' type='text' class='form-control form-control-sm' required> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input type='text' name='description[]' class='form-control form-control-sm'> </div> </td> <td> <div class='form-group'> <i class='remove-button fa-solid fa-circle-minus fa-lg' style='color: #ec2727;'></i> </div> </td> </tr>"
+            "<tr> <td style='width: 33%; padding: 0px 10px 0px 0px; margin-top:-50px'> <div class='form-group'> <select name='itemName[]' id='' class='itemName" +
+            i +
+            " form-control form-control-sm' required> </select> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input name='qty[]' type='text' class='form-control form-control-sm' required> </div> </td> <td style='width: 33%; padding: 10px;'> <div class='form-group'> <input type='text' name='description[]' class='form-control form-control-sm'> </div> </td> <td> <div class='form-group'> <i class='remove-button fa-solid fa-circle-minus fa-lg' style='color: #ec2727;'></i> </div> </td> </tr>"
         ).delay(800).fadeIn(400);
         // $('.itemName' + i + '').select2({
         //     tags: true
