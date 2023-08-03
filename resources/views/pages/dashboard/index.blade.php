@@ -397,7 +397,7 @@
             data: {
                 labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 datasets: [{
-                        label: "Uncompleted Request",
+                        label: "Uncompleted",
                         tension: 0.4,
                         borderWidth: 0,
                         pointRadius: 0,
@@ -410,7 +410,7 @@
 
                     },
                     {
-                        label: "Complate Request",
+                        label: "Complate",
                         tension: 0.4,
                         borderWidth: 0,
                         pointRadius: 0,
@@ -419,6 +419,18 @@
                         backgroundColor: gradientStroke2,
                         fill: true,
                         data: <?= json_encode($resultComplate); ?> ,
+                        maxBarThickness : 6
+                    },
+                    {
+                        label: "In Progress",
+                        tension: 0.4,
+                        borderWidth: 0,
+                        pointRadius: 0,
+                        borderColor: "#1BE457",
+                        borderWidth: 3,
+                        backgroundColor: gradientStroke2,
+                        fill: true,
+                        data: <?= json_encode($resultinProgress); ?> ,
                         maxBarThickness : 6
                     },
                 ],

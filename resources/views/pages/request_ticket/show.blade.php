@@ -33,14 +33,21 @@
                                 <div class="card shadow card-blog card-plain">
                                     <div class="card-body">
                                         <h6>Document</h6>
-                                        <p style="font-size: 11px; font-family: var(--bs-font-quicksand); text-align: justify;">Terlampir untuk file pendukung laporan. Bila file mengalami gangguan dapat menghubungi kami ke <a href="http://">whatsapp</a> - Information Technology</p>
+                                        <p
+                                            style="font-size: 11px; font-family: var(--bs-font-quicksand); text-align: justify;">
+                                            Terlampir untuk file pendukung laporan. Bila file mengalami gangguan dapat
+                                            menghubungi kami ke <a href="http://">whatsapp</a> - Information Technology
+                                        </p>
                                         <div class="row mt-3 d-flex justify-content-center">
                                             <hr style="border: 1px solid green;">
                                             <div class="col">
-                                                <p class="fw-bold text-sm mt-2">Docs Request #{{@$requestTickets->id}}</p>
+                                                <p class="fw-bold text-sm mt-2">Docs Request #{{@$requestTickets->id}}
+                                                </p>
                                             </div>
                                             <div class="col">
-                                                <a class="btn btn-sm" href="{{route('download_bank_accounts',['id' => Crypt::encryptString($requestTickets->attachment)])}}" {{$requestTickets->attachment ? '': 'disabled'}}>download</a>
+                                                <a class="btn btn-sm"
+                                                    href="{{route('download_bank_accounts',['id' => Crypt::encryptString($requestTickets->attachment)])}}"
+                                                    {{$requestTickets->attachment ? '': 'disabled'}}>download</a>
                                             </div>
                                         </div>
                                         <!-- <div class="position-relative">
@@ -153,10 +160,10 @@
                             == env('INPROGRESS') OR Auth::user()->level_id == env('LEVEL_ADMIN') OR
                             Auth::user()->level_id == env('LEVEL_EDITOR'))
                             @if($requestTickets->status == env('COMPLETED'))
-                            <div class="form-group mt-2 text-capitalize">
-                                <div class="card">
-                                    <div class="card-body shadow">
-                                        <small>TIKET TELAH DITUTUP OLEH SISTEM/PENGGUNA</small>
+                            <div class="form-group mt-2">
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <small class="text-capitalize"><i class="fa-solid fa-bell fa-lg" style="margin-right: 12px;"></i> permintaan tiket #{{@$requestTickets->id}} telah selesai</small>
                                     </div>
                                 </div>
                             </div>
@@ -165,6 +172,7 @@
                                 method="post">
                                 @method('PUT')
                                 @csrf
+                                <!-- 
                                 <div class="form-group mt-4 text-capitalize">
                                     <small>Pemintaan untuk <a
                                             href="{{route('create_ticket_request_hardware_software',['id' => Crypt::encryptString($requestTickets->id)])}}"><u>pengadaan
@@ -178,9 +186,75 @@
                                 </select>
                                 <div class="form-group mt-4 d-flex justify-content-end">
                                     <button type="submit" class="btn bg-gradient-info w-40 mt-4 mb-0">simpan</button>
+                                </div> -->
+                                <div class="form-group mt-3">
+                                    <small>Pemintaan untuk <a
+                                            href="{{route('create_ticket_request_hardware_software',['id' => Crypt::encryptString($requestTickets->id)])}}"><u>pengadaan
+                                                hadware/software</u></a></small>
+                                </div>
+                                <div class="form-group mt-4 d-flex justify-content-end">
+                                    <a class="btn bg-gradient-info w-30 mt-4 mb-0" data-bs-toggle="modal"
+                                        href="#exampleModalToggle" role="button">periksa</a>
+                                </div>
+                                <div class="modal fade" id="exampleModalToggle" aria-hidden="true"
+                                    aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                                    <div class="modal-dialog modal-fullscreen">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="table table-responsive">
+                                                    <div class="col-md-6" style="font-size: 12px;">
+                                                        <select name="status" id=""
+                                                            class="form-control form-control-sm w-30">
+                                                            <option value="{{env('COMPLETED')}}">SELESAI</option>
+                                                            <option value="{{env('UNCOMPLETED')}}">BATAL</option>
+                                                        </select>
+                                                        </p>
+                                                    </div>
+                                                    <table class="table table-striped">
+                                                        <thead class="text-center">
+                                                            <tr>
+                                                                <th>Nama Barang</th>
+                                                                <th>Qty</th>
+                                                                <th>Pilih</th>
+                                                            </tr>
+                                                        </thead>
+                                                        @foreach($itemsRequests as $item)
+                                                        <tbody>
+                                                            <tr class="text-capitalize">
+                                                                <td>
+                                                                    {{$item->item_name}}
+                                                                    <input type="hidden" name="items_id"
+                                                                        value="{{$item->items_id}}">
+                                                                    <input type="hidden" name="inventory_unique[]" value="{{$item->inventory_unique}}">
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    {{$item->qty}}
+                                                                    <input type="hidden" name="qty[]"
+                                                                        value="{{$item->qty}}">
+                                                                </td>
+                                                                <td class="w-30">
+                                                                    <div
+                                                                        class="form-check form-switch d-flex justify-content-center">
+                                                                        <input name="item_use[]" class="form-check-input" type="checkbox"
+                                                                            id="flexSwitchCheckDefault"
+                                                                            style="font-size: 16px;">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        @endforeach
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">simpan</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
-                            @else
                             @endif
                             @endif
                         </div>
