@@ -251,10 +251,10 @@
         <div class="col-lg-7">
             <div class="card z-index-2">
                 <div class="card-header pb-0">
-                    <h6>Laporan Inventori IT</h6>
+                    <h6>Request Hardware Software</h6>
                     <p class="text-sm">
                         <i class="fa fa-arrow-up text-success"></i>
-                        Laporan Permintaan Barang Pada Inventori
+                        Laporan bulanan untuk hardware software
                     </p>
                 </div>
                 <div class="card-body p-3">
@@ -316,15 +316,15 @@
         new Chart(ctx, {
             type: "bar",
             data: {
-                labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 datasets: [{
-                    label: "Sales",
+                    label: "Inventory",
                     tension: 0.4,
                     borderWidth: 0,
                     borderRadius: 4,
                     borderSkipped: false,
                     backgroundColor: "#fff",
-                    data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
+                    data: <?= json_encode($resultInventory); ?> ,
                     maxBarThickness: 6
                 }, ],
             },
@@ -410,7 +410,7 @@
 
                     },
                     {
-                        label: "Complate",
+                        label: "Complated",
                         tension: 0.4,
                         borderWidth: 0,
                         pointRadius: 0,
@@ -430,7 +430,19 @@
                         borderWidth: 3,
                         backgroundColor: gradientStroke2,
                         fill: true,
-                        data: <?= json_encode($resultinProgress); ?> ,
+                        data: <?= json_encode($resultinprogress); ?> ,
+                        maxBarThickness : 6
+                    },
+                    {
+                        label: "Checking",
+                        tension: 0.4,
+                        borderWidth: 0,
+                        pointRadius: 0,
+                        borderColor: "#D6E41B",
+                        borderWidth: 3,
+                        backgroundColor: gradientStroke2,
+                        fill: true,
+                        data: <?= json_encode($resultchecking); ?> ,
                         maxBarThickness : 6
                     },
                 ],

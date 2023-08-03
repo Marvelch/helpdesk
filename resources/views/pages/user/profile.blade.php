@@ -14,8 +14,9 @@
                     <img src="{{asset('storage/'.Auth::user()->photo)}}" alt="profile_image"
                         class="w-100 border-radius-lg shadow-sm" style="height: auto; width: 100%; max-width: 100%;">
                     @else
-                    <img src="{{ Avatar::create(Str::upper(Auth::user()->name))->setShape('square')->setFontSize(30)->toBase64() }}" alt="profile_image"
-                        class="w-100 border-radius-lg shadow-sm" style="height: auto; width: 100%; max-width: 100%; border-radius: 10px;">
+                    <img src="{{ Avatar::create(Str::upper(Auth::user()->name))->setShape('square')->setFontSize(30)->toBase64() }}"
+                        alt="profile_image" class="w-100 border-radius-lg shadow-sm"
+                        style="height: auto; width: 100%; max-width: 100%; border-radius: 10px;">
                     @endif
                 </div>
             </div>
@@ -58,11 +59,12 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row m-3">
+                    <!-- <div class="row m-3">
                         <div class="col-md-6" style="font-family: var(--bs-font-roboto);">
                             <div class="card">
                                 <div class="card-body shadow">
-                                    <form action="{{route('update_photo_users',['id' => Auth::user()->id])}}" method="post" enctype="multipart/form-data">
+                                    <form action="{{route('update_photo_users',['id' => Auth::user()->id])}}"
+                                        method="post" enctype="multipart/form-data">
                                         @method('PUT')
                                         @csrf
                                         <div class="form-group">
@@ -105,12 +107,14 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="w-40">Perusahaan</td>
-                                                    <td class="text-capitalize">: {{@Auth::user()->company->company}}</td>
+                                                    <td class="text-capitalize">: {{@Auth::user()->company->company}}
+                                                    </td>
 
                                                 </tr>
                                                 <tr>
                                                     <td class="w-40">Divisi</td>
-                                                    <td class="text-capitalize">: {{@Auth::user()->division->division}}</td>
+                                                    <td class="text-capitalize">: {{@Auth::user()->division->division}}
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -118,7 +122,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

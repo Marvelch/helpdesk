@@ -163,7 +163,9 @@
                             <div class="form-group mt-2">
                                 <div class="card shadow">
                                     <div class="card-body">
-                                        <small class="text-capitalize"><i class="fa-solid fa-bell fa-lg" style="margin-right: 12px;"></i> permintaan tiket #{{@$requestTickets->id}} telah selesai</small>
+                                        <small class="text-capitalize"><i class="fa-solid fa-bell fa-lg"
+                                                style="margin-right: 12px;"></i> permintaan tiket
+                                            #{{@$requestTickets->id}} telah selesai</small>
                                     </div>
                                 </div>
                             </div>
@@ -201,17 +203,12 @@
                                     <div class="modal-dialog modal-fullscreen">
                                         <div class="modal-content">
                                             <div class="modal-header">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close" style="color: black;"><i
+                                                        class="fa-solid fa-xmark"></i></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="table table-responsive">
-                                                    <div class="col-md-6" style="font-size: 12px;">
-                                                        <select name="status" id=""
-                                                            class="form-control form-control-sm w-30">
-                                                            <option value="{{env('COMPLETED')}}">SELESAI</option>
-                                                            <option value="{{env('UNCOMPLETED')}}">BATAL</option>
-                                                        </select>
-                                                        </p>
-                                                    </div>
                                                     <table class="table table-striped">
                                                         <thead class="text-center">
                                                             <tr>
@@ -227,7 +224,8 @@
                                                                     {{$item->item_name}}
                                                                     <input type="hidden" name="items_id"
                                                                         value="{{$item->items_id}}">
-                                                                    <input type="hidden" name="inventory_unique[]" value="{{$item->inventory_unique}}">
+                                                                    <input type="hidden" name="inventory_unique[]"
+                                                                        value="{{$item->inventory_unique}}">
                                                                 </td>
                                                                 <td class="text-center">
                                                                     {{$item->qty}}
@@ -237,7 +235,8 @@
                                                                 <td class="w-30">
                                                                     <div
                                                                         class="form-check form-switch d-flex justify-content-center">
-                                                                        <input name="item_use[]" class="form-check-input" type="checkbox"
+                                                                        <input name="item_use[]"
+                                                                            class="form-check-input" type="checkbox"
                                                                             id="flexSwitchCheckDefault"
                                                                             style="font-size: 16px;">
                                                                     </div>
@@ -248,8 +247,19 @@
                                                     </table>
                                                 </div>
                                             </div>
+                                            <div class="row m-4">
+                                                <div class="col-md-12 ">
+                                                    <div class="form-group">
+                                                        <select name="status" id=""
+                                                                class="form-control form-control-sm w-20 shadow">
+                                                                <option value="{{env('COMPLETED')}}">SELESAI</option>
+                                                                <option value="{{env('UNCOMPLETED')}}">BATAL</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">simpan</button>
+                                                <button type="submit" class="btn btn-sm btn-primary" {{@$item->status == 2 ? '' : 'disabled'}}>simpan</button>
                                             </div>
                                         </div>
                                     </div>

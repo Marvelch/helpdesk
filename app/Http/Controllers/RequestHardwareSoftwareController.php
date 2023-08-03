@@ -337,16 +337,18 @@ class RequestHardwareSoftwareController extends Controller
 
                                     return redirect()->back();
                                 }else{
-                                    // inventory::where('item_name',Str::lower($request->itemName[$key]))->update([
-                                    //     'stock' => $items->stock - $request->qty[$key],
-                                    // ]);
+                                    if($items->request_ticket_id == null) {
+                                        inventory::where('item_name',Str::lower($request->itemName[$key]))->update([
+                                            'stock' => $items->stock - $request->qty[$key],
+                                        ]);
 
-                                    // DetailInventory::create([
-                                    //     'inventory_unique'      => $items->inventory_unique,
-                                    //     'stock_out'             => $request->qty[$key],
-                                    //     'description'           => 'Permintaan hardware dan software '.$request->unique_request,
-                                    //     'created_by_user_id'    => Auth::user()->id
-                                    // ]);
+                                        DetailInventory::create([
+                                            'inventory_unique'      => $items->inventory_unique,
+                                            'stock_out'             => $request->qty[$key],
+                                            'description'           => 'Permintaan hardware dan software '.$request->unique_request,
+                                            'created_by_user_id'    => Auth::user()->id
+                                        ]);
+                                    }
 
                                     detailRequestHardwareSoftware::find($id)->update([
                                         'transaction_status'    => $request->transaction_status[$key]

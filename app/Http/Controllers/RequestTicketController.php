@@ -120,6 +120,7 @@ class RequestTicketController extends Controller
                                 ->join('detail_request_hardware_software','request_hardware_software.unique_request','=','detail_request_hardware_software.unique_request')
                                 ->join('inventories','detail_request_hardware_software.items_id','=','inventories.id')
                                 ->where('detail_request_hardware_software.transaction_status',2)
+                                ->whereOr('detail_request_hardware_software.transaction_status',3)
                                 ->where('request_hardware_software.request_ticket_id',Crypt::decryptString($id))
                                 ->get();
 
