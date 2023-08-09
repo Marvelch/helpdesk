@@ -209,7 +209,9 @@ Route::group(['prefix' => 'bank-accounts','middleware' => ['auth']], function(){
 
 Route::group(['prefix' => 'division','middleware' => ['auth']], function(){
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
+        Route::get('/',[DivisionController::class, 'index'])->name('index_division');
         Route::get('/create',[DivisionController::class, 'create'])->name('create_division');
+        Route::delete('/delete/{id}',[DivisionController::class, 'destroy'])->name('destroy_division');
         Route::post('/store',[DivisionController::class, 'store'])->name('store_division');
     });
 });

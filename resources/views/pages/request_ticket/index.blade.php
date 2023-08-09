@@ -72,14 +72,15 @@
                                         class="text-center text-uppercase text-secondary text-xxs er opacity-7">
                                         Batas Waktu
                                     </th>
-                                    <th>
-                                        <!-- Kosong -->
+                                    <th class="text-center text-uppercase text-secondary text-xxs er opacity-7">
+                                        Bantuan
                                     </th>
                                 </tr>
                             </thead>
-                            @foreach($requestTickets as $item)
                             <tbody>
-                                <td class="align-middle text-sm">
+                                @foreach($requestTickets as $item)
+                                <tr>
+                                    <td class="align-middle text-sm">
                                     <span class="text-xs ">{{@$item->id}}</span>
                                 </td>
                                 <td class="align-middle text-sm">
@@ -101,7 +102,7 @@
                                     @elseif($item->status == 1) 
                                         <span class="badge badge-sm bg-gradient-primary">Diproses</span>
                                     @elseif($item->status == 2) 
-                                         <span class="badge badge-sm bg-gradient-success">Diterima</span>
+                                         <span class="badge badge-sm bg-gradient-success">Selesai</span>
                                      @elseif($item->status == 3) 
                                         <span class="badge badge-sm bg-gradient-info">Ditolak</span>
                                     @endif
@@ -116,6 +117,7 @@
                                             href="{{route('show_request_ticket',['id' => Crypt::encryptString($item->id)])}}"><i
                                                 class="fa-solid fa-square-arrow-up-right fa-lg"></i></a></span>
                                 </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>

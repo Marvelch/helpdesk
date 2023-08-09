@@ -124,7 +124,9 @@ class RequestTicketController extends Controller
                                 ->where('request_hardware_software.request_ticket_id',Crypt::decryptString($id))
                                 ->get();
 
-        return view('pages.request_ticket.show',compact('companys','divisions','typeOfWorks','requestTickets','itemsRequests'));
+        $hardwareSoftware = RequestHardwareSoftware::where('request_ticket_id',Crypt::decryptString($id))->first();
+
+        return view('pages.request_ticket.show',compact('companys','divisions','typeOfWorks','requestTickets','itemsRequests','hardwareSoftware'));
     }
 
     /**
@@ -224,22 +226,24 @@ class RequestTicketController extends Controller
                         'status'    => $request->status
                     ]);
 
-                    foreach($request->item_use as $key => $item) {
+                    if(!$data->isEmpty()) {
+                        foreach($request->item_use as $key => $item) {
 
-                        $getData = inventory::where('inventory_unique',$request->inventory_unique[$key])->first();
+                            $getData = inventory::where('inventory_unique',$request->inventory_unique[$key])->first();
 
-                        inventory::where('inventory_unique',$request->inventory_unique[$key])->update([
-                            'stock' => $getData->stock - $request->qty[$key]
-                        ]);
-
-                        if($item == 'on') {
-                            DetailInventory::create([
-                                'inventory_unique'      => $request->inventory_unique[$key],
-                                'stock_out'             => $request->qty[$key],
-                                'description'           => 'Penerimaan Dari Tiket #'.$id,
-                                'created_by_user_id'    => Auth::user()->id
+                            inventory::where('inventory_unique',$request->inventory_unique[$key])->update([
+                                'stock' => $getData->stock - $request->qty[$key]
                             ]);
-                        }    
+
+                            if($item == 'on') {
+                                DetailInventory::create([
+                                    'inventory_unique'      => $request->inventory_unique[$key],
+                                    'stock_out'             => $request->qty[$key],
+                                    'description'           => 'Penerimaan Dari Tiket #'.$id,
+                                    'created_by_user_id'    => Auth::user()->id
+                                ]);
+                            }    
+                        }
                     }
                 }else{
                     requestTicket::find($id)->update([

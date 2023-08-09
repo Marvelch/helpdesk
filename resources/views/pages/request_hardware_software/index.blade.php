@@ -15,10 +15,10 @@
                                 </a>
                                 <ul class="ticket__tables dropdown-menu px-2 py-3 ms-sm-n4 ms-n5"
                                     aria-labelledby="dropdownTable" style="font-family: var(--bs-font-roboto);">
-                                    <li><a class="dropdown-item border-radius-md small"
+                                    <!-- <li><a class="dropdown-item border-radius-md small"
                                             href="{{route('create_request_hardware_software')}}"><i
-                                                class="fa-thin fa-microchip" style="margin-right: 10px;"></i>
-                                            Buat Permintaan</a></li>
+                                                class="fa-thin fa-microchip" style="margin-right: 10px;" ></i>
+                                            Buat Permintaan</a></li> -->
                                 </ul>
                             </div>
                         </div>

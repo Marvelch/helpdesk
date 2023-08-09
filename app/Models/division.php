@@ -15,4 +15,8 @@ class division extends Model
         'division',
         'company_id'
     ];
+
+    public function company() {
+        return $this->belongsTo(company::class,'company_id');
+    }
 }
