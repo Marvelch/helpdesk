@@ -38,7 +38,7 @@
                                                     <label for="">Kata Sandi</label>
                                                     <input type="text" name="password"
                                                         class="form-control form-control-sm "
-                                                        value="{{old('password')}}">
+                                                        value="{{old('confirm_password')}}">
                                                     <!-- <div class="input-group mb-3">
                                                         <input type="password" name="password" id="pwd"
                                                             class="form-control form-control-sm "

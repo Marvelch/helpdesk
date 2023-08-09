@@ -110,7 +110,7 @@
                                     @csrf
                                     <div class="card-body">
                                         <form role="form">
-                                            <label>Username / Email</label>
+                                            <label>Username</label>
                                             <div class="mb-3">
                                                 <input id="username" type="username"
                                                     class="form-control form-control-sm @error('username') is-invalid @enderror"

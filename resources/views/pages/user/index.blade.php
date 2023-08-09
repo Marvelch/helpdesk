@@ -82,13 +82,13 @@
                                         <!-- <span class="text-xs">{{@Str::ucfirst($item->email)}}</span> -->
                                     </td>
                                     <td class="align-middle text-sm text-center">
-                                        <span class="text-xs font-weight-bold">
-                                            @if($item->level_id == 1)
-                                                <i class="fa-duotone fa-shield-halved fa-lg" title="SUPER ADMIN" style="--fa-primary-color: #54b95b; --fa-secondary-color: #54b95b;"></i>
-                                            @elseif($item->level_id == 2)
-                                                <i class="fa-solid fa-pen-circle fa-lg" style="color: #75b922;" title="EDITOR"></i> 
+                                        <span style="font-size: 11px;">
+                                            @if($item->level_id == 1) 
+                                            <span class="badge badge-sm bg-gradient-danger">Full Access</span>
+                                            @elseif($item->status == 2) 
+                                                <span class="badge badge-sm bg-gradient-primary">Editor Access</span>
                                             @else
-                                                <i class="fa-solid fa-circle-user fa-lg" title="PENGGUNA NORMAL" style="color: #ea8b1f;"></i>
+                                                <span class="badge badge-sm bg-gradient-info">Users</span>
                                             @endif
                                         </span>
                                     </td>

@@ -28,6 +28,7 @@
                                             <input type="hidden" name="unique_request"
                                                 value="{{@$headers->unique_request}}">
                                             <input type="hidden" name="id_transaction" value="{{@$headers->id}}">
+                                            <input type="hidden" name="ticket_id" value="{{@$headers->request_ticket_id}}">
                                         </tr>
                                         <tr>
                                             <th>Permintaan</th>
@@ -271,7 +272,7 @@
                                 <thead>
                                     <tr class="text-sm text-center">
                                         <th style="font-size: 12px;">Nama Barang</th>
-                                        <th style="font-size: 12px;">Jumlah</th>
+                                        <th style="font-size: 12px;">Qty</th>
                                         <th style="font-size: 12px;">Inventori</th>
                                         <th style="font-size: 12px;">Status</th>
                                         <th style="font-size: 12px;">Keterangan</th>
@@ -285,8 +286,8 @@
                                             <div class="form-group">
                                                 <input type="text" class="form-control form-control-sm text-capitalize"
                                                     value="{{$detail->inventorys->item_name}}" disabled>
-                                                <input type="hidden" name="itemName[]"
-                                                    value="{{$detail->items_id ?  $detail->inventorys->item_name : $detail->items_new_request}}">
+                                                <input type="hidden" name="inventoryId[]"
+                                                    value="{{$detail->items_id}}">
                                                 <input type="hidden" name="itemId[]" value="{{$detail->id}}">
                                             </div>
                                         </td>

@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\division;
 use App\Http\Controllers\Controller;
 use App\Models\company;
+use App\Models\RequestHardwareSoftware;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use DB;
+use Alert;
 use Illuminate\Support\Facades\Validator;
 
 class DivisionController extends Controller
@@ -17,7 +20,9 @@ class DivisionController extends Controller
      */
     public function index()
     {
-        //
+        $items = division::all();
+        
+        return view('pages.division.index',compact('items'));
     }
 
     /**
@@ -58,13 +63,15 @@ class DivisionController extends Controller
 
             DB::commit();
 
-            return back()->with('success','Division has been successfully added !');
+            Alert::success('BERHASIL','Penambahan Data Pada Helpdesk Telah Berhasil');
+            
+            return redirect()->route('index_division');
         } catch (\Throwable $th) {
             //throw $th;
 
             DB::rollback();
 
-            return back()->with('failed','Sorry error system call administrator !');
+            return back()->with('error','Gangguan Penginputan Data Pada Helpdesk');
         }
     }
 
@@ -95,8 +102,32 @@ class DivisionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(division $division)
+    public function destroy(division $division, $id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            $division = RequestHardwareSoftware::where('division_id',$id)->first();
+            $user = User::where('division_id',$id)->first();
+
+            if($division == NULL AND $user == NULL) {
+                division::find($id)->delete();
+            }else{
+                DB::rollback();
+
+                Alert::info('INFO','Tidak Bisa Dihapus. Divisi Telah Digunakan');
+                return back();
+            }
+
+            DB::commit();
+
+            Alert::success('BERHASIL','Penghapusan Data Telah Berhasil Diproses');
+            return back();
+        } catch (\Throwable $th) {
+            DB::rollback();
+
+            Alert::error('GAGAL','Helpdesk Mengalami Gangguan, Ulangi Lagi');
+            return back();
+        }
     }
 }

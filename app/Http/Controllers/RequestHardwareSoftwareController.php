@@ -319,12 +319,15 @@ class RequestHardwareSoftwareController extends Controller
 
                         if($request->transaction_status[$key] == env('COMPLETED') AND $filtering->transaction_status != env('COMPLETED')) {
                             
-                            $items = inventory::select('stock','inventory_unique')->where('item_name',Str::lower($request->itemName[$key]))->first();
+                            $items = inventory::select('stock','inventory_unique')->where('id',$request->inventoryId[$key])->first();
 
+                            $checkRequestTicketOnHardware = RequestHardwareSoftware::where('id',$request->id_transaction)
+                                                                                ->where('request_ticket_id',$request->ticket_id)
+                                                                                ->first();
                             if($request->qty[$key] == 0){
                                 DB::rollback();
 
-                                Alert::info('Masalah','Pemintaan '.$request->itemName[$key].' melanggar aturan sistem !');
+                                Alert::info('Masalah','Pemintaan Tidak Sesuai Periksa Kembali');
 
                                 return redirect()->back();     
                             }
@@ -333,12 +336,12 @@ class RequestHardwareSoftwareController extends Controller
                                 if($request->qty[$key] > $items->stock) {
                                     DB::rollback();
 
-                                    Alert::info('Masalah','Pemintaan '.$request->itemName[$key].' permintaan stok tidak tersedia !');
+                                    Alert::info('Masalah','Pemintaan Barang Pada Stok Inventori Tidak Tersedia');
 
                                     return redirect()->back();
                                 }else{
-                                    if($items->request_ticket_id == null) {
-                                        inventory::where('item_name',Str::lower($request->itemName[$key]))->update([
+                                    if(is_null($checkRequestTicketOnHardware)) {
+                                        inventory::where('id',$request->inventoryId[$key])->update([
                                             'stock' => $items->stock - $request->qty[$key],
                                         ]);
 
@@ -355,32 +358,11 @@ class RequestHardwareSoftwareController extends Controller
                                     ]);
                                 }
                             }else{
-                                // Penambahan atau pembuatan inventori baru
-                                $inventory_unique = generateUniqueCode();
+                                DB::rollback();
 
-                                inventory::create([
-                                    'item_name'             => Str::lower($request->itemName[$key]),
-                                    'stock'                 => 0,
-                                    'inventory_unique'      => $inventory_unique
-                                ]);
+                                Alert::info('INFO','Inventori Tidak Ditemukan, Periksa Kembali.');
 
-                                DetailInventory::create([
-                                    'inventory_unique'      => $inventory_unique,
-                                    'stock_in'             => $request->qty[$key],
-                                    'description'           => 'Permintaan hardware dan software '.$request->unique_request,
-                                    'created_by_user_id'    => Auth::user()->id
-                                ]);
-
-                                // DetailInventory::create([
-                                //     'inventory_unique'      => $inventory_unique,
-                                //     'stock_out'             => $request->qty[$key],
-                                //     'description'           => 'Permintaan hardware dan software '.$request->unique_request,
-                                //     'created_by_user_id'    => Auth::user()->id
-                                // ]);
-
-                                detailRequestHardwareSoftware::find($id)->update([
-                                    'transaction_status'    => $request->transaction_status[$key]
-                                ]);
+                                return back();
                             }
                         }elseif($request->transaction_status[$key] == env('UNCOMPLETED')){
                             detailRequestHardwareSoftware::find($id)->update([
