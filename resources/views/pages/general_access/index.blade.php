@@ -20,7 +20,7 @@
                                     </tr>
                                     <tr>
                                         <td class="w-95 p-3 fw-bold">Pengelolaan Jenis Pekerjaan</td>
-                                        <td class="text-center"><a href="{{route('index_type_general_access')}}"><i class="fa-solid fa-arrow-up-right-from-square" style="margin-top:35%;"></i></a></td>
+                                        <td class="text-center"><a href="{{route('index_type')}}"><i class="fa-solid fa-arrow-up-right-from-square" style="margin-top:35%;"></i></a></td>
                                     </tr>
                                     <tr>
                                         <td class="w-95 p-3 fw-bold">Hak Akses Pengguna Helpdesk</td>

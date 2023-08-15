@@ -8,6 +8,7 @@ use App\Models\typeOfWork;
 use App\Models\WorkType;
 use Illuminate\Http\Request;
 use DB;
+use Alert;
 
 class GeneralAccessController extends Controller
 {
@@ -89,7 +90,9 @@ class GeneralAccessController extends Controller
 
             DB::commit();
 
-            return back()->with('success','Penginputan Master Jenis Pekerjaan Berhasil');
+            Alert::success('BERHASIL','Penginputan Master Jenis Pekerjaan Berhasil');
+
+            return redirect()->route('index_type');
         } catch (\Throwable $th) {
             //throw $th;
 
