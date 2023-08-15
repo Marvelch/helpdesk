@@ -85,7 +85,7 @@
                                         <span style="font-size: 11px;">
                                             @if($item->level_id == 1) 
                                             <span class="badge badge-sm bg-gradient-danger">Full Access</span>
-                                            @elseif($item->status == 2) 
+                                            @elseif($item->level_id == 2) 
                                                 <span class="badge badge-sm bg-gradient-primary">Editor Access</span>
                                             @else
                                                 <span class="badge badge-sm bg-gradient-info">Users</span>

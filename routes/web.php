@@ -12,6 +12,7 @@ use App\Http\Controllers\RequestHardwareSoftwareController;
 use App\Http\Controllers\RequestTicketController;
 use App\Http\Controllers\TypeOfWorkController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\WorkTypeController;
 use App\Models\bankAccounts;
 use App\Models\company;
 use App\Models\inventory;
@@ -223,6 +224,13 @@ Route::group(['prefix' => 'general_access','middleware' => ['auth']], function()
         // Page work type
         Route::get('/type/index',[GeneralAccessController::class, 'index_type'])->name('index_type_general_access');
         Route::post('/type/store',[GeneralAccessController::class, 'store_type'])->name('store_type_general_access');
+    });
+});
+
+Route::group(['prefix' => 'work-type','middleware' => ['auth']], function(){
+    Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
+        Route::get('/',[WorkTypeController::class, 'index'])->name('index_type');
+        Route::delete('/delete/{id}',[WorkTypeController::class, 'destroy'])->name('destroy_type');
     });
 });
 
