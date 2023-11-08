@@ -128,13 +128,25 @@
                 </a>
             </li> -->
             <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">HR (Human Resources)</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ (request()->is('news*')) ? 'active' : '' }}" href="{{route('index_news')}}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa-duotone fa-newspaper fa-xl" style="color: #1b3d98; font-size: 14px;"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Berita</span>
+                </a>
+            </li>
+            <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ (request()->is('profile*')) ? 'active' : '' }}" href="{{route('profile_users')}}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa-solid fa-shield-halved fa-xl" style="color: #1b3d98; font-size: 14px;"></i>
+                        <i class="fa-solid fa-square-user fa-xl" style="color: #1b3d98; font-size: 14px;"></i>
                     </div>
                     <span class="nav-link-text ms-1">Profile</span>
                 </a>
