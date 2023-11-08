@@ -54,9 +54,9 @@ class HomeController extends Controller
     {
         $items = company::all();
         $divisions = division::all();
-        $position = Position::all();
+        $positions = Position::all();
 
-        return view('pages.user.create',compact('items','divisions','position'));
+        return view('pages.user.create',compact('items','divisions','positions'));
     }
 
     /**
@@ -69,9 +69,8 @@ class HomeController extends Controller
         $items = User::find(Crypt::decryptString($id));
         $companys = company::all();
         $divisions = division::all();
-        $position = Position::all();
-        
-        return view('pages.user.edit',compact('items','companys','divisions','position'));
+
+        return view('pages.user.edit',compact('items','companys','divisions'));
     }
 
      /**
@@ -105,14 +104,14 @@ class HomeController extends Controller
                 'password'      => Hash::make($request->password),
                 'company_id'    => $request->company_id,
                 'password_text' => $request->password,
-                'multi_company' => $request->multi_company == 'on' ? 1 : 0, 
+                'multi_company' => $request->multi_company == 'on' ? 1 : 0,
                 'division_id'   => $request->division_id,
                 'position_id'   => $request->position_id
             ]);
 
             DB::commit();
 
-            Alert::success('Berhasil','Penambahan pengguna berhasil tersimpan !');
+            Alert::success('Success','The account addition has been successfully created');
 
             return redirect()->route('index_users');
         } catch (\Throwable $th) {
@@ -155,10 +154,10 @@ class HomeController extends Controller
                         'email'         =>  $request->email,
                         'password'      =>  Hash::make($request->password),
                         'password_text' =>  $request->password,
-                        'phone'         =>  $request->phone, 
+                        'phone'         =>  $request->phone,
                         'company_id'    =>  $request->company_id,
                         'division_id'   =>  $request->division_id,
-                        'multi_company' =>  $request->multi_company == 'on' ? 1 : 0, 
+                        'multi_company' =>  $request->multi_company == 'on' ? 1 : 0,
                         'position_id'   =>  $request->position_id
                     ]);
 
@@ -174,7 +173,7 @@ class HomeController extends Controller
                     'email'         =>  $request->email,
                     'password'      =>  Hash::make($request->password),
                     'password_text' =>  $request->password,
-                    'phone'         =>  $request->phone, 
+                    'phone'         =>  $request->phone,
                     'company_id'    =>  $request->company_id,
                     'division_id'   =>  $request->division_id,
                     'position_id'   =>  $request->position_id
@@ -183,7 +182,7 @@ class HomeController extends Controller
                 DB::commit();
                 return redirect('users')->with('BERHASIL','Pembaharuan Informasi Pengguna Berhasil !');
             }
-            
+
             DB::commit();
 
             Alert::success('BERHASIL','Pembaharuan Data Pengguna Telah Berhasil');

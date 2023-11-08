@@ -6,6 +6,7 @@ use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\GeneralAccessController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RequestBooksController;
 use App\Http\Controllers\RequestHardwareSoftwareController;
@@ -42,13 +43,13 @@ Route::get('/telegram',function() {
     $response = $telegram->setWebhook(['url' => 'https://localhost:8000/telegram/webhook']);
 });
 
-Route::get('/', function () { 
+Route::get('/', function () {
     return view('welcome');
 })->name('/');
 
 Auth::routes([
-  'register' => false, 
-//   'login' => false, 
+  'register' => false,
+//   'login' => false,
 ]);
 
 // Route::get('/usersas',[UsersController::class,'index'])->name('users.index');
@@ -61,7 +62,7 @@ Route::get('/home', function() {
                 $online_users++;
             }
         }
-    
+
     $countUsers = User::all()->count();
 
     $countPasswordManagers = bankAccounts::all()->count();
@@ -93,7 +94,7 @@ Route::get('/home', function() {
         }
     }
 
-    // Uncompleted 
+    // Uncompleted
     $uncompleted = RequestHardwareSoftware::select('id', 'created_at')
         ->where('status',3)
         ->whereYear('created_at', '=', date('Y',strtotime(Now())))
@@ -117,7 +118,7 @@ Route::get('/home', function() {
         }
     }
 
-    // InProgress 
+    // InProgress
     $inprogress = RequestHardwareSoftware::select('id', 'created_at')
         ->where('status',1)
         ->whereYear('created_at', '=', date('Y',strtotime(Now())))
@@ -196,7 +197,7 @@ Route::get('logout',[LoginController::class,'logout'])->middleware('auth');
 
 Route::group(['prefix' => 'bank-accounts','middleware' => ['auth']], function(){
     Route::get('/download/{id}',[BankAccountsController::class,'download'])->name('download_bank_accounts');
-    
+
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
         Route::get('/',[BankAccountsController::class,'index'])->name('index_bank_accounts');
         Route::get('/create',[BankAccountsController::class,'create'])->name('create_bank_accounts');
@@ -248,12 +249,12 @@ Route::group(['prefix' => 'request-tickets','middleware' => ['auth']], function(
     Route::get('/searching-users',[RequestTicketController::class,'searchUsers']);
     Route::get('/searching/users/assign/to',[RequestTicketController::class,'search_users_assign']);
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
-        
+
     });
 });
 
 Route::group(['prefix' => 'request-hardware-software','middleware' => ['auth']], function(){
-    
+
     Route::get('/',[RequestHardwareSoftwareController::class,'index'])->name('index_request_hardware_software');
     Route::get('/searching-inventory',[RequestHardwareSoftwareController::class,'searchInventory']);
     Route::get('/create',[RequestHardwareSoftwareController::class,'create'])->name('create_request_hardware_software');
@@ -307,6 +308,12 @@ Route::group(['prefix' => 'inventory','middleware' => ['auth']], function(){
         Route::post('/scan',[InventoryController::class,'scanBercode'])->name('scan_inventory');
         Route::post('/store-barcode',[InventoryController::class,'storeBercode'])->name('store_barcode_transaction_inventory');
     });
+});
+
+Route::group(['prefix' => 'news','middleware' => ['auth']], function(){
+    Route::get('/',[NewsController::class,'index'])->name('index_news');
+    Route::get('/create',[NewsController::class,'create'])->name('create_news');
+    Route::post('/store',[NewsController::class,'store'])->name('store_news');
 });
 
 Route::get('/logout', function(){

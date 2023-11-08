@@ -125,11 +125,11 @@
                                                     <label for="">Jabatan</label>
                                                     <select name="position_id" id="position_id"
                                                         class="form-control form-control-sm ">
-                                                        @foreach($position as $item)
-                                                        <option value="{{$item->id}}">{{$item->position}}</option>
+                                                        @foreach($positions as $item)
+                                                        <option value="{{@$item->id}}">{{@$item->position}}</option>
                                                         @endforeach
                                                     </select>
-                                                    @error('item_name')
+                                                    @error('position')
                                                     <p class="error__required">* {{ $message }}</p>
                                                     @enderror
                                                 </div>

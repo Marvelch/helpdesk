@@ -24,6 +24,7 @@
     <!-- Jquery -->
     <script src="{{asset('./js/jquery-3.7.0.js')}}"></script>
     <!-- Tinymce -->
+    <script src="https://cdn.tiny.cloud/1/cydrvem3p8qfzgvv2f9gvgom18a7ddkrlezcu12kmkfr95ry/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <x-head.tinymce-config />
     <!-- Select2 -->
     <link href="{{asset('./css/select2.min.css')}}" rel="stylesheet" />
