@@ -250,6 +250,10 @@ Route::group(['prefix' => 'request-tickets','middleware' => ['auth']], function(
     Route::get('/searching/users/assign/to',[RequestTicketController::class,'search_users_assign']);
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
 
+    ## Reports ##
+    Route::get('/reports',[RequestTicketController::class,'reports'])->name('report_request_ticket');
+    Route::post('/result-reports',[RequestTicketController::class,'resultReports'])->name('result_report_request_ticket');
+    Route::get('/export-reports/{start_date}/{end_date}', [RequestTicketController::class, 'export'])->name('export_report_request_ticket');
     });
 });
 

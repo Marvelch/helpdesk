@@ -35,12 +35,14 @@
                             <thead>
                                 <tr>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        </th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Berita</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Artikel</th>
+                                        Dibuat</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Status
+                                    </th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Bantuan
@@ -48,7 +50,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                @foreach($news as $item)
+                                    <tr>
+                                        <td class="align-middle small">
+                                            <span class="text-xs font-weight-bold text-capitalize">{{@$item->title}}</span>
+                                        </td>
+                                        <td class="align-middle small">
+                                            <span class="text-xs font-weight-bold text-capitalize">{{@$item->users->name}}</span>
+                                        </td>
+                                        <td class="align-middle small">
+                                            <span class="text-xs font-weight-bold text-capitalize">{{@$item->status == 1 ? 'Aktif' : 'Tidak Aktif'}}</span>
+                                        </td>
+                                        <td class="align-middle small">
+                                            <span></span>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
