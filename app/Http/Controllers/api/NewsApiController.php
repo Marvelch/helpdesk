@@ -57,7 +57,7 @@ class NewsApiController extends Controller
         DB::beginTransaction();
         try {
 
-            $getData = News::all();
+            $getData = News::orderBy('created_at', 'desc')->take(2)->get();
 
             // Your data
             $data = [

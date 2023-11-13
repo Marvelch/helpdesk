@@ -15,6 +15,11 @@ class News extends Model
         'title',
         'article',
         'status',
+        'img',
         'created_user_id'
     ];
+
+    public function users() {
+        return $this->belongsTo(User::class,'created_user_id','id');
+    }
 }

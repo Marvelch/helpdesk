@@ -16,7 +16,9 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('pages.news.index');
+        $news = News::all();
+
+        return view('pages.news.index',compact('news'));
     }
 
     /**
@@ -32,12 +34,17 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->file('img')) {
+            $img = $request->file('img')->store('news');
+        }
+
         DB::beginTransaction();
 
         try {
             News::create([
                 'title'     => $request->title,
                 'article'   => $request->article,
+                'img'       => @$img,
                 'status'    => 1,
                 'created_user_id' => Auth::user()->id,
             ]);

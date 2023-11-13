@@ -12,7 +12,7 @@
                         <div class="row justify-content-center mt-5 mb-5">
                             <div class="col-8" style="z-index: 3;">
                                 <div class="form-group">
-                                    <label for="">Judul  </label>
+                                    <label for="">Judul Berita</label>
                                     <input name="title" type="text" class="form-control form-control-sm "
                                         value="{{old('name')}}">
                                     @error('name')
@@ -20,7 +20,14 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Isi Berita</label>
+                                    <label for="">Upload Gambar</label>
+                                    <input type="file" name="img" id="" class="form-control form-control-sm">
+                                    @error('img')
+                                    <p class="error__required">* {{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Buat Berita</label>
                                     <textarea style="font-size: 10px;" name="article">
                                     </textarea>
                                     @error('email')

@@ -25,12 +25,14 @@
                                             href="{{route('create_request_ticket')}}"><i
                                                 class="fa-solid fa-book" style="margin-right: 10px;"></i>
                                             Buat Tiket</a></li>
-                                    <!-- <li><a
+                                    @if(@Auth::user()->level_id == env('LEVEL_ADMIN'))
+                                    <li><a
                                             class="dropdown-item border-radius-md small"
-                                            href="{{route('create_bank_accounts')}}"><i
-                                                class="fa-light fa-caret-right fa-lg" style="margin-right: 10px;"></i>
-                                            Ticket Approve</a></li>
-                                    <li class="shadow-sm mb-1 p-1 bg-white rounded"><a
+                                            href="{{route('report_request_ticket')}}"><i
+                                                class="fa-duotone fa-file-chart-pie fa-lg" style="margin-right: 10px;"></i>
+                                            Laporan</a></li>
+                                    @endif
+                                    <!-- <li class="shadow-sm mb-1 p-1 bg-white rounded"><a
                                             class="dropdown-item border-radius-md small"
                                             href="{{route('create_request_ticket')}}"><i
                                                 class="fa-light fa-caret-right fa-lg" style="margin-right: 10px;"></i>
@@ -97,13 +99,13 @@
                                 </td>
                                 <td class="align-middle text-sm text-center">
                                     <span class="text-xs ">
-                                    @if($item->status == 0) 
+                                    @if($item->status == 0)
                                         <span class="badge badge-sm bg-gradient-danger">Menunggu</span>
-                                    @elseif($item->status == 1) 
+                                    @elseif($item->status == 1)
                                         <span class="badge badge-sm bg-gradient-primary">Diproses</span>
-                                    @elseif($item->status == 2) 
+                                    @elseif($item->status == 2)
                                          <span class="badge badge-sm bg-gradient-success">Selesai</span>
-                                     @elseif($item->status == 3) 
+                                     @elseif($item->status == 3)
                                         <span class="badge badge-sm bg-gradient-info">Ditolak</span>
                                     @endif
                                     </span>

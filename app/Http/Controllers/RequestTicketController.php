@@ -15,8 +15,10 @@ use Illuminate\Support\Facades\Storage;
 use DB;
 use Auth;
 use Alert;
+use App\Exports\reportTicketExport;
 use App\Models\DetailInventory;
-use App\Models\detailRequestHardwareSoftware;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\inventory;
 use App\Models\Notification;
 use App\Models\RequestHardwareSoftware;
@@ -159,7 +161,7 @@ class RequestTicketController extends Controller
                     ]);
 
                     $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER')));
-             
+
                     $data = requestTicket::find(Crypt::decryptString($request->notification));
 
                     $count = Notification::where('users_id',$request->assignTo)
@@ -195,7 +197,7 @@ class RequestTicketController extends Controller
             DB::rollback();
 
             Alert::error('Gagal','Gagal Memperbaharui Informasi Pada Tiket, Ulangi Lagi');
-            
+
             return back();
         }
     }
@@ -242,7 +244,7 @@ class RequestTicketController extends Controller
                                     'description'           => 'Penerimaan Dari Tiket #'.$id,
                                     'created_by_user_id'    => Auth::user()->id
                                 ]);
-                            }    
+                            }
                         }
                     }
                 }else{
@@ -258,12 +260,11 @@ class RequestTicketController extends Controller
 
             return back();
         } catch (\Throwable $th) {
-            // DB::rollback();
+            DB::rollback();
 
-            // Alert::error('GAGAL','Pembaharuan Informasi Laporan Tiket Gagal, Ulangi Lagi');
+            Alert::error('GAGAL','Pembaharuan Informasi Laporan Tiket Gagal, Ulangi Lagi');
 
-            // return back();
-            return $th;
+            return back();
         }
     }
 
@@ -305,7 +306,7 @@ class RequestTicketController extends Controller
 
         return view('pages.request_ticket.approve',compact('requestTickets'));
     }
-    
+
     /**
      * look up the user in the users table
      */
@@ -332,7 +333,7 @@ class RequestTicketController extends Controller
     /**
      * Download files from storage
      */
-    public function download($id) 
+    public function download($id)
     {
         DB::beginTransaction();
 
@@ -348,4 +349,37 @@ class RequestTicketController extends Controller
         }
     }
 
+    /**
+     * Work report from each employee
+     */
+    public function reports()
+    {
+        return view('pages.request_ticket.report');
+    }
+
+    /**
+     * Displays search results report data
+     */
+    public function resultReports(Request $request)
+    {
+        if($request->start_date > $request->end_date) {
+            Alert::info('INFO','Penentuan Tanggal Dari & Hingga Tidak Sesuai Ketentuan');
+        }
+
+        $start_date = $request->start_date ? $request->start_date : now();
+
+        $end_date = $request->end_date ? $request->end_date : now();
+
+        $requestTickets = requestTicket::whereBetween('created_at', [$request->start_date, $request->end_date])->get();
+
+        return view('pages.request_ticket.result-report',compact('requestTickets','start_date','end_date'));
+    }
+
+    /**
+     * Download report data in excel form
+     */
+    public function export($start_data, $end_Date)
+    {
+        return Excel::download(new reportTicketExport($start_data, $end_Date), 'Reports'.date('m:s',strtotime(now())).'.xlsx');
+    }
 }
