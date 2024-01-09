@@ -21,21 +21,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        view()->composer('*', function ($view) 
+        view()->composer('*', function ($view)
         {
             $id = @Auth::user()->id ? Auth::user()->id : 0;
-            $count = Notification::where('users_id',$id)
+            $count = @Notification::where('users_id',$id)
                                 ->where('read',NULL)
                                 ->count();
-            
-            $notifList = Notification::where('users_id',$id)
+
+            $notifList = @Notification::where('users_id',$id)
                                 ->where('read',NULL)
                                 ->latest()
                                 ->take(5)
                                 ->get();
 
             $view->with('countNotif', $count)
-                 ->with('notifList',$notifList);    
-        }); 
+                 ->with('notifList',$notifList);
+        });
     }
 }
