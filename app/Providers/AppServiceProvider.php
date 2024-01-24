@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         view()->composer('*', function ($view)
         {
-            $id = @Auth::user()->id ? Auth::user()->id : 0;
+            $id = Auth::user()->id;
             $count = @Notification::where('users_id',$id)
                                 ->where('read',NULL)
                                 ->count();
