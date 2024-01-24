@@ -23,19 +23,26 @@ class AppServiceProvider extends ServiceProvider
     {
         view()->composer('*', function ($view)
         {
-            $id = Auth::user()->id;
-            $count = @Notification::where('users_id',$id)
-                                ->where('read',NULL)
-                                ->count();
+            $countNotif = 0;
+            $notifList = [];
 
-            $notifList = @Notification::where('users_id',$id)
-                                ->where('read',NULL)
-                                ->latest()
-                                ->take(5)
-                                ->get();
+            // Check if there's an authenticated user
+            if (Auth::check()) {
+                $id = Auth::user()->id;
 
-            $view->with('countNotif', $count)
-                 ->with('notifList',$notifList);
+                $countNotif = Notification::where('users_id', $id)
+                    ->where('read', NULL)
+                    ->count();
+
+                $notifList = Notification::where('users_id', $id)
+                    ->where('read', NULL)
+                    ->latest()
+                    ->take(5)
+                    ->get();
+            }
+
+            $view->with('countNotif', $countNotif)
+                 ->with('notifList', $notifList);
         });
     }
 }
