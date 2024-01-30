@@ -20,6 +20,7 @@
 </head>
 
 <body>
+    @include('sweetalert::alert')
     <div id="app">
         <main class="py-4">
             <div class="container">

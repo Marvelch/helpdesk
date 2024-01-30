@@ -1,6 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\NewsApiController;
+use App\Http\Controllers\JobDescController;
+use App\Http\Controllers\RequestTicketController;
+use App\Http\Controllers\WorkTypeController;
+use App\Models\requestTicket;
+use App\Models\WorkType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +28,11 @@ Route::get('/news',[NewsApiController::class,'getAll']);
 
 Route::prefix('news')->group(function() {
     Route::get('/getAll',[NewsApiController::class,'getAll']);
+});
+
+Route::prefix('jobs')->group(function() {
+    Route::get('work-type',[WorkTypeController::class,'getData']);
+
+    // CREATE NEW REQUEST TICKET
+    Route::post('store',[RequestTicketController::class,'storeReqApi']);
 });

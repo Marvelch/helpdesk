@@ -6,6 +6,7 @@ use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\GeneralAccessController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\JobDescController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RequestBooksController;
@@ -285,10 +286,10 @@ Route::group(['prefix' => 'users','middleware' => ['auth']], function(){
     });
 });
 
-Route::group(['prefix' => 'type-of-work','auth'], function(){
-    Route::get('/create',[TypeOfWorkController::class,'create'])->name('create_type_of_work');
-    Route::post('/store',[TypeOfWorkController::class,'store'])->name('store_type_of_work');
-});
+// Route::group(['prefix' => 'type-of-work','auth'], function(){
+//     Route::get('/create',[WorkTypeController::class,'create'])->name('create_type_of_work');
+//     Route::post('/store',[WorkTypeController::class,'store'])->name('store_type_of_work');
+// });
 
 Route::group(['prefix' => 'profile','auth'], function(){
      Route::get('/',[UsersController::class, 'profile'])->name('profile_users');

@@ -382,4 +382,64 @@ class RequestTicketController extends Controller
     {
         return Excel::download(new reportTicketExport($start_data, $end_Date), 'Reports'.date('m:s',strtotime(now())).'.xlsx');
     }
+
+    /* ----------------------------------------------- API ACCESS -----------------------------------------------*/
+
+     /**
+     * Store a newly created resource in storage.
+     */
+    public function storeReqApi(Request $request)
+    {
+        $request->validate([
+            'title'         => 'required|min:3',
+            'company'       => 'required',
+            'division'      => 'required',
+            'location'      => 'required',
+            'work_type'     => 'required'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+
+            if(division::where('id',$request->division)->where('company_id',$request->company)->doesntExist()) {
+                DB::rollback();
+
+                Alert::info('INFO','Helpdesk Mengalami Masalah, Ulangi Penginputan');
+
+                return back();
+            }
+
+            if($request->file('attachment')) {
+                $attachment = $request->file('attachment')->store('ticket');
+            }
+
+            requestTicket::create([
+                'request_on_user_id'    => Auth::user()->id,
+                'title'                 => $request->title,
+                'company_id'            => $request->company,
+                'division_id'           => $request->division,
+                'deadline'              => $request->deadline,
+                'type_of_work_id'       => $request->work_type,
+                'location'              => $request->location,
+                'description'           => $request->description,
+                'status'                => 0,
+                'attachment'            => @$attachment
+            ]);
+
+            DB::commit();
+
+            Alert::success('BERHASIL','Pembuatan Tiket Laporan Telah Berhasil');
+
+            return redirect()->route('index_request_ticket');
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            DB::rollback();
+
+            Alert::error('GAGAL','Pembuatan Laporan Tiket Bermasalah, Ulangi Lagi');
+
+            return redirect()->back();
+        }
+    }
 }

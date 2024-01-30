@@ -92,4 +92,15 @@ class WorkTypeController extends Controller
             return back();
         }
     }
+
+    /**
+     * Displays all job type data.
+     */
+    public function getData()
+    {
+        $data = WorkType::all();
+
+        return response()->json($data, 200)
+                        ->header('Content-Type','application/json');
+    }
 }
