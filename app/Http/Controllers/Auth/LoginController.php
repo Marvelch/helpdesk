@@ -44,7 +44,7 @@ class LoginController extends Controller
         $client = new Client();
 
         // API endpoint you want to hit
-        $apiEndpoint = 'http://10.10.30.14:3000/login?plant=bpu';
+        $apiEndpoint = 'http://10.10.30.14:1024/login?plant=bpu';
 
         try {
             $response = $client->post($apiEndpoint, [

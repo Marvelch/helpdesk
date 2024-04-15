@@ -12,6 +12,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RequestBooksController;
 use App\Http\Controllers\RequestHardwareSoftwareController;
 use App\Http\Controllers\RequestTicketController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\SignatureController;
 use App\Http\Controllers\TypeOfWorkController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\WorkTypeController;
@@ -196,6 +198,17 @@ Route::get('/home', function() {
 
 Route::get('logout',[LoginController::class,'logout'])->middleware('auth');
 
+Route::group(['prefix' => 'reservation'], function(){
+    Route::get('/',[ReservationController::class,'index'])->name('reservation');
+    Route::post('store',[ReservationController::class,'store'])->name('reservation_store');
+    Route::get('show',[ReservationController::class,'show'])->name('reservation_show');
+    Route::get('edit/{id}',[ReservationController::class,'edit'])->name('reservation_edit');
+    Route::put('update-signature-employee/{id}',[ReservationController::class,'update'])->name('reservation_update');
+
+    Route::get('signature/{unique}',[SignatureController::class,'index']);
+    Route::post('signature/{unique}',[SignatureController::class,'update'])->name('signature_store');
+    Route::get('submited',[SignatureController::class,'show'])->name('signature_submited');
+});
 Route::group(['prefix' => 'bank-accounts','middleware' => ['auth']], function(){
     Route::get('/download/{id}',[BankAccountsController::class,'download'])->name('download_bank_accounts');
 
@@ -249,6 +262,7 @@ Route::group(['prefix' => 'request-tickets','middleware' => ['auth']], function(
     Route::get('/search-division/{id}',[RequestTicketController::class,'searchDivision']);
     Route::get('/searching-users',[RequestTicketController::class,'searchUsers']);
     Route::get('/searching/users/assign/to',[RequestTicketController::class,'search_users_assign']);
+
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
 
     ## Reports ##
@@ -270,6 +284,7 @@ Route::group(['prefix' => 'request-hardware-software','middleware' => ['auth']],
     Route::put('/update',[RequestHardwareSoftwareController::class,'update'])->name('update_request_hardware_software');
     Route::get('/create/{id}/request-ticket',[RequestHardwareSoftwareController::class,'createRequestTicket'])->name('create_ticket_request_hardware_software');
     Route::post('/destroy/{id}',[RequestHardwareSoftwareController::class,'destroy'])->name('destroy_request_hardware_software');
+    Route::put('/update-division',[RequestHardwareSoftwareController::class,'updateDivision'])->name('update.division.request.hardware.software');
 
     Route::middleware(['UserLevel:'.env('LEVEL_ADMIN').','.env('LEVEL_EDITOR')])->group(function(){
         Route::post('/delete/{id}/detail',[RequestHardwareSoftwareController::class,'destroyDetail'])->name('delete_detail_request_hardware_software');

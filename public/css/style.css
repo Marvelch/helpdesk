@@ -11,17 +11,87 @@
 
 /* ------------------------------------- Page Users -------------------------------------*/
 
-@media screen and (max-width: 1200px) {}
+@media screen and (min-width: 1200px) {
+    .img-users {
+        width: 25%;
+    }
+
+    .mobile-header {
+        margin-top: 9%;
+    }
+
+    .reservation-img {
+        margin-top: 30%;
+        width: 80%;
+        height: 60%;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .img-users {
+        width: 25%;
+    }
+
+    .mobile-header {
+        margin-top: 9%;
+    }
+
+    .reservation-img {
+        margin-top: 30%;
+        width: 80%;
+        height: 50%;
+    }
+}
 
 @media screen and (max-width: 1024px) {
     .img-users {
         width: 25%;
     }
+
+    .mobile-header {
+        margin-top: 9%;
+    }
+
+    .reservation-img {
+        width: 100%;
+    }
 }
+
+@media screen and (max-width: 768px) {
+    .img-users {
+        width: 25%;
+    }
+
+    .mobile-header {
+        margin-top: 16%;
+    }
+
+    .reservation-img {
+        width: 50%;
+    }
+}
+
 
 @media screen and (max-width: 480px) {
     .img-users {
         width: 15%;
+    }
+
+    .mobile-header {
+        margin-top: 9%;
+    }
+
+    .reservation > p {
+        font-size: 12px;
+        margin-left: 20px;
+    }
+
+    .reservation > label {
+        font-size: 10px;
+    }
+
+    .reservation-img {
+        width: 70%;
     }
 }
 
@@ -193,3 +263,10 @@ img.zoom-img {
 .custom-tinymce-font {
     font-size: 10px;
 }
+
+.kbw-signature { width: 100%; height: 200px;}
+        #sig canvas{
+            width: 100% !important;
+            height: auto;
+            border-radius: 10px;
+        }

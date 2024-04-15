@@ -26,28 +26,34 @@ class RequestHardwareSoftwareController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->level_id == env('LEVEL_ADMIN') OR Auth::user()->division->division == env('DIVISION_IT') OR Auth::user()->level_id == env('LEVEL_EDITOR')) {
-            $requestHardwareSoftware = RequestHardwareSoftware::all();
-        }elseif(Auth::user()->position_id == env('GENERAL_MENAGER')){
-            $requestHardwareSoftware = RequestHardwareSoftware::where('check_approval_general_manager',1)->get();
-        }elseif(Auth::user()->position_id == env('MANAGER')){
-            $getDivision = division::find(Auth::user()->division_id);
+        if(Auth::user()->division_id == null){
+            $divisionData = division::where('company_id',2)->get();
 
-            if(Auth::user()->multi_company == 1){
-                $requestHardwareSoftware = DB::table('divisions')
-                                                ->select('request_hardware_software.description','divisions.division','x.name as requests_by_user','y.name as created_by_user','request_hardware_software.requests_from_users','request_hardware_software.status','request_hardware_software.created_by_user_id','request_hardware_software.division_id','request_hardware_software.unique_request','request_hardware_software.id','request_hardware_software.approval_supervisor','request_hardware_software.approval_manager','request_hardware_software.approval_general_manager')
-                                                ->join('request_hardware_software','divisions.id','=','request_hardware_software.division_id')
-                                                ->join('users as x','request_hardware_software.requests_from_users','=','x.id')
-                                                ->join('users as y','request_hardware_software.created_by_user_id','=','y.id')
-                                                ->where('divisions.division',$getDivision->division)
-                                                ->get();
-            }else{
-                $requestHardwareSoftware = RequestHardwareSoftware::where('division_id',Auth::user()->division_id)->get();
-            }
+            return view('pages.request_hardware_software.handle_error',compact('divisionData'));
         }else{
-            $requestHardwareSoftware = RequestHardwareSoftware::where('created_by_user_id',Auth::User()->id)
-                                                                ->orWhere('requests_from_users',Auth::User()->id)
-                                                                ->get();
+            if(Auth::user()->level_id == env('LEVEL_ADMIN') OR Auth::user()->division->division == env('DIVISION_IT') OR Auth::user()->level_id == env('LEVEL_EDITOR')) {
+                $requestHardwareSoftware = RequestHardwareSoftware::all();
+            }elseif(Auth::user()->position_id == env('GENERAL_MENAGER')){
+                $requestHardwareSoftware = RequestHardwareSoftware::where('check_approval_general_manager',1)->get();
+            }elseif(Auth::user()->position_id == env('MANAGER')){
+                $getDivision = division::find(Auth::user()->division_id);
+
+                if(Auth::user()->multi_company == 1){
+                    $requestHardwareSoftware = DB::table('divisions')
+                                                    ->select('request_hardware_software.description','divisions.division','x.name as requests_by_user','y.name as created_by_user','request_hardware_software.requests_from_users','request_hardware_software.status','request_hardware_software.created_by_user_id','request_hardware_software.division_id','request_hardware_software.unique_request','request_hardware_software.id','request_hardware_software.approval_supervisor','request_hardware_software.approval_manager','request_hardware_software.approval_general_manager')
+                                                    ->join('request_hardware_software','divisions.id','=','request_hardware_software.division_id')
+                                                    ->join('users as x','request_hardware_software.requests_from_users','=','x.id')
+                                                    ->join('users as y','request_hardware_software.created_by_user_id','=','y.id')
+                                                    ->where('divisions.division',$getDivision->division)
+                                                    ->get();
+                }else{
+                    $requestHardwareSoftware = RequestHardwareSoftware::where('division_id',Auth::user()->division_id)->get();
+                }
+            }else{
+                $requestHardwareSoftware = RequestHardwareSoftware::where('created_by_user_id',Auth::User()->id)
+                                                                    ->orWhere('requests_from_users',Auth::User()->id)
+                                                                    ->get();
+            }
         }
 
         // dd($requestHardwareSoftware);
@@ -114,14 +120,14 @@ class RequestHardwareSoftwareController extends Controller
                 DB::rollback();
 
                 Alert::info('PERHATIAN','Perhatikan Penginputan Barang Tidak Boleh Sama');
-                
+
                 return back();
             }
 
             DB::commit();
 
             Alert::success('BERHASIL','Penambahan Transaksi Telah Berhasil');
-            
+
             return redirect()->route('index_request_hardware_software');
 
         } catch (\Throwable $th) {
@@ -130,7 +136,7 @@ class RequestHardwareSoftwareController extends Controller
             DB::rollback();
 
             Alert::error('GAGAL','Penambahan Transaksi Baru Gagal, Ulangi Lagi');
-            
+
             return back();
         }
     }
@@ -158,7 +164,7 @@ class RequestHardwareSoftwareController extends Controller
                 'transaction_date'      => Now(),
                 'created_by_user_id'    => Auth::user()->id
             ]);
-            
+
             foreach($request->itemName as $key => $item) {
 
                  detailRequestHardwareSoftware::create([
@@ -232,7 +238,7 @@ class RequestHardwareSoftwareController extends Controller
         $details = detailRequestHardwareSoftware::where('unique_request',Crypt::decryptString($id))->get();
 
         $inventorys = inventory::all();
-        
+
         return view('pages.request_hardware_software.edit',compact('headers','details','inventorys'));
     }
 
@@ -244,7 +250,7 @@ class RequestHardwareSoftwareController extends Controller
         DB::beginTransaction();
 
         try {
-            // Approvement Staff IT, Manager, General Manager 
+            // Approvement Staff IT, Manager, General Manager
             if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_supervisor',0)->exists()) {
                     RequestHardwareSoftware::where('id',$request->id_transaction)->update([
                         'approval_supervisor' => $request->approval_supervisor,
@@ -261,9 +267,9 @@ class RequestHardwareSoftwareController extends Controller
                     DB::commit();
                     Alert::success('BERHASIL','Pembaharuan Status Permintaan Telah Berhasil');
                     return redirect()->back();
-                    
+
             }else if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_manager',0)->exists()) {
-                    
+
                     if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_manager',0)->where('check_approval_general_manager',1)->exists()){
                         RequestHardwareSoftware::find($request->id_transaction)->update([
                             'approval_manager' => $request->approval_manager
@@ -274,7 +280,7 @@ class RequestHardwareSoftwareController extends Controller
                             'approval_general_manager' => 1,
                         ]);
                     }
-                        
+
 
                     if($request->approval_manager == 2) {
                         RequestHardwareSoftware::where('id',$request->id_transaction)->update([
@@ -301,11 +307,11 @@ class RequestHardwareSoftwareController extends Controller
                     return redirect()->back();
             }
 
-            // Validasi pesetujuan dari supervisor, manager dan general menager 
+            // Validasi pesetujuan dari supervisor, manager dan general menager
             if(RequestHardwareSoftware::where('id',$request->id_transaction)->where('approval_supervisor',1)->where('approval_manager',1)->where('approval_general_manager',1)->exists()) {
 
                 $i = is_array($request->itemId) ? count($request->itemId) : 0;
-                
+
                 if($i <= 0) {
                     DB::rollback();
 
@@ -318,7 +324,7 @@ class RequestHardwareSoftwareController extends Controller
                         $filtering = detailRequestHardwareSoftware::find($id);
 
                         if($request->transaction_status[$key] == env('COMPLETED') AND $filtering->transaction_status != env('COMPLETED')) {
-                            
+
                             $items = inventory::select('stock','inventory_unique')->where('id',$request->inventoryId[$key])->first();
 
                             $checkRequestTicketOnHardware = RequestHardwareSoftware::where('id',$request->id_transaction)
@@ -329,7 +335,7 @@ class RequestHardwareSoftwareController extends Controller
 
                                 Alert::info('Masalah','Pemintaan Tidak Sesuai Periksa Kembali');
 
-                                return redirect()->back();     
+                                return redirect()->back();
                             }
 
                             if($items) {
@@ -456,5 +462,19 @@ class RequestHardwareSoftwareController extends Controller
         $data = inventory::where('item_name','LIKE','%'.request('q').'%')->paginate(5);
 
         return response()->json($data);
+    }
+
+     /**
+     * Updating the company's division of users
+     */
+    public function updateDivision(Request $request)
+    {
+        User::where('id',Auth::user()->id)->update([
+            'division_id' => $request->division_id
+        ]);
+
+        toast('The divisional renewal had been successful','success');
+
+        return back();
     }
 }

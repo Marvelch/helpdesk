@@ -3,7 +3,7 @@
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
-        <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html "
+        <a class="navbar-brand m-0" href="{{url('/')}}"
             target="_blank">
             <img src="{{asset('./assets/logo.png')}}" class="navbar-brand-img h-100" alt="main_logo">
         </a>
@@ -98,6 +98,15 @@
                 </a>
             </li>
             @endif
+            <li class="nav-item">
+                <a class="nav-link {{ (request()->is('reservation*')) ? 'active' : '' }}" href="{{route('reservation_show')}}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa-duotone fa-signature-lock fa-xl" style="color: #1b3d98; font-size: 14px;"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Reservation</span>
+                </a>
+            </li>
             <!-- <li class="nav-item">
                 <a class="nav-link  " href="../pages/rtl.html">
                     <div
@@ -127,6 +136,7 @@
                     <span class="nav-link-text ms-1">RTL</span>
                 </a>
             </li> -->
+            @if(@Auth::user()->level_id == env('LEVEL_ADMIN'))
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">HR (Human Resources)</h6>
             </li>
@@ -139,6 +149,7 @@
                     <span class="nav-link-text ms-1">Berita</span>
                 </a>
             </li>
+            @endif
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
             </li>

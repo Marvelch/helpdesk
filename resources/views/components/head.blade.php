@@ -32,6 +32,13 @@
     <!-- Datatables -->
     <link rel="stylesheet" href="{{asset('./css/dataTables.css')}}" />
     <script src="{{asset('js/dataTables.js')}}"></script>
+    <!-- Signature -->
+    <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css"
+    rel="stylesheet">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
     <!-- Pusher -->
     @if(Auth::check())
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
@@ -51,5 +58,5 @@
             $('.pusher-append li:first-child').before(newListItem)
         });
     </script>
-    @endif
+@endif
 </head>

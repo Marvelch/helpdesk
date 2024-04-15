@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'company_id',
         'level_id',
+        'erp_code',
         'photo',
         'password_text',
         'phone',

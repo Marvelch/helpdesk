@@ -16,6 +16,15 @@
 <html lang="en">
 
 @include('components.head')
+<!-- Signature -->
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css"
+    rel="stylesheet">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
+
+<link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
 
 <body class="">
     <div class="container position-sticky z-index-sticky top-0">
@@ -25,8 +34,8 @@
                 <nav
                     class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
                     <div class="container-fluid pe-0">
-                        <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="{{url('/')}}">
-                            {{env('APP_NAME')}}
+                        <a class="navbar-brand font-weight-bolder " href="{{url('/')}}">
+                            Reservation Online
                         </a>
                         <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false"
@@ -71,8 +80,8 @@
                             </li> -->
                             <ul class="navbar-nav d-lg-block d-none">
                                 <li class="nav-item">
-                                    <a href="https://www.creative-tim.com/product/soft-ui-dashboard"
-                                        class="btn btn-sm btn-round mb-0 me-1 bg-gradient-dark">Baca Penggunaan</a>
+                                    <a class="btn btn-sm btn-round mb-0 me-1 bg-gradient-dark" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">Baca Penggunaan</a>
                                 </li>
                             </ul>
                         </div>
@@ -84,84 +93,53 @@
     </div>
     <main class="main-content  mt-0">
         <section>
-            <div class="page-header min-vh-75">
+            <div class="page-header min-vh-45 mobile-header">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
-                            @if(Auth::check())
-                            <div class="card card-plain mt-8" style="padding: 50% 0 50% 0;">
-                                <div class="card-header pb-0 text-left bg-transparent">
-                                    <h3 class="font-weight-bolder text-info text-gradient">Hi </h3>
-                                    <small class="mb-0 text-secondary" style="font-family: 'Nunito', sans-serif;">Maaf,
-                                        @if($message = Session::get('failed'))
-                                            {{$message}}
-                                        @endif
-                                        kembali ke
-                                    <a href="{{url('/home')}}">dashboard</a></small>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-8">
+                            <form method="POST" action="{{ route('signature_store', ['unique' => $result->unique]) }}">
+                                @csrf
+                                <p class="text-muted text-sm">Hi {{$result->full_name}}, thank you for your time.
+If your registration is approved, you will get a notification from email or whatsApp which can be used to enter through the guard post. If there is no reply within a few days, please contact us via email : it@sekarbumi.com</p>
+                                <div class="col-md-12">
+                                    <label for="">Signature : </label>
+                                    <br />
+                                    <div id="sig"></div>
+                                    <br />
+                                    <button id="clear" class="btn btn-danger btn-sm">Clear Signature</button>
+                                    <textarea id="signature64" name="signed" style="display: none;"></textarea>
                                 </div>
-                            </div>
-                            @else
-                            <div class="card card-plain mt-8">
-                                <div class="card-header pb-0 text-left bg-transparent">
-                                    <h3 class="font-weight-bolder text-info text-gradient">Selamat Datang</h3>
-                                    <small class="mb-0">Sign in menggunakan user dan password</small>
+                                <br />
+                                <div class="form-group d-flex justify-content-end">
+                                    <button class="btn btn-success">Submit Reservation</button>
                                 </div>
-                                <form method="POST" action="{{ route('login') }}">
-                                    @csrf
-                                    <div class="card-body">
-                                        <form role="form">
-                                            <label>Username</label>
-                                            <div class="mb-3">
-                                                <input id="username" type="username"
-                                                    class="form-control form-control-sm @error('username') is-invalid @enderror"
-                                                    placeholder="Username" aria-label="username"
-                                                    aria-describedby="username-addon" name="username"
-                                                    value="{{ old('username') }}" required autocomplete="username" autofocus>
-                                            </div>
-                                            @error('username')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                            <label>Password</label>
-                                            <div class="mb-3">
-                                                <input id="password" name="password" type="password"
-                                                    class="form-control form-control-sm @error('password') is-invalid @enderror"
-                                                    placeholder="Password" aria-label="Password"
-                                                    aria-describedby="password-addon" required
-                                                    autocomplete="current-password">
-                                            </div>
-                                            @error('password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="rememberMe"
-                                                    checked="">
-                                                <label class="form-check-label" for="rememberMe">Remember me</label>
-                                            </div>
-                                            <div class="text-center">
-                                                <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Sign
-                                                    in</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </form>
-                            </div>
-                            @endif
-                        </div>
-                        <div class="col-md-6">
-                            <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
-                                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 w-95 z-index-0 ms-n6"
-                                    style="background-image:url('./assets/img/curved-images/curved6.png')"></div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-sm">
+                        Thank you for choosing to visit us. To ensure a smooth and secure experience, we kindly ask you
+                        to
+                        complete the following visitor registration form. Your cooperation is greatly appreciated.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- -------- START FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
     <footer class="footer py-5">
         <div class="container">
@@ -185,6 +163,16 @@
     <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script>
+        var sig = $('#sig').signature({
+            syncField: '#signature64',
+            syncFormat: 'PNG'
+        });
+        $('#clear').click(function (e) {
+            e.preventDefault();
+            sig.signature('clear');
+            $("#signature64").val('');
+        });
+
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
             var options = {
