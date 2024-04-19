@@ -134,6 +134,10 @@
                                     <label for="">Want to meet</label>
                                     <select name="employee" class="js-data-example-ajax w-100"></select>
                                 </div>
+                                <div class="form-group">
+                                    <label for="">Phone</label>
+                                    <input name="phone" type="number" class="form-control" required>
+                                </div>
                                 <div class="from-group d-flex justify-content-end pt-3">
                                     <button type="submit" class="btn btn-primary">Next</button>
                                 </div>

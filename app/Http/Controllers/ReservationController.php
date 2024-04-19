@@ -69,14 +69,15 @@ class ReservationController extends Controller
             'expected_arrival_time' => $request->expected_arrival_time,
             'assign_to' => $responseData[0]->code,
             'employee_name' => $responseData[0]->name,
-            'status' => 0
+            'status' => 0,
+            'phone' => $request->phone
         ]);
 
         return redirect()->route('signature_store', ['unique' => $unique_code]);
-    } catch (\Throwable $th) {
-        // Handle any exceptions
-        return $th->getMessage();
-    }
+        } catch (\Throwable $th) {
+            // Handle any exceptions
+            return $th->getMessage();
+        }
     }
 
     /**
@@ -143,9 +144,6 @@ class ReservationController extends Controller
         // Create an UploadedFile instance from the temporary file
         $file = new UploadedFile($tempFilePath, $unique . '.' . $image_type, mime_content_type($tempFilePath), null, true);
 
-        // Store the file in the storage
-        // $path = $file->store($folderPath);
-
         // Store the file in the storage using its original name and extension
         $path = $file->storeAs($folderPath, $file->getClientOriginalName());
 
@@ -155,9 +153,27 @@ class ReservationController extends Controller
         DB::beginTransaction();
 
         try {
+            $result = reservation::where('unique', $id)->first();
+
             reservation::where('unique', $id)->update([
                 'signature_employee' => $path
             ]);
+
+            if (substr($result->phone, 0, 1) === '0') {
+                $employee_phone = '62' . substr($result->phone, 1);
+            }
+
+            $notificationData = [
+                'name' => ucfirst($result->full_name),
+                'employee_name' => ucfirst($result->employee_name),
+                'visit_date' => $result->visit_date,
+                'visitor_phone' => $employee_phone,
+                // Add any other data you need to send
+            ];
+
+            $url = "http://10.10.30.14:8888/wa/reservation/notification/visitor";
+
+            Http::post($url, $notificationData);
 
             DB::commit();
 
@@ -165,8 +181,10 @@ class ReservationController extends Controller
         } catch (\Throwable $th) {
             // Handle the exception as needed
             DB::rollback();
+
+            toast($th->getMessage(), 'error');
             // Log or return the exception
-            return $th;
+            return back();
         }
     }
 

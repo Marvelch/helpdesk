@@ -121,6 +121,10 @@ class SignatureController extends Controller
                 'employee_phone' => $employee_phone
                 // Add any other data you need to send
             ];
+
+            $url = "http://10.10.30.14:8888/wa/reservation/notification";
+
+            $response = Http::post($url, $notificationData);
         } else {
             // Handle the case where response data is empty or the key doesn't exist
             $default_phone = '6282217797018'; // Provide a default phone number
@@ -134,6 +138,10 @@ class SignatureController extends Controller
                 'employee_phone' => $default_phone
                 // Add any other data you need to send
             ];
+
+            $url = "http://10.10.30.14:8888/wa/reservation/notification";
+
+            $response = Http::post($url, $notificationData);
         }
 
         // Send notification
@@ -150,8 +158,10 @@ class SignatureController extends Controller
 } catch (\Throwable $th) {
     // Handle the exception as needed
     DB::rollback();
+
+    toast($th->getMessage(), 'error');
     // Log or return the exception
-    return $th;
+    return back();
 }
 
 }
