@@ -37,8 +37,8 @@
     rel="stylesheet">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
-
     <link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
     <!-- Pusher -->
     @if(Auth::check())
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>

@@ -116,10 +116,12 @@ class ReservationController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $signatureData = $request->input('signature');
+
         // Get the path to the storage folder
         $folderPath = 'public/';
 
-        $image_parts = explode(";base64,", $request->signed);
+        $image_parts = explode(";base64,", $signatureData);
 
         $image_type_aux = explode("image/", $image_parts[0]);
 

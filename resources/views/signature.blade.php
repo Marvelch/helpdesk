@@ -16,15 +16,6 @@
 <html lang="en">
 
 @include('components.head')
-<!-- Signature -->
-<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css"
-    rel="stylesheet">
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
-
-<link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css"> -->
-<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
 
 <!-- End Signature  -->
 <body class="">
@@ -199,7 +190,6 @@ If your registration is approved, you will get a notification from email or what
             // Clear the signature pad
             signaturePad.clear();
         });
-
         // End Signature
 
         var win = navigator.platform.indexOf('Win') > -1;
