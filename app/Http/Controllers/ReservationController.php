@@ -90,7 +90,7 @@ class ReservationController extends Controller
         $data = $response->json();
 
         // Access the sub_bagian value
-        $sub_bagian = $data[0]['sub_bagian'];
+        $sub_bagian = $data[0]['sub_bagian'] ? $data[0]['sub_bagian'] : null;
 
         if($sub_bagian == 'SECURITY') {
             $results = reservation::all();
