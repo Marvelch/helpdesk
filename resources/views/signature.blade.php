@@ -17,15 +17,16 @@
 
 @include('components.head')
 <!-- Signature -->
-
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css"
     rel="stylesheet">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
 
-<link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
+<link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css"> -->
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
 
+<!-- End Signature  -->
 <body class="">
     <div class="container position-sticky z-index-sticky top-0">
         <div class="row">
@@ -104,12 +105,15 @@ If your registration is approved, you will get a notification from email or what
                                 <div class="col-md-12">
                                     <label for="">Signature : </label>
                                     <br />
-                                    <div id="sig"></div>
+                                    <canvas id="sig" class="sig"></canvas>
                                     <br />
-                                    <button id="clear" class="btn btn-danger btn-sm">Clear Signature</button>
-                                    <textarea id="signature64" name="signed" style="display: none;"></textarea>
+                                    <button type="button" id="clear" class="btn btn-danger btn-sm">Clear Signature</button>
+                                    <input type="hidden" id="signatureInput" name="signature">
                                 </div>
                                 <br />
+                                <!-- Custom Signature -->
+
+                                <!-- End Custom Signature -->
                                 <div class="form-group d-flex justify-content-end">
                                     <button class="btn btn-success">Submit Reservation</button>
                                 </div>
@@ -160,18 +164,43 @@ If your registration is approved, you will get a notification from email or what
     <!--   Core JS Files   -->
     <script src="{{asset('./assets/js/core/popper.min.js')}}"></script>
     <script src="{{asset('./assets/js/core/bootstrap.min.js')}}"></script>
-    <script src="{{asset('./js/plugins/perfect-scrollbar.min.js')}}"></script>
+    <!-- <script src="{{asset('./js/plugins/perfect-scrollbar.min.js')}}"></script> -->
     <script src="{{asset('./js/plugins/smooth-scrollbar.min.js')}}"></script>
     <script>
         var sig = $('#sig').signature({
             syncField: '#signature64',
             syncFormat: 'PNG'
         });
-        $('#clear').click(function (e) {
-            e.preventDefault();
-            sig.signature('clear');
-            $("#signature64").val('');
+
+        // Signature Pad initialization
+        var signaturePad = new SignaturePad(document.getElementById('sig'), {
+        backgroundColor: 'rgba(255, 255, 255, 0)',
+        penColor: 'rgb(0, 0, 0)'
         });
+
+        // Form submission event listener
+        document.querySelector('form').addEventListener('submit', function (event) {
+            // Prevent form submission
+            event.preventDefault();
+
+            // Get the signature data URL
+            var signatureData = signaturePad.toDataURL();
+
+            // Set the signature data to the hidden input field
+            document.getElementById('signatureInput').value = signatureData;
+
+            // Submit the form
+            this.submit();
+        });
+
+        // Clear signature button event listener
+        var clearButton = document.getElementById('clear');
+        clearButton.addEventListener('click', function (event) {
+            // Clear the signature pad
+            signaturePad.clear();
+        });
+
+        // End Signature
 
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
