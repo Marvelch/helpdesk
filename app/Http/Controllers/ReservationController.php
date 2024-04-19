@@ -89,12 +89,12 @@ class ReservationController extends Controller
         // Decode the JSON response
         $data = $response->json();
 
-        if (isset($data[0]['sub_bagian'])) {
-            // Access the sub_bagian value
-            $sub_bagian = $data[0]['sub_bagian'];
-        } else {
+        if (empty(trim($data[0]['sub_bagian']))) {
             toast('ERP Data Sub_bagian INCOMPLETE', 'error');
             return back();
+        } else {
+            // Access the sub_bagian value
+            $sub_bagian = $data[0]['sub_bagian'];
         }
 
         if($sub_bagian == 'SECURITY') {
