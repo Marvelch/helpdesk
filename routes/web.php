@@ -22,6 +22,7 @@ use App\Models\company;
 use App\Models\inventory;
 use App\Models\RequestHardwareSoftware;
 use App\Models\requestTicket;
+use App\Models\reservation;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
@@ -198,17 +199,31 @@ Route::get('/home', function() {
 
 Route::get('logout',[LoginController::class,'logout'])->middleware('auth');
 
+// Preview page
+
+Route::get('preview/{id}',function($id) {
+
+    $data = reservation::where('unique',$id)->first();
+
+    $janji = @$data->signature_empoyee == null ? "Belum" : "Sudah Janji";
+
+    return view('pages.reservation.print',compact('data'));
+});
+
+// Route for reservation
+
 Route::group(['prefix' => 'reservation'], function(){
     Route::get('/',[ReservationController::class,'index'])->name('reservation');
     Route::post('store',[ReservationController::class,'store'])->name('reservation_store');
     Route::get('show',[ReservationController::class,'show'])->name('reservation_show');
     Route::get('edit/{id}',[ReservationController::class,'edit'])->name('reservation_edit');
     Route::put('update-signature-employee/{id}',[ReservationController::class,'update'])->name('reservation_update');
-
+    Route::get('print/{id}',[ReservationController::class,'print'])->name('reservation_print');
     Route::get('signature/{unique}',[SignatureController::class,'index']);
     Route::post('signature/{unique}',[SignatureController::class,'update'])->name('signature_store');
     Route::get('submited',[SignatureController::class,'show'])->name('signature_submited');
 });
+
 Route::group(['prefix' => 'bank-accounts','middleware' => ['auth']], function(){
     Route::get('/download/{id}',[BankAccountsController::class,'download'])->name('download_bank_accounts');
 

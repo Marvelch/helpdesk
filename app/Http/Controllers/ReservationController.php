@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\UploadedFile;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Auth;
 use DB;
+use Illuminate\Support\Facades\App;
 
 class ReservationController extends Controller
 {
@@ -98,13 +100,36 @@ class ReservationController extends Controller
             $sub_bagian = $data[0]['sub_bagian'];
         }
 
-        if($sub_bagian == 'SECURITY') {
-            $results = reservation::all();
-        }else{
-            $results = reservation::where('assign_to',$data[0]['code'])->get();
+        if ($sub_bagian == 'SECURITY') {
+            $results = Reservation::orderBy('created_at', 'desc')->get();
+        } else {
+            $results = Reservation::where('assign_to', $data[0]['code'])
+                                ->orderBy('created_at', 'desc')
+                                ->get();
         }
 
+
         return view('pages.reservation.show',compact('results'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function print($id)
+    {
+        // $pdf = App::make('dompdf.wrapper');;
+
+        $data = reservation::where('unique',$id)->first();
+
+        $pdf = Pdf::loadView('pages.reservation.print', ['data' => $data]);
+
+        return $pdf->stream();
+
+        // $pdf = PDF::loadView('pages.reservation.print', compact('data'));
+        // $pdf->setPaper('A4', 'portrait');
+        // $sales_report_file_name = "daily_sales_".date('Y-m-d').".pdf";
+        // return $pdf->stream($sales_report_file_name);
+        // return $pdf->download('pages.reservation.pdf');
     }
 
     /**

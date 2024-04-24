@@ -89,9 +89,16 @@
                                             class="text-xs font-weight-bold">{{ucfirst(strtolower(@$result->employee_name))}}</span>
                                     </td>
                                     <td class="align-middle text-sm text-center">
-                                        <span class="text-xs font-weight-bold" data-bs-toggle="modal"
+                                        <div class="row">
+                                            <div class="col">
+                                                <span class="text-xs font-weight-bold" data-bs-toggle="modal"
                                             data-bs-target="#exampleModa{{$key}}"><i
                                                 class="fa-solid fa-lg fa-comments"></i></span>
+                                            </div>
+                                            <div class="col">
+                                                <a href="{{route('reservation_print',['id'=>$result->unique])}}" target="_blank" rel="noopener noreferrer"><i class="fa-duotone fa-lg fa-print" title="Print Document"></i></a>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 <!-- Modal -->
