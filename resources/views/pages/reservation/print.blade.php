@@ -70,7 +70,7 @@
         .column {
         float: left;
         width: 33%;
-        padding: 10px;
+        padding: 8px;
         }
 
         .column-50 {
@@ -99,7 +99,7 @@
         }
 
         table {
-            margin-top: 6%;
+            margin-top: 4%;
             width: 60%;
         }
 
@@ -120,35 +120,35 @@
             </div>
             <table>
             <tr>
-                <td style="padding-bottom: 10px;">Hari / Tanggal</td>
-                <td style="padding-bottom: 10px;">: {{date('d-m-Y',strtotime(@$data->visit_date))}}</td>
+                <td style="padding-bottom: 8px;">Hari / Tanggal</td>
+                <td style="padding-bottom: 8px;">: {{date('d-m-Y',strtotime(@$data->visit_date))}}</td>
             </tr>
             <tr>
-                <td style="padding-bottom: 10px;">Nama</td>
-                <td style="padding-bottom: 10px;">: {{ucwords(@$data->full_name)}}</td>
+                <td style="padding-bottom: 8px;">Nama</td>
+                <td style="padding-bottom: 8px;">: {{ucwords(@$data->full_name)}}</td>
             </tr>
             <tr>
-                <td style="padding-bottom: 10px;">Instansi</td>
-                <td style="padding-bottom: 10px;">: {{ucwords(@$data->company)}}<</td>
+                <td style="padding-bottom: 8px;">Instansi</td>
+                <td style="padding-bottom: 8px;">: {{ucwords(@$data->company)}}<</td>
             </tr>
             <tr>
-                <td style="padding-bottom: 10px;">Jabatan</td>
-                <td style="padding-bottom: 10px;">: -</td>
+                <td style="padding-bottom: 8px;">Jabatan</td>
+                <td style="padding-bottom: 8px;">: -</td>
             </tr>
             <tr>
-                <td style="padding-bottom: 10px;">Bertemu</td>
-                <td style="padding-bottom: 10px;">: {{ucwords(strtolower(@$data->employee_name))}}</td>
+                <td style="padding-bottom: 8px;">Bertemu</td>
+                <td style="padding-bottom: 8px;">: {{ucwords(strtolower(@$data->employee_name))}}</td>
             </tr>
             <tr>
-                <td style="padding-bottom: 10px;">Maksud Kunjungan</td>
-                <td style="padding-bottom: 10px;">: {{ucwords(@$data->purpose_of_visit)}}</td>
+                <td style="padding-bottom: 8px;">Maksud Kunjungan</td>
+                <td style="padding-bottom: 8px;">: {{ucwords(@$data->purpose_of_visit)}}</td>
             </tr>
             <tr>
-                <td style="padding-bottom: 10px;">Sudah Janji / Belum</td>
-                <td style="padding-bottom: 10px;">: {{@$data->signature_employee == null ? "Belum" : "Sudah Buat Janji";}}</td>
+                <td style="padding-bottom: 8px;">Sudah Janji / Belum</td>
+                <td style="padding-bottom: 8px;">: {{@$data->signature_employee == null ? "Belum" : "Sudah Buat Janji";}}</td>
             </tr>
             </table>
-            <div class="row" style="margin-top: 5%;">
+            <div class="row" style="margin-top: 3%;">
                 <div class="column-50 content-center border">
                     <p>PARAF TAMU</p>
                 </div>
@@ -159,21 +159,21 @@
             <div class="row" style="margin-top: -1;">
                 <div class="column-50 content-center border">
                     @if($data->signature_visitor)
-                    <img src="{{ public_path("storage/".$data->signature_visitor) }}" style="width: 100%; height: 100px;">
+                    <img src="{{ public_path("storage/".$data->signature_visitor) }}" style="width: 100%; height: 70px;">
                     @else
                         <p>TIDAK TERSEDIA</p>
                     @endif
                 </div>
                 <div class="column-50 content-center border">
                     @if($data->signature_employee)
-                    <img src="{{ public_path("storage/".$data->signature_employee) }}" style="width: 100%; height: 100px;">
+                    <img src="{{ public_path("storage/".$data->signature_employee) }}" style="width: 100%; height: 70px;">
                     @else
                         <p>TIDAK TERSEDIA</p>
                     @endif
                 </div>
             </div>
             <br>
-            <p>Catatan Untuk Petugas Keamanan</p>
+            <p>CATATAN UNTUK PETUGAS KEAMANAN</p>
             <div class="row">
                 <div class="column content-center border">
                     <p>JAM MASUK</p>
