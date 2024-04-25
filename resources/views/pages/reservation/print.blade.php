@@ -187,13 +187,13 @@
             </div>
             <div class="row" style="margin-top: -1;">
                 <div class="column content-center border">
-                    <p> </p>
+                    <p>{{@$data->in}}</p>
                 </div>
                 <div class="column content-center border">
-                    <p> </p>
+                    <p>{{@$data->out}}</p>
                 </div>
                 <div class="column content-center border">
-                    <p> </p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Giang_%C6%A0i_signature.png/480px-Giang_%C6%A0i_signature.png" style="width: 100%; height: 38px;">
                 </div>
             </div>
         </div>

@@ -162,7 +162,9 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                                         @if($result->signature_employee)
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                            @if($result->date == null || $result->in == null || $result->out == null)
+                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                            @endif
                                         @endif
                                     </div>
                                     </form>
