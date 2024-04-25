@@ -222,6 +222,7 @@ Route::group(['prefix' => 'reservation'], function(){
     Route::get('signature/{unique}',[SignatureController::class,'index']);
     Route::post('signature/{unique}',[SignatureController::class,'update'])->name('signature_store');
     Route::get('submited',[SignatureController::class,'show'])->name('signature_submited');
+    Route::post('set-time/{id}',[ReservationController::class,'updateTimeVisit'])->name('reservation_settime');
 });
 
 Route::group(['prefix' => 'bank-accounts','middleware' => ['auth']], function(){

@@ -25,6 +25,10 @@ class reservation extends Model
         'signature_visitor',
         'signature_employee',
         'status',
-        'phone'
+        'phone',
+        'signature_security',
+        'date',
+        'in',
+        'out'
     ];
 }

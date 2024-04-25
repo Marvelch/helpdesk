@@ -108,8 +108,9 @@ class ReservationController extends Controller
                                 ->get();
         }
 
+        $subBagian = $data[0]['sub_bagian'];
 
-        return view('pages.reservation.show',compact('results'));
+        return view('pages.reservation.show',compact('results','subBagian'));
     }
 
     /**
@@ -219,5 +220,41 @@ class ReservationController extends Controller
     public function destroy(reservation $reservation)
     {
         //
+    }
+
+    public function updateTimeVisit($id)
+    {
+        $currentTime = time();
+
+        DB::beginTransaction();
+
+        $data = reservation::where('unique',$id)->first();
+
+        try {
+            if($data->in == null) {
+                reservation::where('unique',$id)->update([
+                    'date' => now(),
+                    'in' => DB::raw("FROM_UNIXTIME($currentTime)")
+                ]);
+            }else{
+                reservation::where('unique',$id)->update([
+                    'out' => DB::raw("FROM_UNIXTIME($currentTime)")
+                ]);
+            }
+
+            DB::commit();
+
+            toast('Updating guest hour data was successful','success');
+
+            return back();
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            DB::rollback();
+
+            toast($th->getMessage(),'error');
+
+            return $th->getMessage();
+        }
     }
 }
