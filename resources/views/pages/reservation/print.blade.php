@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title>Visitor Logbook</title>
+        <title>PRINT DOC</title>
         <style>
         body {
             font-family: Arial, sans-serif;
@@ -159,14 +159,14 @@
             <div class="row" style="margin-top: -1;">
                 <div class="column-50 content-center border">
                     @if($data->signature_visitor)
-                    <img src="{{ public_path("storage/".$data->signature_visitor) }}" style="width: 100%; height: 70px;">
+                    <img src="{{ public_path("storage/".$data->signature_visitor) }}" style="width: 40%; height: 40px; padding: 10px;">
                     @else
                         <p>TIDAK TERSEDIA</p>
                     @endif
                 </div>
                 <div class="column-50 content-center border">
                     @if($data->signature_employee)
-                    <img src="{{ public_path("storage/".$data->signature_employee) }}" style="width: 100%; height: 70px;">
+                    <img src="{{ public_path("storage/".$data->signature_employee) }}" style="width: 40%; height: 40px; padding: 10px;">
                     @else
                         <p>TIDAK TERSEDIA</p>
                     @endif
@@ -193,7 +193,7 @@
                     <p>{{@$data->out}}</p>
                 </div>
                 <div class="column content-center border">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Giang_%C6%A0i_signature.png/480px-Giang_%C6%A0i_signature.png" style="width: 100%; height: 38px;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Giang_%C6%A0i_signature.png/480px-Giang_%C6%A0i_signature.png" style="width: 40%; height: 19px; padding: 10px;">
                 </div>
             </div>
         </div>
