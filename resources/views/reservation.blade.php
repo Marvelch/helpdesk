@@ -84,60 +84,72 @@
     </div>
     <main class="main-content  mt-0">
         <section>
-            <div class="page-header min-vh-65 mobile-header">
+            <div class="page-header min-vh-45 mobile-header">
                 <div class="container">
                     <div class="row d-flex justify-content-center">
-                        <div class="col-md-4 d-flex justify-content-center">
+                        <!-- <div class="col-md-4 d-flex justify-content-center">
                             <img src="{{asset('/assets/reservation.png')}}" class="reservation-img" alt="" srcset="">
-                        </div>
+                        </div> -->
                         <div class="col-md-8">
                             <form action="{{route('reservation_store')}}" method="post">
                                 @csrf
-                                <div class="form-group">
-                                    <label for="">Full Name</label>
-                                    <input name="full_name" type="text" class="form-control" required>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Full Name</label>
+                                            <input name="full_name" type="text" class="form-control text-capitalize"
+                                                required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Company/Organization</label>
+                                            <input name="company" type="text" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">How many individuals</label>
+                                            <input name="total_visitor" type="number" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Full names of all individuals</label>
+                                            <input name="visitor_name" type="text" class="form-control text-capitalize" required>
+                                            <p style="font-size: 10px;" class="text-muted mt-1">Please provide the full names
+                                                of all
+                                                individuals traveling with you. (Indicate "N/a" if you are travelling
+                                                alone)</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Purpose of Visit</label>
+                                            <select name="purpose_of_visit" id="" class="form-control" required>
+                                                <option value="Business Meeting">Business Meeting</option>
+                                                <option value="Interview">Interview</option>
+                                                <option value="Inspection / Audit">Inspection / Audit</option>
+                                                <option value="Event Attendance">Event Attendance</option>
+                                                <option value="Others">Others</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Date of Visit</label>
+                                            <input name="visit_date" type="date" class="form-control"
+                                                value="{{date('Y-m-d',strtotime(now()))}}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Expected Arrival Time</label>
+                                            <input name="expected_arrival_time" type="time" class="form-control"
+                                                required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Want to meet</label>
+                                            <select name="employee" class="js-data-example-ajax w-100"></select>
+                                            <input type="hidden" name="companyEmployee" id="companyEmployeeInput">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Phone</label>
+                                            <input name="phone" type="number" class="form-control" required>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="">Company/Organization</label>
-                                    <input name="company" type="text" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">How many individuals</label>
-                                    <input name="total_visitor" type="number" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Full names of all individuals</label>
-                                    <input name="visitor_name" type="text" class="form-control" required>
-                                    <p style="font-size: 10px;" class="text-muted">Please provide the full names of all
-                                        individuals traveling with you. (Indicate "N/a" if you are travelling alone)</p>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Purpose of Visit</label>
-                                    <select name="purpose_of_visit" id="" class="form-control" required>
-                                        <option value="Business Meeting">Business Meeting</option>
-                                        <option value="Interview">Interview</option>
-                                        <option value="Inspection / Audit">Inspection / Audit</option>
-                                        <option value="Event Attendance">Event Attendance</option>
-                                        <option value="Others">Others</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Date of Visit</label>
-                                    <input name="visit_date" type="date" class="form-control"
-                                        value="{{date('Y-m-d',strtotime(now()))}}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Expected Arrival Time</label>
-                                    <input name="expected_arrival_time" type="time" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Want to meet</label>
-                                    <select name="employee" class="js-data-example-ajax w-100"></select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Phone</label>
-                                    <input name="phone" type="number" class="form-control" required>
-                                </div>
+
                                 <div class="from-group d-flex justify-content-end pt-3">
                                     <button type="submit" class="btn btn-primary">Next</button>
                                 </div>
@@ -206,7 +218,8 @@
                         results: data.map(function (item) {
                             return {
                                 id: item.code,
-                                text: item.name
+                                text: item.name + ' - ' + item.company,
+                                companyEmployee: item.company
                             };
                         })
                     };
@@ -214,23 +227,10 @@
                 cache: true
             },
             minimumInputLength: 3,
-            templateResult: formatResult, // Function to format each result item
-            templateSelection: formatSelection // Function to format the selected item
+        }).on('change', function (e) {
+            var selectedOption = $(this).select2('data')[0];
+            $('#companyEmployeeInput').val(selectedOption.companyEmployee);
         });
-
-        // Function to format each result item
-        function formatResult(item) {
-            if (!item.id) {
-                return item.text;
-            }
-            var $result = $('<span>' + item.text + '</span>');
-            return $result;
-        }
-
-        // Function to format the selected item
-        function formatSelection(item) {
-            return item.text;
-        }
 
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {

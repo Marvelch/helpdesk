@@ -136,6 +136,13 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                             @enderror
+                                            <label>Select Company</label>
+                                            <div class="mb-3">
+                                                <select name="company" id="" class="form-control form-control-sm">
+                                                    <option value="bpu">BPU</option>
+                                                    <option value="skb">SKB</option>
+                                                </select>
+                                            </div>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" id="rememberMe"
                                                     checked="">

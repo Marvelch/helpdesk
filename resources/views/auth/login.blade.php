@@ -65,6 +65,18 @@
                                 </span>
                                 @enderror
 
+                                <div class="row mb-3">
+                                    <div class="form-group">
+                                        <label for="company"
+                                            class="form-control-sm col-form-label text-md-end">Select Company</label>
+                                        <select name="company" id="" class="form-controlform-control-sm">
+                                            <option value="bpu">BPU</option>
+                                            <option value="skb">SKB</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
                                 <div class="row mb-0">
                                     <div class="d-flex justify-content-end">
                                         <button type="submit" class="btn-init btn-submit">

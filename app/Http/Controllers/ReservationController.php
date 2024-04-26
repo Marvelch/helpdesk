@@ -53,7 +53,7 @@ class ReservationController extends Controller
     {
         try {
         // Make an asynchronous request to fetch data
-        $response = Http::get('http://10.10.30.14:1024/api/reservation/user', ['term' => $request->employee]);
+        $response = Http::get('http://10.10.30.14:1024/api/reservation/user', ['term' => $request->employee,'plant'=>strtolower($request->companyEmployee)]);
 
         // Proceed with creating the reservation
         $unique_code = 'RV-'.generateUniqueCode();
@@ -87,12 +87,14 @@ class ReservationController extends Controller
      */
     public function show(reservation $reservation)
     {
-        $response = Http::get('http://10.10.30.14:1024/api/reservation/find-people', ['term' => Auth::user()->id_people]);
+        $initialCompany = Auth::user()->company_id == 1 ? 'bpu' : 'skb';
+
+        $response = Http::get('http://10.10.30.14:1024/api/reservation/find-people', ['term' => Auth::user()->id_people, 'plant' => $initialCompany]);
 
         // Decode the JSON response
         $data = $response->json();
 
-        if (empty(trim($data[0]['sub_bagian']))) {
+        if (empty(trim(@$data[0]['sub_bagian']))) {
             toast('ERP Data Sub_bagian INCOMPLETE', 'error');
             return back();
         } else {

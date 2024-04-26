@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
@@ -30,21 +31,23 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-
-        // $credentials = $request->only('email', 'password');
-
-        // if (FacadesAuth::attempt($credentials)) {
-        //     return redirect()->intended('/dashboard');
-        // }
-
-        // return back()->with('error', 'Invalid login credentials');
-
         DB::beginTransaction();
 
         $client = new Client();
 
+        // Intial company
+        if($request->company == 'bpu') {
+            $companyIntial = '1';
+        }else{
+            $companyIntial = '2';
+        }
+
         // API endpoint you want to hit
-        $apiEndpoint = 'http://10.10.30.14:1024/login?plant=bpu';
+        if($companyIntial == '1') {
+            $apiEndpoint = 'http://10.10.30.14:1024/login?plant=bpu';
+        }else{
+            $apiEndpoint = 'http://10.10.30.14:1024/login?plant=skb3';
+        }
 
         try {
             $response = $client->post($apiEndpoint, [
@@ -55,7 +58,9 @@ class LoginController extends Controller
             if ($response->getStatusCode() == 201) {
                 $userErp = json_decode($response->getBody(), true);
 
-                $userHelpdesk = User::where('id_people',$userErp['authData']['id_people'])->first();
+                $userHelpdesk = User::where('id_people',$userErp['authData']['id_people'])
+                                        ->where('company_id',$companyIntial)
+                                        ->first();
 
                 if($userHelpdesk) {
                     if($userErp['authData']['userid'] != $userHelpdesk->username || $userErp['authData']['username'] != $userHelpdesk->name || $request->password != $userHelpdesk->password_text) {
@@ -85,7 +90,7 @@ class LoginController extends Controller
                         'name' => strtolower($userErp['authData']['username']),
                         'username' => $userErp['authData']['userid'],
                         'email' => 'default@bumipanganutama.com',
-                        'company_id' => '2',
+                        'company_id' => $companyIntial,
                         'password' => Hash::make($request->password),
                         'password_text' => $request->password,
                         'id_people' => $userErp['authData']['id_people']
