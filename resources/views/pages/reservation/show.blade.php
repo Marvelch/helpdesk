@@ -88,23 +88,21 @@
                                         <span
                                             class="text-xs font-weight-bold">{{ucfirst(strtolower(@$result->employee_name))}}</span>
                                     </td>
-                                    <td class="align-middle text-sm text-center d-flex justify-content-center">
-                                        <div class="row col-md-4">
-                                            <div class="d-flex justify-content-center">
-                                                <div class="col-sm-4 m-1">
+                                    <td class="align-middle text-sm">
+                                        <div class="row">
+                                            <div class="col">
                                                     <span class="text-xs font-weight-bold" data-bs-toggle="modal"
                                                     data-bs-target="#exampleModa{{$key}}"><i
-                                                    class="fa-solid fa-lg fa-comments"></i></span>
+                                                    class="fa-solid fa-comments"></i></span>
                                                 </div>
                                                 @if($subBagian == 'SECURITY')
-                                                <div class="col-sm-4 m-1">
-                                                    <i class="fa-duotone fa-lg fa-pen-field" data-bs-toggle="modal" data-bs-target="#{{$result->unique}}"></i>
+                                                <div class="col">
+                                                    <i class="fa-duotone fa-pen-field" data-bs-toggle="modal" data-bs-target="#{{$result->unique}}"></i>
                                                 </div>
                                                 @endif
-                                                <div class="col-sm-4 m-1">
-                                                    <a href="{{route('reservation_print',['id'=>$result->unique])}}" target="_blank" rel="noopener noreferrer"><i class="fa-duotone fa-lg fa-print" title="Print Document"></i></a>
+                                                <div class="col">
+                                                    <a href="{{route('reservation_print',['id'=>$result->unique])}}" target="_blank" rel="noopener noreferrer"><i class="fa-duotone fa-print" title="Print Document"></i></a>
                                                 </div>
-                                            </div>
                                         </div>
                                     </td>
                                 </tr>
