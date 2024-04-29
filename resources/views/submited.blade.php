@@ -107,7 +107,7 @@
                                             berhasil dikirim. Tunggu pemberitahuan dari kami terima kasih.</p>
                                     </div>
                                     <div class="form-group mt-2">
-                                        <a class="btn btn-primary" href="{{route('/')}}">Halaman Utama</a>
+                                        <a class="btn btn-primary" href="{{route('reservation')}}">Halaman Utama</a>
                                     </div>
                                 </div>
                             </div>
