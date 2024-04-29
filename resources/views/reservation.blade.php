@@ -144,7 +144,7 @@
                                             <input type="hidden" name="companyEmployee" id="companyEmployeeInput">
                                         </div>
                                         <div class="form-group">
-                                            <label for="">Phone</label>
+                                            <label for="">Mobile (Whatsapp)</label>
                                             <input name="phone" type="number" class="form-control" required>
                                         </div>
                                     </div>

@@ -72,7 +72,8 @@ class ReservationController extends Controller
             'assign_to' => $responseData[0]->code,
             'employee_name' => $responseData[0]->name,
             'status' => 0,
-            'phone' => $request->phone
+            'phone' => $request->phone,
+            'plant' => strtolower($request->companyEmployee)
         ]);
 
         return redirect()->route('signature_store', ['unique' => $unique_code]);
@@ -207,12 +208,14 @@ class ReservationController extends Controller
 
             return redirect()->route('reservation_show');
         } catch (\Throwable $th) {
-            // Handle the exception as needed
-            DB::rollback();
+            // // Handle the exception as needed
+            // DB::rollback();
 
-            toast($th->getMessage(), 'error');
-            // Log or return the exception
-            return back();
+            // toast($th->getMessage(), 'error');
+            // // Log or return the exception
+            // return back();
+
+            return $th;
         }
     }
 

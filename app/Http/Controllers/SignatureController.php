@@ -96,7 +96,7 @@ class SignatureController extends Controller
     try {
         $res = reservation::where('unique', $unique_rev)->first();
 
-        $response = Http::get('http://10.10.30.14:1024/api/reservation/user', ['term' => $res->assign_to]);
+        $response = Http::get('http://10.10.30.14:1024/api/reservation/user', ['term' => $res->assign_to,'plant'=>strtolower($res->plant)]);
 
         if ($response->successful() && $response->json() !== null) {
         // Get the response data

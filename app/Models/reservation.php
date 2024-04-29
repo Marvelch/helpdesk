@@ -29,6 +29,7 @@ class reservation extends Model
         'signature_security',
         'date',
         'in',
-        'out'
+        'out',
+        'plant'
     ];
 }
