@@ -88,7 +88,7 @@ class ReservationController extends Controller
      */
     public function show(reservation $reservation)
     {
-        $initialCompany = Auth::user()->company_id == 1 ? 'bpu' : 'skb';
+        $initialCompany = Auth::user()->company_id == 1 ? 'bpu' : 'skb3';
 
         $response = Http::get('http://10.10.30.14:1024/api/reservation/find-people', ['term' => Auth::user()->id_people, 'plant' => $initialCompany]);
 

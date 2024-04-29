@@ -88,20 +88,20 @@
                                         <span
                                             class="text-xs font-weight-bold">{{ucfirst(strtolower(@$result->employee_name))}}</span>
                                     </td>
-                                    <td class="align-middle text-sm text-center">
-                                        <div class="row">
+                                    <td class="align-middle text-sm text-center d-flex justify-content-center">
+                                        <div class="row col-md-4">
                                             <div class="d-flex justify-content-center">
-                                                <div class="col-2 m-1">
+                                                <div class="col-sm-4 m-1">
                                                     <span class="text-xs font-weight-bold" data-bs-toggle="modal"
                                                     data-bs-target="#exampleModa{{$key}}"><i
                                                     class="fa-solid fa-lg fa-comments"></i></span>
                                                 </div>
                                                 @if($subBagian == 'SECURITY')
-                                                <div class="col-2 m-1">
+                                                <div class="col-sm-4 m-1">
                                                     <i class="fa-duotone fa-lg fa-pen-field" data-bs-toggle="modal" data-bs-target="#{{$result->unique}}"></i>
                                                 </div>
                                                 @endif
-                                                <div class="col-2 m-1">
+                                                <div class="col-sm-4 m-1">
                                                     <a href="{{route('reservation_print',['id'=>$result->unique])}}" target="_blank" rel="noopener noreferrer"><i class="fa-duotone fa-lg fa-print" title="Print Document"></i></a>
                                                 </div>
                                             </div>
